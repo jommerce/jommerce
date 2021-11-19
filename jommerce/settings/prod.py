@@ -1,7 +1,7 @@
 from .base import *
 
 DEBUG = False
-ALLOWED_HOSTS = ['pyshem.com', 'www.pyshem.com']
+ALLOWED_HOSTS = ['jommerce.org', 'www.jommerce.org']
 
 
 STATIC_ROOT = os.environ['STATIC_ROOT']

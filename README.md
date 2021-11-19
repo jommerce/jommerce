@@ -1,2 +1,0 @@
-# pyshem.com
-Membership Platform
