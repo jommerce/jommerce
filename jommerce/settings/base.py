@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'jommerce.accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
