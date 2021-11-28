@@ -1,7 +1,7 @@
 from .base import *
 
 DEBUG = False
-ALLOWED_HOSTS = ['jommerce.org', 'www.jommerce.org']
+ALLOWED_HOSTS = SECRETS.get('ALLOWED_HOSTS', [])
 
 
 STATIC_ROOT = SECRETS['STATIC_ROOT']
