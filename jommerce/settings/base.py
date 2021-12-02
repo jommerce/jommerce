@@ -146,3 +146,6 @@ MIGRATION_MODULES = {
     "auth": "jommerce.auth.migrations",
     "jauth": None,
 }
+
+# Authentication and Authorization
+AUTH_USER_MODEL = "auth.CustomUser"
