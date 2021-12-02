@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "jommerce.accounts.apps.AccountsConfig",
+    "jommerce.auth.apps.AuthConfig",
 ]
 
 MIDDLEWARE = [
@@ -142,5 +142,10 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# Custom User Model
-AUTH_USER_MODEL = "accounts.User"
+MIGRATION_MODULES = {
+    "auth": "jommerce.auth.migrations",
+    "jauth": None,
+}
+
+# Authentication and Authorization
+AUTH_USER_MODEL = "auth.CustomUser"
