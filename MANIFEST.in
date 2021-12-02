@@ -1,4 +1,0 @@
-include LICENSE
-include README.md
-recursive-include jommerce/static *
-recursive-include jommerce/templates *
