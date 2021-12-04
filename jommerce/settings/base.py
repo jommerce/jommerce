@@ -11,15 +11,15 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-import json
+import tomlkit
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 JOMMERCE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = Path.cwd()
 
-# Load 'secrets.json' file
-with open(BASE_DIR / "secrets.json", "r") as file:
-    SECRETS = json.load(file)
+# Load 'secrets.toml' file
+with open(BASE_DIR / "secrets.toml", "r") as file:
+    SECRETS = tomlkit.loads(file.read())
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/

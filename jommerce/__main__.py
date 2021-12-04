@@ -1,6 +1,5 @@
 from django.core.management.utils import get_random_secret_key
 from pathlib import Path
-import json
 
 ROOT_DIR = Path.cwd()
 
@@ -37,17 +36,14 @@ def main():
         "from jommerce.settings.dev import *\n"
     )
     (ROOT_DIR / "manage.py").write_text(text)
-    with open((ROOT_DIR / "secrets.json"), "w") as file:
-        json.dump(
-            {
-                "SECRET_KEY": get_random_secret_key(),
-                "ALLOWED_HOSTS": [
-                    "example.com",
-                    "www.example.com",
-                ],
-            },
-            file,
-            indent=4,
+    with open((ROOT_DIR / "secrets.toml"), "w") as file:
+        file.write(
+            f"""SECRET_KEY = "{get_random_secret_key()}"
+ALLOWED_HOSTS = [
+    "example.com",
+    "www.example.com",
+]
+"""
         )
 
 
