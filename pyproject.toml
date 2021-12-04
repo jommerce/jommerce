@@ -13,6 +13,7 @@ repository = "https://github.com/jommerce/jommerce"
 include = [
     "jommerce/templates/*",
     "jommerce/static/*",
+    "jommerce/project_template/*",
 ]
 
 classifiers = [
