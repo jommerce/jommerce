@@ -18,7 +18,7 @@ JOMMERCE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = Path.cwd()
 
 # Load 'secrets.toml' file
-with open(BASE_DIR / "secrets.toml", "r") as file:
+with open(BASE_DIR / ".secrets", "r") as file:
     SECRETS = tomlkit.loads(file.read())
 
 # Quick-start development settings - unsuitable for production
