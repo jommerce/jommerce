@@ -35,8 +35,8 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.6"
 Django = "^3.2"
-tomlkit = "^0.7.2"
 psycopg2 = { version = "^2.5.4", optional = true }
+pytomlpp = "^1.0.9"
 
 [tool.poetry.extras]
 PostgreSQL = ["psycopg2"]
