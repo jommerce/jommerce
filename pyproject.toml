@@ -11,6 +11,8 @@ homepage = "https://github.com/jommerce/jommerce"
 repository = "https://github.com/jommerce/jommerce"
 
 include = [
+    "README.md",
+    "LICENSE",
     "CHANGELOG.md",
     "jommerce/templates/*",
     "jommerce/static/*",
