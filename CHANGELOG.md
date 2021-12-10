@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Fixed generate ```SECRET_KEY```
+- Fixed 'Page not found' error on ```Home Page```
 
 ## [0.1.0] - 2021-08-12
 ### Added
