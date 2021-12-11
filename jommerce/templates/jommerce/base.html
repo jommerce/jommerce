@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% block head_extra %}{% endblock head_extra %}
+    {% block css %}{% endblock %}
+
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+    {% block header %}
+        {% include 'jommerce/includes/header.html' %}
+    {% endblock %}
+
+    {% block content %}{% endblock %}
+
+    {% block footer %}
+        {% include 'jommerce/includes/footer.html' %}
+    {% endblock %}
+
+    {% block body_extra %}{% endblock body_extra %}
+    {% block js %}{% endblock %}
+
+</body>
+</html>
