@@ -6,12 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.1] - 2021-11-12
+## [0.1.1] - 2021-12-11
 ### Fixed
 - Fixed generate ```SECRET_KEY```
 - Fixed 'Page not found' error on ```Home Page```
 
-## [0.1.0] - 2021-08-12
+## [0.1.0] - 2021-12-08
 ### Added
 - Added ```Custom User Model```
 - Added ```auth``` app.
