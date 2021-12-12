@@ -24,11 +24,9 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Environment :: Web Environment",
     "Framework :: Django",
-    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.0",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -36,8 +34,8 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6"
-Django = "^3.2"
+python = "^3.8"
+Django = "4"
 psycopg2 = { version = "^2.5.4", optional = true }
 pytomlpp = "^1.0.9"
 
@@ -45,8 +43,8 @@ pytomlpp = "^1.0.9"
 PostgreSQL = ["psycopg2"]
 
 [tool.poetry.dev-dependencies]
-black = {version = "^21.11b1", python = "^3.6.2"}
-ipython = {version = "^7.30.1", python = "^3.7"}
+black = "^21.11b1"
+ipython = "^7.30.1"
 sphinx = "^4.2.0"
 sphinx_rtd_theme = "^1.0.0"
 myst-parser = "^0.15.2"
