@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add ```django-debug-toolbar``` to the development environment.
 - Add **PostgreSQL Database Settings** to the production environment.
+### Removed
+- The ```.secrets``` file has been deleted.
 
 ## [0.1.1] - 2021-12-11
 ### Fixed
