@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Upgrade ```Django``` to 4.0
 - Use **environment variables** to read sensitive data instead of using the ```.secrets``` file.
+- The ```email``` field is ```unique``` by default.
 ### Added
 - Add ```django-debug-toolbar``` to the development environment.
 - Add **PostgreSQL Database Settings** to the production environment.
