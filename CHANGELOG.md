@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Upgrade ```Django``` to 4.0
+- Use **environment variables** to read sensitive data instead of using the ```.secrets``` file.
 
 ## [0.1.1] - 2021-12-11
 ### Fixed
