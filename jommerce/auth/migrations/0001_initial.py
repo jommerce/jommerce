@@ -276,7 +276,8 @@ class Migration(migrations.Migration):
                 (
                     "email",
                     models.EmailField(
-                        blank=True,
+                        unique=True,
+                        null=True,
                         max_length=254,
                         verbose_name="email address",
                     ),

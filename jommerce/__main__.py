@@ -18,7 +18,6 @@ def main():
             "django-admin",
             "startproject",
             f"--template={str(JOMMERCE_DIR / 'project_template')}",
-            "--name=.secrets",
             project_name,
             ".",
         ]
