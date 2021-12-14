@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jommerce"
-version = "0.1.1"
+version = "1.0.0"
 description = "Jommerce"
 license = "GPL-3.0-or-later"
 authors = ["githashem <PersonalHashem@gmail.com>"]
