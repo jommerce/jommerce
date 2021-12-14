@@ -1,5 +1,26 @@
-{% extends 'jommerce/base.html' %}
-
-{% block head_extra %}
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-{% endblock %}
+    <meta name="keywords" content="{% block keywords %}{% endblock %}"/>
+    <meta name="description" content="{% block description %}{% endblock %}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/global.css' %}">
+
+    {% block head_extra %}{% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+    {% block header %}{% endblock %}
+
+    {% block content %}{% endblock %}
+
+    {% block footer %}{% endblock %}
+    
+    <script type="text/javascript" src="{% static 'js/global.js' %}"></script>
+
+    {% block body_extra %}{% endblock %}
+</body>
+</html>
