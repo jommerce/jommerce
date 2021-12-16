@@ -6,6 +6,7 @@ from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
 import jommerce.auth.models
+import jommerce.auth.fields
 
 
 class Migration(migrations.Migration):
@@ -74,9 +75,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "name",
-                    models.CharField(
-                        max_length=150, unique=True, verbose_name="name"
-                    ),
+                    models.CharField(max_length=150, unique=True, verbose_name="name"),
                 ),
                 (
                     "permissions",
@@ -275,9 +274,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "email",
-                    models.EmailField(
+                    jommerce.auth.fields.NullEmailField(
                         unique=True,
                         null=True,
+                        blank=True,
+                        default=None,
                         max_length=254,
                         verbose_name="email address",
                     ),
