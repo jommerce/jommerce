@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Customizable email length with ```AUTH_EMAIL_MAX_LENGTH```
+- Customizable name length with ```AUTH_FIRST_NAME_MAX_LENGTH``` and ```AUTH_LAST_NAME_MAX_LENGTH```
 
 ## [1.0.1] - 2021-12-16
 ### Fixed
