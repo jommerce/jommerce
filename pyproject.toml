@@ -9,6 +9,7 @@ keywords = ["jommerce"]
 
 homepage = "https://github.com/jommerce/jommerce"
 repository = "https://github.com/jommerce/jommerce"
+documentation = "https://jommerce.readthedocs.io/"
 
 include = [
     "README.md",
