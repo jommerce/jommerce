@@ -25,6 +25,7 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
 
     class Meta(AbstractUser.Meta):
+        abstract = "jommerce.auth" not in settings.INSTALLED_APPS
         app_label = "auth"
         db_table = "auth_user"
 
