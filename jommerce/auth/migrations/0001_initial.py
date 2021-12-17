@@ -4,6 +4,7 @@ import django.contrib.auth.models
 import django.contrib.auth.validators
 from django.db import migrations, models
 import django.db.models.deletion
+from django.conf import settings
 import django.utils.timezone
 import jommerce.auth.models
 import jommerce.auth.fields
@@ -279,7 +280,7 @@ class Migration(migrations.Migration):
                         null=True,
                         blank=True,
                         default=None,
-                        max_length=254,
+                        max_length=settings.AUTH_EMAIL_MAX_LENGTH,
                         verbose_name="email address",
                     ),
                 ),

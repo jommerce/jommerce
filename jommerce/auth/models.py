@@ -2,11 +2,17 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
 from .fields import NullEmailField
+from django.conf import settings
 
 
 class CustomUser(AbstractUser):
     email = NullEmailField(
-        _("email address"), unique=True, null=True, blank=True, default=None
+        _("email address"),
+        max_length=settings.AUTH_EMAIL_MAX_LENGTH,
+        unique=True,
+        null=True,
+        blank=True,
+        default=None,
     )
 
     objects = CustomUserManager()
