@@ -10,6 +10,12 @@ class DefaultSettingsTest(TestCase):
     def test_email_max_length(self):
         self.assertEqual(settings.AUTH_EMAIL_MAX_LENGTH, 40)
 
+    def test_first_name_max_length(self):
+        self.assertEqual(settings.AUTH_FIRST_NAME_MAX_LENGTH, 64)
+
+    def test_last_name_max_length(self):
+        self.assertEqual(settings.AUTH_LAST_NAME_MAX_LENGTH, 64)
+
 
 class CustomUserManagerTest(TestCase):
     def test_normalize_email(self):
