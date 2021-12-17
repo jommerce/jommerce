@@ -2,7 +2,13 @@ from django.core.exceptions import ImproperlyConfigured
 from .managers import CustomUserManager
 from .fields import NullEmailField
 from django.test import TestCase
+from django.conf import settings
 from .models import CustomUser
+
+
+class DefaultSettingsTest(TestCase):
+    def test_email_max_length(self):
+        self.assertEqual(settings.AUTH_EMAIL_MAX_LENGTH, 40)
 
 
 class CustomUserManagerTest(TestCase):

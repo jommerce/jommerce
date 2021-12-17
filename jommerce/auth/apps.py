@@ -9,4 +9,4 @@ class AuthConfig(AppConfig):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        set_default_settings(f"{self.name}.settings")
+        set_default_settings(f"{self.name}.settings", prefix="AUTH_")
