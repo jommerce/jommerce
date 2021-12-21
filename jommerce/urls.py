@@ -20,19 +20,13 @@ from django.conf import settings
 from django.contrib import admin
 
 urlpatterns = [
-    path(
-        "", TemplateView.as_view(template_name="pages/home.html"), name="home"
-    ),
+    path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path("admin/", admin.site.urls),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(
-        settings.STATIC_URL, document_root=settings.STATIC_ROOT
-    )
-    urlpatterns += static(
-        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
-    )
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     try:
         import debug_toolbar
     except ImportError:
