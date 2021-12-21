@@ -30,11 +30,12 @@ if settings.DEBUG:
 
 if getattr(settings, "COMING_SOON", False):
     urlpatterns = [
+        path("admin/", admin.site.urls),
         re_path(
             "",
             TemplateView.as_view(template_name="coming-soon.html"),
             name="coming_soon",
-        )
+        ),
     ]
 
 if "debug_toolbar" in settings.INSTALLED_APPS:
