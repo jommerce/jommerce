@@ -9,4 +9,5 @@ Welcome to jommerce's documentation!
 .. toctree::
    :maxdepth: 2
 
+   settings
    custom_templates
