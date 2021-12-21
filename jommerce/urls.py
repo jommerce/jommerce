@@ -29,11 +29,6 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if "debug_toolbar" in settings.INSTALLED_APPS:
-    try:
-        import debug_toolbar
-    except ImportError:
-        pass
-    else:
-        urlpatterns += [
-            path("__debug__/", include(debug_toolbar.urls)),
-        ]
+    import debug_toolbar
+
+    urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
