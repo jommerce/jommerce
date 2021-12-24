@@ -12,4 +12,4 @@ COMING_SOON_MODE
 ----------------
     Default: **False**
 
-    Whether to active your coming soon screen. If this is set to **True**, coming Soon mode will be activated.
+    Whether to active your coming soon screen. If this is set to **True**, coming Soon mode will be activated. it loads the template **coming-soon.html**
