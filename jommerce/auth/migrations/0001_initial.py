@@ -264,17 +264,13 @@ class Migration(migrations.Migration):
                 (
                     "first_name",
                     models.CharField(
-                        blank=True,
-                        max_length=settings.AUTH_FIRST_NAME_MAX_LENGTH,
-                        verbose_name="first name",
+                        blank=True, max_length=150, verbose_name="first name"
                     ),
                 ),
                 (
                     "last_name",
                     models.CharField(
-                        blank=True,
-                        max_length=settings.AUTH_LAST_NAME_MAX_LENGTH,
-                        verbose_name="last name",
+                        blank=True, max_length=150, verbose_name="last name"
                     ),
                 ),
                 (
