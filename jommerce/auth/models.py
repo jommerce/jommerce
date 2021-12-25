@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
 from .fields import NullEmailField
 from django.conf import settings
+from django.db import models
 
 
 class CustomUser(AbstractUser):
@@ -14,6 +15,8 @@ class CustomUser(AbstractUser):
         blank=True,
         default=None,
     )
+    first_name = models.CharField(_("first name"), max_length=64, blank=True)
+    last_name = models.CharField(_("last name"), max_length=64, blank=True)
 
     objects = CustomUserManager()
 
