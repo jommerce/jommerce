@@ -3,6 +3,7 @@ from django.conf import settings
 from unittest import skipIf
 
 COMING_SOON_MODE = getattr(settings, "COMING_SOON_MODE", False)
+MAINTENANCE_MODE = getattr(settings, "MAINTENANCE_MODE", False)
 
 
 class ComingSoonModeTests(TestCase):
@@ -28,3 +29,31 @@ class ComingSoonModeTests(TestCase):
         self.assertTemplateNotUsed(response, "coming-soon.html")
         response = self.client.get("/blog/post/")
         self.assertTemplateNotUsed(response, "coming-soon.html")
+
+
+class MaintenanceModeTests(TestCase):
+    @skipIf(not MAINTENANCE_MODE, "Because the value of 'MAINTENANCE_MODE' is False")
+    def test_admin_url(self):
+        response = self.client.get("/admin/")
+        self.assertEqual(response.status_code, 302)
+        self.assertNotEqual(response.status_code, 503)
+        self.assertTemplateNotUsed(response, "maintenance.html")
+
+    @skipIf(not MAINTENANCE_MODE, "Because the value of 'MAINTENANCE_MODE' is False")
+    def test_with_maintenance_mode(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 503)
+        self.assertTemplateUsed(response, "maintenance.html")
+
+        response = self.client.get("/blog/post/")
+        self.assertEqual(response.status_code, 503)
+        self.assertTemplateUsed(response, "maintenance.html")
+
+    @skipIf(MAINTENANCE_MODE, "Because the value of 'MAINTENANCE_MODE' is True")
+    def test_without_maintenance_mode(self):
+        response = self.client.get("/")
+        self.assertNotEqual(response.status_code, 503)
+        self.assertTemplateNotUsed(response, "maintenance.html")
+        response = self.client.get("/blog/post/")
+        self.assertNotEqual(response.status_code, 503)
+        self.assertTemplateNotUsed(response, "maintenance.html")

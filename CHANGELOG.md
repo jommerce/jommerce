@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Customizable email length with ```AUTH_EMAIL_MAX_LENGTH```
 - Active the 'coming soon' screen using ```COMING_SOON_MODE=True``` in ```settings.py``` file. (Default: **False**)
+- Active the 'maintenance' screen using ```MAINTENANCE_MODE=True```. (Default: **False**)
+
 ### Changed
 - Use ```AbstractBaseUser``` instead of ```AbstractUser```.
 
