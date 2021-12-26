@@ -1,18 +1,19 @@
 from django.utils.module_loading import import_module
-from django.conf import settings
+from django.conf import settings, global_settings
 
 
-def inject_app_default_settings(settings_module, prefix: str = ""):
+def inject_app_default_settings(application: str, prefix=None):
+    """Inject an application's default settings"""
     try:
-        conf = import_module(settings_module)
+        conf = import_module(f"{application}.settings")
     except ImportError:
-        raise ModuleNotFoundError(f"No module named '{settings_module}'")
+        raise ModuleNotFoundError(f"No module named '{application}.settings'")
     else:
-        for key in filter(lambda x: x.isupper(), dir(conf)):
-            key = prefix.upper() + key
+        if prefix is None:
+            prefix = getattr(conf, "prefix", "").upper()
+        for key in filter(lambda k: k.isupper(), dir(conf)):
+            default = getattr(conf, key)
+            key = prefix + key
+            setattr(global_settings, key, default)
             if not hasattr(settings, key):
-                setattr(
-                    settings,
-                    key,
-                    getattr(conf, key[len(prefix) :]),
-                )
+                setattr(settings, key, default)
