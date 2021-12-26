@@ -2,7 +2,7 @@ from django.utils.module_loading import import_module
 from django.conf import settings
 
 
-def set_default_settings(settings_module, prefix: str = ""):
+def inject_app_default_settings(settings_module, prefix: str = ""):
     try:
         conf = import_module(settings_module)
     except ImportError:
