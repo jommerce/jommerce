@@ -1,6 +1,6 @@
 from django.core.exceptions import ImproperlyConfigured
+from jommerce.fields import NullEmailField
 from .managers import CustomUserManager
-from .fields import NullEmailField
 from django.test import TestCase
 from django.conf import settings
 from .models import CustomUser
