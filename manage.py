@@ -2,8 +2,31 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import functools
 
 
+def coverage(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        cov = Coverage()
+        cov.erase()
+        cov.start()
+        func(*args, **kwargs)
+        cov.stop()
+        cov.save()
+        cov.report()
+        cov.html_report(directory="htmlcov")
+
+    try:
+        from coverage import Coverage
+    except ImportError:
+        return func
+    if len(sys.argv) > 1 and sys.argv[1] == "test":
+        return wrapper
+    return func
+
+
+@coverage
 def main():
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "jommerce.settings.dev")

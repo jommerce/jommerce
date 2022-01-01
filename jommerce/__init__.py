@@ -1,3 +1,1 @@
-import pkg_resources
-
-__version__ = pkg_resources.get_distribution("jommerce").version
+__version__ = "1.1.0"

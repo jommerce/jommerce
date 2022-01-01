@@ -4,9 +4,10 @@ import django.contrib.auth.models
 import django.contrib.auth.validators
 from django.db import migrations, models
 import django.db.models.deletion
+from django.conf import settings
 import django.utils.timezone
 import jommerce.auth.models
-import jommerce.auth.fields
+import jommerce.fields
 
 
 class Migration(migrations.Migration):
@@ -263,23 +264,23 @@ class Migration(migrations.Migration):
                 (
                     "first_name",
                     models.CharField(
-                        blank=True, max_length=150, verbose_name="first name"
+                        blank=True, max_length=64, verbose_name="first name"
                     ),
                 ),
                 (
                     "last_name",
                     models.CharField(
-                        blank=True, max_length=150, verbose_name="last name"
+                        blank=True, max_length=64, verbose_name="last name"
                     ),
                 ),
                 (
                     "email",
-                    jommerce.auth.fields.NullEmailField(
+                    jommerce.fields.NullEmailField(
                         unique=True,
                         null=True,
                         blank=True,
                         default=None,
-                        max_length=254,
+                        max_length=settings.AUTH_EMAIL_MAX_LENGTH,
                         verbose_name="email address",
                     ),
                 ),

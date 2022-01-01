@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jommerce"
-version = "1.0.1"
+version = "1.1.0"
 description = "Jommerce"
 license = "GPL-3.0-or-later"
 authors = ["githashem <PersonalHashem@gmail.com>"]
@@ -9,6 +9,7 @@ keywords = ["jommerce"]
 
 homepage = "https://github.com/jommerce/jommerce"
 repository = "https://github.com/jommerce/jommerce"
+documentation = "https://jommerce.readthedocs.io/"
 
 include = [
     "README.md",
@@ -46,7 +47,6 @@ black = "^21.11b1"
 ipython = "^7.30.1"
 sphinx = "^4.2.0"
 sphinx_rtd_theme = "^1.0.0"
-myst-parser = "^0.15.2"
 coverage = "^6.2"
 django-debug-toolbar = "^3.2.3"
 
@@ -59,3 +59,10 @@ jommerce = "jommerce.__main__:main"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.coverage.run]
+source = ["."]
+omit = ["manage.py"]
+
+[tool.coverage.report]
+skip_covered = true

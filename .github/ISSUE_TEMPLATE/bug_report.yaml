@@ -1,0 +1,24 @@
+name: Bug Report
+description: Create a report to help us improve
+labels: ["bug"]
+
+body:
+  - type: dropdown
+    attributes:
+      label: Which django app(s) are the source of the bug?
+      options:
+        - Auth
+
+  - type: textarea
+    attributes:
+      label: Description
+      placeholder: A clear and concise description of what the bug is.
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Version
+      placeholder: jommerce x.x.x
+    validations:
+      required: true
