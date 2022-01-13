@@ -6,7 +6,7 @@ from django.db import migrations, models
 from django.conf import settings
 import django.utils.timezone
 import jommerce.auth.models
-import jommerce.utils.fields
+import jommerce.utils.models.fields
 
 
 class Migration(migrations.Migration):
@@ -274,7 +274,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "email",
-                    jommerce.utils.fields.NullEmailField(
+                    jommerce.utils.models.fields.NullEmailField(
                         unique=True,
                         null=True,
                         blank=True,

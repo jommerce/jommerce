@@ -1,7 +1,7 @@
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from jommerce.utils.fields import NullEmailField
+from jommerce.utils.models.fields import NullEmailField
 from .managers import CustomUserManager
 from django.core.mail import send_mail
 from django.utils import timezone

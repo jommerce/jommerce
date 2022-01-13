@@ -1,5 +1,5 @@
 from django.core.exceptions import ImproperlyConfigured
-from jommerce.utils.fields import NullEmailField
+from jommerce.utils.models.fields import NullEmailField
 from django.test import TestCase
 
 
