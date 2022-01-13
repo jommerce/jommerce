@@ -1,7 +1,7 @@
 from django.test import TestCase, override_settings
 
 
-@override_settings(ROOT_URLCONF="jommerce.utils.urls.maintenance_mode")
+@override_settings(ROOT_URLCONF="jommerce.utils.urlpatterns.maintenance_mode")
 class MaintenanceMode(TestCase):
     def test_admin(self):
         response = self.client.get("/admin/")
@@ -20,7 +20,7 @@ class MaintenanceMode(TestCase):
         self.assertEqual(self.client.get("/blog/post/").status_code, 503)
 
 
-@override_settings(ROOT_URLCONF="jommerce.utils.urls.coming_soon_mode")
+@override_settings(ROOT_URLCONF="jommerce.utils.urlpatterns.coming_soon_mode")
 class ComingSoonMode(TestCase):
     def test_admin(self):
         response = self.client.get("/admin/")
