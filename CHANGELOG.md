@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2022-01-30
+### Removed
+- Removed ```inject_app_default_settings```
+- Removed ```auth``` app.
+
 ## [1.1.0] - 2022-01-01
 ### Added
 - Customizable email length with ```AUTH_EMAIL_MAX_LENGTH```
@@ -43,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added ```auth``` app.
 - Added ```jommerce``` command.
 
+[2.0.0]: https://github.com/jommerce/jommerce/releases/tag/v2.0.0
 [1.1.0]: https://github.com/jommerce/jommerce/releases/tag/v1.1.0
 [1.0.1]: https://github.com/jommerce/jommerce/releases/tag/v1.0.1
 [1.0.0]: https://github.com/jommerce/jommerce/releases/tag/v1.0.0
