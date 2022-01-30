@@ -3,11 +3,6 @@ from django.test import TestCase, override_settings
 
 @override_settings(ROOT_URLCONF="jommerce.utils.urlpatterns.maintenance_mode")
 class MaintenanceMode(TestCase):
-    def test_admin(self):
-        response = self.client.get("/admin/")
-        self.assertNotEqual(response.status_code, 503)
-        self.assertTemplateNotUsed(response, "503.html")
-
     def test_template(self):
         template_name = "503.html"
         self.assertTemplateUsed(self.client.get("/"), template_name)
@@ -22,11 +17,6 @@ class MaintenanceMode(TestCase):
 
 @override_settings(ROOT_URLCONF="jommerce.utils.urlpatterns.coming_soon_mode")
 class ComingSoonMode(TestCase):
-    def test_admin(self):
-        response = self.client.get("/admin/")
-        self.assertNotEqual(response.status_code, 200)
-        self.assertTemplateNotUsed(response, "coming-soon.html")
-
     def test_template(self):
         template_name = "coming-soon.html"
         self.assertTemplateUsed(self.client.get("/"), template_name)
