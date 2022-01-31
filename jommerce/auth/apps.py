@@ -4,3 +4,6 @@ from django.apps import AppConfig
 class AuthConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "jommerce.auth"
+
+    def ready(self):
+        from jommerce.auth import checks
