@@ -29,7 +29,7 @@ class UserTests(TestCase):
             self.assertFalse(user2.is_superuser)
             self.assertTrue(user3.is_superuser)
 
-        with self.settings(AUTH_SUPERUSER_ID=None):
+        with self.settings(AUTH_SUPERUSER_ID=0):
             self.assertFalse(user1.is_superuser)
             self.assertFalse(user2.is_superuser)
             self.assertFalse(user3.is_superuser)
