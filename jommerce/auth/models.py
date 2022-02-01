@@ -4,6 +4,7 @@ from django.db import models
 
 
 class User(models.Model):
+    id = models.BigAutoField(_("ID"), primary_key=True)
     email = models.EmailField(_("email"), max_length=64, unique=True)
     password = models.CharField(_("password"), max_length=128)
 

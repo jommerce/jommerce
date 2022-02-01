@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class AuthConfig(AppConfig):
-    default_auto_field = "django.db.models.BigAutoField"
+    default_auto_field = "django.db.models.AutoField"
     name = "jommerce.auth"
     verbose_name = _("Authentication and Authorization")
 
