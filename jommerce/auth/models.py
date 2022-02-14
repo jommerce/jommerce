@@ -15,3 +15,13 @@ class User(models.Model):
     @property
     def is_superuser(self):
         return settings.AUTH_SUPERUSER_ID == self.id
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+

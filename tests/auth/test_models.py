@@ -33,3 +33,11 @@ class UserTests(TestCase):
             self.assertFalse(user1.is_superuser)
             self.assertFalse(user2.is_superuser)
             self.assertFalse(user3.is_superuser)
+
+    def test_is_authenticated(self):
+        user = User.objects.get(id=1)
+        self.assertTrue(user.is_authenticated)
+
+    def test_is_anonymous(self):
+        user = User.objects.get(id=1)
+        self.assertFalse(user.is_anonymous)
