@@ -37,7 +37,7 @@ Django = "^4.0.3"
 [tool.poetry.dev-dependencies]
 django-debug-toolbar = "^3.2.4"
 
-[tool.poetry.script]
+[tool.poetry.scripts]
 djplus = "djplus.__main__:main"
 
 [build-system]
