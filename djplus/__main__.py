@@ -6,12 +6,13 @@ DIR_PROJECT_TEMPLATE = Path(__file__).parent / "project_template"
 
 
 def main():
+    project_name = input("project_name [config]: ").strip() or "config"
     execute_from_command_line([
         "django-admin",
         "startproject",
         "--template",
         str(DIR_PROJECT_TEMPLATE),
-        "config",
+        str(project_name),
         ".",
     ])
     print(f'SECRET_KEY = "{get_random_secret_key()}"')
