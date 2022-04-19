@@ -5,3 +5,5 @@
   </a>
 <h2 align="center">A package of ready-made apps</h2>
 </div>
+
+![djplus version](https://img.shields.io/pypi/v/djplus?style=flat-square)
