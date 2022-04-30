@@ -17,3 +17,19 @@ class User(models.Model):
             self.password = hash_password(self.password)
         super().save(*args, **kwargs)
         self.__original_password = self.password
+
+    @property
+    def is_anonymous(self):
+        """
+        Always return False. This is a way of comparing User objects to
+        anonymous users.
+        """
+        return False
+
+    @property
+    def is_authenticated(self):
+        """
+        Always return True. This is a way to tell if the user has been
+        authenticated in templates.
+        """
+        return True
