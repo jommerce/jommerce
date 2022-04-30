@@ -1,10 +1,14 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password as hash_password, check_password
+from django.conf import settings
+from .hashers import generate_salt
 
 
 class User(models.Model):
     email = models.EmailField(max_length=64, unique=True)
     password = models.CharField(max_length=128)
+    salt = models.CharField(max_length=32, default=generate_salt)
+    hash_type = models.CharField(max_length=16, default=settings.AUTH_DEFAULT_HASHER_NAME)
 
     __original_password = None
 
