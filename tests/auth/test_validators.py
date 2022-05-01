@@ -5,6 +5,7 @@ from djplus.auth.validators import (
     validate_at_least_one_number,
     validate_at_least_one_lowercase,
     validate_at_least_one_uppercase,
+    validate_at_least_1_special_character,
 )
 
 
@@ -54,3 +55,13 @@ class PasswordValidatorsTest(TestCase):
         self.assertIsNone(validate_at_least_one_uppercase("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
         self.assertIsNone(validate_at_least_one_uppercase("s_32&Dd~31#*"))
         self.assertIsNone(validate_at_least_one_uppercase("9~#HVzM%s0+f"))
+
+    def test_validate_at_least_1_special_character(self):
+        with self.assertRaisesMessage(ValidationError, "your password must contain at least 1 special character."):
+            validate_at_least_1_special_character(
+                '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ \t\n\r\x0b\x0c'
+            )
+
+        self.assertIsNone(validate_at_least_1_special_character('!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'))
+        self.assertIsNone(validate_at_least_1_special_character("s6cm2%S30y"))
+        self.assertIsNone(validate_at_least_1_special_character("s5FD#fs!4$3"))

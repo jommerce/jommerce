@@ -30,3 +30,7 @@ def validate_at_least_one_uppercase(password):
             _("your password must contain at least one uppercase letter."),
             code="password_no_uppercase",
         )
+
+
+def validate_at_least_1_special_character(password):
+    pass
