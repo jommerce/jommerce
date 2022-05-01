@@ -25,4 +25,8 @@ def validate_at_least_one_lowercase(password):
 
 
 def validate_at_least_one_uppercase(password):
-    pass
+    if not any(map(str.isupper, password)):
+        raise ValidationError(
+            _("your password must contain at least one uppercase letter."),
+            code="password_no_uppercase",
+        )
