@@ -33,4 +33,9 @@ def validate_at_least_one_uppercase(password):
 
 
 def validate_at_least_1_special_character(password):
-    pass
+    special_characters = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+    if not any(char in special_characters for char in password):
+        raise ValidationError(
+            _("your password must contain at least 1 special character."),
+            code="password_no_symbol",
+        )
