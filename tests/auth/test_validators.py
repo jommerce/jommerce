@@ -1,6 +1,10 @@
 from django.test import TestCase, override_settings
 from django.core.exceptions import ValidationError
-from djplus.auth.validators import validate_at_least_one_number, get_password_validators
+from djplus.auth.validators import (
+    get_password_validators,
+    validate_at_least_one_number,
+    validate_at_least_one_lowercase,
+)
 
 
 def validate_return_none(value):
@@ -32,3 +36,12 @@ class PasswordValidatorsTest(TestCase):
         self.assertIsNone(validate_at_least_one_number("0123456789"))
         self.assertIsNone(validate_at_least_one_number("s%dfg$2lsf0@"))
         self.assertIsNone(validate_at_least_one_number("sS%tEe5&st_"))
+
+    def test_validate_at_least_one_lowercase(self):
+        with self.assertRaisesMessage(ValidationError, "your password must contain at least one lowercase letter."):
+            validate_at_least_one_lowercase(
+                '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c'
+            )
+        self.assertIsNone(validate_at_least_one_lowercase("abcdefghijklmnopqrstuvwxyz"))
+        self.assertIsNone(validate_at_least_one_lowercase("S%32^Dd@31#$"))
+        self.assertIsNone(validate_at_least_one_lowercase("1~#GVzS%s5+f"))
