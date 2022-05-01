@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password as hash_password, check_password
+from .validators import get_password_validators
 
 
 class User(models.Model):
     email = models.EmailField(max_length=64, unique=True)
-    password = models.CharField(max_length=128)
+    password = models.CharField(max_length=128, validators=get_password_validators())
 
     __original_password = None
 

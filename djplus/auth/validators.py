@@ -1,5 +1,11 @@
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
+from django.utils.module_loading import import_string
+from django.conf import settings
+
+
+def get_password_validators():
+    return [import_string(validator) for validator in settings.AUTH_PASSWORD_VALIDATORS]
 
 
 def validate_at_least_one_number(password):
