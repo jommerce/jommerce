@@ -4,6 +4,7 @@ from djplus.auth.validators import (
     get_password_validators,
     validate_at_least_one_number,
     validate_at_least_one_lowercase,
+    validate_at_least_one_uppercase,
 )
 
 
@@ -44,3 +45,12 @@ class PasswordValidatorsTest(TestCase):
         self.assertIsNone(validate_at_least_one_lowercase("abcdefghijklmnopqrstuvwxyz"))
         self.assertIsNone(validate_at_least_one_lowercase("S%32^Dd@31#$"))
         self.assertIsNone(validate_at_least_one_lowercase("1~#GVzS%s5+f"))
+
+    def test_validate_at_least_one_uppercase(self):
+        with self.assertRaisesMessage(ValidationError, "your password must contain at least one uppercase letter."):
+            validate_at_least_one_uppercase(
+                '0123456789abcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c'
+            )
+        self.assertIsNone(validate_at_least_one_uppercase("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
+        self.assertIsNone(validate_at_least_one_uppercase("s_32&Dd~31#*"))
+        self.assertIsNone(validate_at_least_one_uppercase("9~#HVzM%s0+f"))

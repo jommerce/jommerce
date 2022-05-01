@@ -22,3 +22,7 @@ def validate_at_least_one_lowercase(password):
             _("your password must contain at least one lowercase letter."),
             code="password_no_lowercase",
         )
+
+
+def validate_at_least_one_uppercase(password):
+    pass
