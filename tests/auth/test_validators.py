@@ -16,7 +16,6 @@ def validate_raise_error(value):
 
 
 class PasswordValidatorsTest(TestCase):
-    @override_settings()
     def test_get_password_validators(self):
         with self.settings(AUTH_PASSWORD_VALIDATORS=["tests.auth.test_validators.validate_return_none"]):
             self.assertListEqual(get_password_validators(), [validate_return_none])
