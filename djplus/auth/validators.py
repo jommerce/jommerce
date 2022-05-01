@@ -14,3 +14,11 @@ def validate_at_least_one_number(password):
             _("your password must contain at least one number."),
             code="password_no_number",
         )
+
+
+def validate_at_least_one_lowercase(password):
+    if not any(map(str.islower, password)):
+        raise ValidationError(
+            _("your password must contain at least one lowercase letter."),
+            code="password_no_lowercase",
+        )
