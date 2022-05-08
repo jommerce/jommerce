@@ -4,6 +4,7 @@ from .validators import get_password_validators
 
 
 class User(models.Model):
+    username = models.CharField(max_length=32, unique=True)
     email = models.EmailField(max_length=64, unique=True)
     password = models.CharField(max_length=128, validators=get_password_validators())
 
