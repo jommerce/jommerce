@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='hash_type',
-            field=models.CharField(default=settings.AUTH_DEFAULT_HASHER_NAME, max_length=16),
+            field=models.CharField(default=settings.AUTH_DEFAULT_HASHER_NAME, max_length=8),
         ),
         migrations.AddField(
             model_name='user',

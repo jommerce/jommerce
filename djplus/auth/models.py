@@ -8,7 +8,7 @@ class User(models.Model):
     email = models.EmailField(max_length=64, unique=True)
     password = models.CharField(max_length=128)
     salt = models.CharField(max_length=32, default=generate_salt)
-    hash_type = models.CharField(max_length=16, default=settings.AUTH_DEFAULT_HASHER_NAME)
+    hash_type = models.CharField(max_length=8, default=settings.AUTH_DEFAULT_HASHER_NAME)
 
     __original_password = None
 
