@@ -33,3 +33,11 @@ def symbol(password):
             _("your password must contain at least 1 special character."),
             code="password_no_symbol",
         )
+
+
+def length(password):
+    if len(password) < 8:
+        raise ValidationError(
+            _("your password must be at least 8 characters long."),
+            code="password_length"
+        )

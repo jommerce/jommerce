@@ -57,3 +57,12 @@ class PasswordValidatorsTest(TestCase):
         self.assertIsNone(validate('!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'))
         self.assertIsNone(validate("s6cm2%S30y"))
         self.assertIsNone(validate("s5FD#fs!4$3"))
+
+    def test_password_must_be_at_least_8_characters_long(self):
+        validate = password_validators.length
+        with self.assertRaisesMessage(ValidationError, "your password must be at least 8 characters long."):
+            validate('T$0@aYs')
+        with self.assertRaisesMessage(ValidationError, "your password must be at least 8 characters long."):
+            validate('Nm6$')
+        self.assertIsNone(validate("m$dSC0#8"))
+        self.assertIsNone(validate("m$@dFG(*3_0!No^"))
