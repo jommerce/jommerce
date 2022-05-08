@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 def number(password):
     if not any(map(str.isdigit, password)):
         raise ValidationError(
-            _("your password must contain at least one number."),
+            _("your password must contain at least 1 digit."),
             code="password_no_number",
         )
 
@@ -13,7 +13,7 @@ def number(password):
 def lowercase(password):
     if not any(map(str.islower, password)):
         raise ValidationError(
-            _("your password must contain at least one lowercase letter."),
+            _("your password must contain at least 1 lowercase letter."),
             code="password_no_lowercase",
         )
 
@@ -21,7 +21,7 @@ def lowercase(password):
 def uppercase(password):
     if not any(map(str.isupper, password)):
         raise ValidationError(
-            _("your password must contain at least one uppercase letter."),
+            _("your password must contain at least 1 uppercase letter."),
             code="password_no_uppercase",
         )
 

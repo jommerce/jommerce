@@ -24,9 +24,9 @@ class PasswordValidatorsTest(TestCase):
         ]):
             self.assertListEqual(get_password_validators(), [validate_return_none, validate_raise_error])
 
-    def test_validate_at_least_one_number(self):
+    def test_validate_at_least_1_digit(self):
         validate = password_validators.number
-        with self.assertRaisesMessage(ValidationError, "your password must contain at least one number."):
+        with self.assertRaisesMessage(ValidationError, "your password must contain at least 1 digit."):
             validate(
                 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c'
             )
@@ -34,17 +34,17 @@ class PasswordValidatorsTest(TestCase):
         self.assertIsNone(validate("s%dfg$2lsf0@"))
         self.assertIsNone(validate("sS%tEe5&st_"))
 
-    def test_validate_at_least_one_lowercase(self):
+    def test_validate_at_least_1_lowercase_letter(self):
         validate = password_validators.lowercase
-        with self.assertRaisesMessage(ValidationError, "your password must contain at least one lowercase letter."):
+        with self.assertRaisesMessage(ValidationError, "your password must contain at least 1 lowercase letter."):
             validate('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c')
         self.assertIsNone(validate("abcdefghijklmnopqrstuvwxyz"))
         self.assertIsNone(validate("S%32^Dd@31#$"))
         self.assertIsNone(validate("1~#GVzS%s5+f"))
 
-    def test_validate_at_least_one_uppercase(self):
+    def test_validate_at_least_1_uppercase_letter(self):
         validate = password_validators.uppercase
-        with self.assertRaisesMessage(ValidationError, "your password must contain at least one uppercase letter."):
+        with self.assertRaisesMessage(ValidationError, "your password must contain at least 1 uppercase letter."):
             validate('0123456789abcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c')
         self.assertIsNone(validate("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
         self.assertIsNone(validate("s_32&Dd~31#*"))
