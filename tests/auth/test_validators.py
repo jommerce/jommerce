@@ -1,12 +1,7 @@
 from django.test import TestCase, override_settings
 from django.core.exceptions import ValidationError
-from djplus.auth.validators import (
-    get_password_validators,
-    validate_at_least_one_number,
-    validate_at_least_one_lowercase,
-    validate_at_least_one_uppercase,
-    validate_at_least_1_special_character,
-)
+from djplus.auth.validators import get_password_validators
+from djplus.auth.validators import password as password_validators
 
 
 def validate_return_none(value):
@@ -30,38 +25,35 @@ class PasswordValidatorsTest(TestCase):
             self.assertListEqual(get_password_validators(), [validate_return_none, validate_raise_error])
 
     def test_validate_at_least_one_number(self):
+        validate = password_validators.number
         with self.assertRaisesMessage(ValidationError, "your password must contain at least one number."):
-            validate_at_least_one_number(
+            validate(
                 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c'
             )
-        self.assertIsNone(validate_at_least_one_number("0123456789"))
-        self.assertIsNone(validate_at_least_one_number("s%dfg$2lsf0@"))
-        self.assertIsNone(validate_at_least_one_number("sS%tEe5&st_"))
+        self.assertIsNone(validate("0123456789"))
+        self.assertIsNone(validate("s%dfg$2lsf0@"))
+        self.assertIsNone(validate("sS%tEe5&st_"))
 
     def test_validate_at_least_one_lowercase(self):
+        validate = password_validators.lowercase
         with self.assertRaisesMessage(ValidationError, "your password must contain at least one lowercase letter."):
-            validate_at_least_one_lowercase(
-                '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c'
-            )
-        self.assertIsNone(validate_at_least_one_lowercase("abcdefghijklmnopqrstuvwxyz"))
-        self.assertIsNone(validate_at_least_one_lowercase("S%32^Dd@31#$"))
-        self.assertIsNone(validate_at_least_one_lowercase("1~#GVzS%s5+f"))
+            validate('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c')
+        self.assertIsNone(validate("abcdefghijklmnopqrstuvwxyz"))
+        self.assertIsNone(validate("S%32^Dd@31#$"))
+        self.assertIsNone(validate("1~#GVzS%s5+f"))
 
     def test_validate_at_least_one_uppercase(self):
+        validate = password_validators.uppercase
         with self.assertRaisesMessage(ValidationError, "your password must contain at least one uppercase letter."):
-            validate_at_least_one_uppercase(
-                '0123456789abcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c'
-            )
-        self.assertIsNone(validate_at_least_one_uppercase("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
-        self.assertIsNone(validate_at_least_one_uppercase("s_32&Dd~31#*"))
-        self.assertIsNone(validate_at_least_one_uppercase("9~#HVzM%s0+f"))
+            validate('0123456789abcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c')
+        self.assertIsNone(validate("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
+        self.assertIsNone(validate("s_32&Dd~31#*"))
+        self.assertIsNone(validate("9~#HVzM%s0+f"))
 
     def test_validate_at_least_1_special_character(self):
+        validate = password_validators.symbol
         with self.assertRaisesMessage(ValidationError, "your password must contain at least 1 special character."):
-            validate_at_least_1_special_character(
-                '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ \t\n\r\x0b\x0c'
-            )
-
-        self.assertIsNone(validate_at_least_1_special_character('!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'))
-        self.assertIsNone(validate_at_least_1_special_character("s6cm2%S30y"))
-        self.assertIsNone(validate_at_least_1_special_character("s5FD#fs!4$3"))
+            validate('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ \t\n\r\x0b\x0c')
+        self.assertIsNone(validate('!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'))
+        self.assertIsNone(validate("s6cm2%S30y"))
+        self.assertIsNone(validate("s5FD#fs!4$3"))

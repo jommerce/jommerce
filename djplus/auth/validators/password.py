@@ -1,14 +1,8 @@
-from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
-from django.utils.module_loading import import_string
-from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 
-def get_password_validators():
-    return [import_string(validator) for validator in settings.AUTH_PASSWORD_VALIDATORS]
-
-
-def validate_at_least_one_number(password):
+def number(password):
     if not any(map(str.isdigit, password)):
         raise ValidationError(
             _("your password must contain at least one number."),
@@ -16,7 +10,7 @@ def validate_at_least_one_number(password):
         )
 
 
-def validate_at_least_one_lowercase(password):
+def lowercase(password):
     if not any(map(str.islower, password)):
         raise ValidationError(
             _("your password must contain at least one lowercase letter."),
@@ -24,7 +18,7 @@ def validate_at_least_one_lowercase(password):
         )
 
 
-def validate_at_least_one_uppercase(password):
+def uppercase(password):
     if not any(map(str.isupper, password)):
         raise ValidationError(
             _("your password must contain at least one uppercase letter."),
@@ -32,7 +26,7 @@ def validate_at_least_one_uppercase(password):
         )
 
 
-def validate_at_least_1_special_character(password):
+def symbol(password):
     special_characters = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
     if not any(char in special_characters for char in password):
         raise ValidationError(
