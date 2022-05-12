@@ -38,3 +38,8 @@ class User(models.Model):
 
     def check_password(self, raw_password):
         return check_password(raw_password, self.password)
+
+
+class Session(models.Model):
+    key = models.CharField(max_length=32, primary_key=True)
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="sessions")
