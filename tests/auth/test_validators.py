@@ -1,6 +1,6 @@
 from django.test import TestCase, override_settings
 from django.core.exceptions import ValidationError
-from djplus.auth.validators import get_password_validators
+from djplus.auth.validators import get_password_validators, get_username_validators
 from djplus.auth.validators import password as password_validators
 from djplus.auth.validators.password import PasswordLengthValidator
 
@@ -92,3 +92,16 @@ class PasswordValidatorsTest(TestCase):
         self.assertNotEqual(validate_between_6_and_20_characters, validate_between_8_and_20_characters)
         self.assertNotEqual(validate_between_6_and_20_characters, validate_between_8_and_16_characters)
         self.assertEqual(validate_between_8_and_16_characters, PasswordLengthValidator(min_length=8, max_length=16))
+
+
+class UsernameValidatorsTest(TestCase):
+    def test_get_username_validators(self):
+        with self.settings(AUTH_USERNAME_VALIDATORS=["tests.auth.test_validators.validate_return_none"]):
+            self.assertListEqual(get_username_validators(), [validate_return_none])
+        with self.settings(AUTH_USERNAME_VALIDATORS=["tests.auth.test_validators.validate_raise_error"]):
+            self.assertListEqual(get_username_validators(), [validate_raise_error])
+        with self.settings(AUTH_USERNAME_VALIDATORS=[
+            "tests.auth.test_validators.validate_return_none",
+            "tests.auth.test_validators.validate_raise_error",
+        ]):
+            self.assertListEqual(get_username_validators(), [validate_return_none, validate_raise_error])

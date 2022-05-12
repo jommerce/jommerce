@@ -5,9 +5,9 @@ from djplus.auth.models import User
 class UserModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        User.objects.create(email="user1@gmail.com", password="123456")
-        User.objects.create(email="user2@gmail.com", password="123456")
-        User.objects.create(email="user3@gmail.com", password="password")
+        User.objects.create(username="user1", email="user1@gmail.com", password="123456")
+        User.objects.create(username="user2", email="user2@gmail.com", password="123456")
+        User.objects.create(username="user3", email="user3@gmail.com", password="password")
 
     def test_password_hashing_with_salt(self):
         user1 = User.objects.get(pk=1)
