@@ -26,13 +26,15 @@ class UserModelTest(TestCase):
         self.assertFalse(user.check_password("123456"))
 
     def test_is_authenticated(self):
-        user1 = User.objects.get(pk=1)
-        self.assertTrue(user1.is_authenticated)
-        user2 = User.objects.get(pk=2)
-        self.assertTrue(user2.is_authenticated)
+        user = User.objects.get(pk=1)
+        self.assertTrue(user.is_authenticated)
+
+        with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_authenticated'"):
+            user.is_authenticated = False
 
     def test_is_anonymous(self):
-        user1 = User.objects.get(pk=1)
-        self.assertFalse(user1.is_anonymous)
-        user2 = User.objects.get(pk=2)
-        self.assertFalse(user2.is_anonymous)
+        user = User.objects.get(pk=1)
+        self.assertFalse(user.is_anonymous)
+
+        with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_anonymous'"):
+            user.is_anonymous = True

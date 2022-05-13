@@ -1,4 +1,4 @@
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.core.exceptions import ValidationError
 from djplus.auth.validators import get_password_validators, get_username_validators
 from djplus.auth.validators import password as password_validators
@@ -15,22 +15,22 @@ def validate_raise_error(value):
 
 class PasswordValidatorsTest(TestCase):
     def test_get_password_validators(self):
-        with self.settings(AUTH_PASSWORD_VALIDATORS=["tests.auth.test_validators.validate_return_none"]):
-            self.assertListEqual(get_password_validators(), [validate_return_none])
-        with self.settings(AUTH_PASSWORD_VALIDATORS=["tests.auth.test_validators.validate_raise_error"]):
-            self.assertListEqual(get_password_validators(), [validate_raise_error])
         with self.settings(AUTH_PASSWORD_VALIDATORS=[
             "tests.auth.test_validators.validate_return_none",
             "tests.auth.test_validators.validate_raise_error",
         ]):
             self.assertListEqual(get_password_validators(), [validate_return_none, validate_raise_error])
 
+        with self.settings(AUTH_PASSWORD_VALIDATORS=[
+            "tests.auth.test_validators.validate_raise_error",
+            "tests.auth.test_validators.validate_return_none",
+        ]):
+            self.assertListEqual(get_password_validators(), [validate_raise_error, validate_return_none])
+
     def test_validate_at_least_one_number(self):
         validate = password_validators.number
         with self.assertRaisesMessage(ValidationError, "at least one number"):
-            validate(
-                'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c'
-            )
+            validate('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')
         self.assertIsNone(validate("0123456789"))
         self.assertIsNone(validate("s%dfg$2lsf0@"))
         self.assertIsNone(validate("sS%tEe5&st_"))
@@ -38,7 +38,7 @@ class PasswordValidatorsTest(TestCase):
     def test_validate_at_least_one_lowercase_letter(self):
         validate = password_validators.lowercase
         with self.assertRaisesMessage(ValidationError, "at least one lowercase letter"):
-            validate('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c')
+            validate('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')
         self.assertIsNone(validate("abcdefghijklmnopqrstuvwxyz"))
         self.assertIsNone(validate("S%32^Dd@31#$"))
         self.assertIsNone(validate("1~#GVzS%s5+f"))
@@ -46,7 +46,7 @@ class PasswordValidatorsTest(TestCase):
     def test_validate_at_least_one_uppercase_letter(self):
         validate = password_validators.uppercase
         with self.assertRaisesMessage(ValidationError, "at least one uppercase letter"):
-            validate('0123456789abcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c')
+            validate('0123456789abcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')
         self.assertIsNone(validate("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
         self.assertIsNone(validate("s_32&Dd~31#*"))
         self.assertIsNone(validate("9~#HVzM%s0+f"))
@@ -54,7 +54,7 @@ class PasswordValidatorsTest(TestCase):
     def test_validate_at_least_one_special_character(self):
         validate = password_validators.symbol
         with self.assertRaisesMessage(ValidationError, "at least one special character"):
-            validate('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ \t\n\r\x0b\x0c')
+            validate('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
         self.assertIsNone(validate('!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'))
         self.assertIsNone(validate("s6cm2%S30y"))
         self.assertIsNone(validate("s5FD#fs!4$3"))
@@ -96,10 +96,12 @@ class PasswordValidatorsTest(TestCase):
 
 class UsernameValidatorsTest(TestCase):
     def test_get_username_validators(self):
-        with self.settings(AUTH_USERNAME_VALIDATORS=["tests.auth.test_validators.validate_return_none"]):
-            self.assertListEqual(get_username_validators(), [validate_return_none])
-        with self.settings(AUTH_USERNAME_VALIDATORS=["tests.auth.test_validators.validate_raise_error"]):
-            self.assertListEqual(get_username_validators(), [validate_raise_error])
+        with self.settings(AUTH_USERNAME_VALIDATORS=[
+            "tests.auth.test_validators.validate_raise_error",
+            "tests.auth.test_validators.validate_return_none",
+        ]):
+            self.assertListEqual(get_username_validators(), [validate_raise_error, validate_return_none])
+
         with self.settings(AUTH_USERNAME_VALIDATORS=[
             "tests.auth.test_validators.validate_return_none",
             "tests.auth.test_validators.validate_raise_error",
