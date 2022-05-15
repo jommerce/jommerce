@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from djplus.auth.validators import get_password_validators, get_username_validators
 from djplus.auth.validators import password as password_validators
 from djplus.auth.validators.password import PasswordLengthValidator
+from djplus.auth.validators.username import UsernameLengthValidator
 
 
 def validate_return_none(value):
@@ -105,3 +106,91 @@ class UsernameValidatorsTest(TestCase):
             "tests.auth.test_validators.validate_raise_error",
         ]):
             self.assertListEqual(get_username_validators(), [validate_return_none, validate_raise_error])
+
+
+class UsernameLengthValidatorTests(TestCase):
+    def test_raise_when_min_length_is_equal_to_or_less_than_zero(self):
+        expected_message = "The 'min_length' argument must be greater than zero or None"
+        for num in (0, -1, -2):
+            with self.assertRaisesMessage(ValueError, expected_message):
+                UsernameLengthValidator(min_length=num)
+
+    def test_raise_when_max_length_is_equal_to_or_less_than_zero(self):
+        expected_message = "The 'max_length' argument must be greater than zero or None"
+        for num in (0, -1, -2):
+            with self.assertRaisesMessage(ValueError, expected_message):
+                UsernameLengthValidator(max_length=num)
+
+    def test_raise_when_min_length_greater_than_max_length(self):
+        expected_message = "The 'min_length' argument must be less than the 'max_length' argument"
+        with self.assertRaisesMessage(ValueError, expected_message):
+            UsernameLengthValidator(min_length=32, max_length=5)
+        with self.assertRaisesMessage(ValueError, expected_message):
+            UsernameLengthValidator(min_length=4, max_length=3)
+
+    def test_raise_when_both_min_length_and_max_length_arguments_are_none(self):
+        expected_message = "Both 'min_length' and 'max_length' arguments cannot be None"
+        with self.assertRaisesMessage(ValueError, expected_message):
+            UsernameLengthValidator(min_length=None, max_length=None)
+
+    def test_validate_with_min_length_and_max_length(self):
+        validate_between_6_and_32_characters = UsernameLengthValidator(min_length=6, max_length=32)
+
+        expected_message = "Your username must be at least 6 characters long."
+        with self.assertRaisesMessage(ValidationError, expected_message) as err:
+            validate_between_6_and_32_characters("admin")
+        self.assertEqual(err.exception.code, "username_too_short")
+
+        expected_message = "Your username must be at most 32 characters long."
+        with self.assertRaisesMessage(ValidationError, expected_message) as err:
+            validate_between_6_and_32_characters("username_too_looooooooooooooooong")
+        self.assertEqual(err.exception.code, "username_too_long")
+
+        self.assertIsNone(validate_between_6_and_32_characters("python"))
+        self.assertIsNone(validate_between_6_and_32_characters("developer"))
+        self.assertIsNone(validate_between_6_and_32_characters("a" * 32))
+
+    def test_validate_just_with_max_length(self):
+        validate_at_most_30_characters = UsernameLengthValidator(min_length=None, max_length=30)
+
+        expected_message = "Your username must be at most 30 characters long."
+        with self.assertRaisesMessage(ValidationError, expected_message) as err:
+            validate_at_most_30_characters("a" * 32)
+        self.assertEqual(err.exception.code, "username_too_long")
+
+        self.assertIsNone(validate_at_most_30_characters(""))
+        self.assertIsNone(validate_at_most_30_characters("django"))
+        self.assertIsNone(validate_at_most_30_characters("b" * 30))
+
+    def test_validate_just_with_min_length(self):
+        validate_at_least_5_characters = UsernameLengthValidator(min_length=5, max_length=None)
+
+        expected_message = "Your username must be at least 5 characters long."
+        with self.assertRaisesMessage(ValidationError, expected_message) as err:
+            validate_at_least_5_characters("test")
+        self.assertEqual(err.exception.code, "username_too_short")
+
+        self.assertIsNone(validate_at_least_5_characters("admin"))
+        self.assertIsNone(validate_at_least_5_characters("javascript"))
+        self.assertIsNone(validate_at_least_5_characters("c" * 255))
+
+    def test_equal_method(self):
+        validate_between_5_and_32_characters = UsernameLengthValidator(min_length=5, max_length=32)
+        validate_at_most_32_characters = UsernameLengthValidator(min_length=None, max_length=32)
+        validate_at_least_5_characters = UsernameLengthValidator(min_length=5, max_length=None)
+
+        self.assertNotEqual(validate_between_5_and_32_characters, validate_at_least_5_characters)
+        self.assertNotEqual(validate_between_5_and_32_characters, validate_at_most_32_characters)
+        self.assertNotEqual(validate_at_least_5_characters, validate_at_most_32_characters)
+
+        validate_between_6_and_32_characters = UsernameLengthValidator(min_length=6, max_length=32)
+        validate_between_5_and_30_characters = UsernameLengthValidator(min_length=5, max_length=30)
+        validate_between_6_and_30_characters = UsernameLengthValidator(min_length=6, max_length=30)
+
+        self.assertNotEqual(validate_between_5_and_32_characters, validate_between_6_and_32_characters)
+        self.assertNotEqual(validate_between_5_and_32_characters, validate_between_5_and_30_characters)
+        self.assertNotEqual(validate_between_5_and_32_characters, validate_between_6_and_30_characters)
+
+        self.assertEqual(validate_between_5_and_32_characters, UsernameLengthValidator(min_length=5, max_length=32))
+        self.assertEqual(validate_at_least_5_characters, UsernameLengthValidator(min_length=5, max_length=None))
+        self.assertEqual(validate_at_most_32_characters, UsernameLengthValidator(min_length=None, max_length=32))
