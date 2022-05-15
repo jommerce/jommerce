@@ -7,5 +7,5 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USERNAME_VALIDATORS = [
-
+    "djplus.auth.validators.username.length",
 ]
