@@ -1,5 +1,5 @@
 from django.test import TestCase
-from djplus.auth.models import User
+from djplus.auth.models import User, AnonymousUser
 
 
 class UserModelTest(TestCase):
@@ -38,3 +38,19 @@ class UserModelTest(TestCase):
 
         with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_anonymous'"):
             user.is_anonymous = True
+
+
+class AnonymousUserTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = AnonymousUser()
+
+    def test_is_authenticated(self):
+        self.assertFalse(self.user.is_authenticated)
+        with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_authenticated'"):
+            self.user.is_authenticated = True
+
+    def test_is_anonymous(self):
+        self.assertTrue(self.user.is_anonymous)
+        with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_anonymous'"):
+            self.user.is_anonymous = False

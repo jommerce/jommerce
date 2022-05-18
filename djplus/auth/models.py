@@ -43,3 +43,13 @@ class User(models.Model):
 class Session(models.Model):
     key = models.CharField(max_length=32, primary_key=True)
     user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="sessions")
+
+
+class AnonymousUser:
+    @property
+    def is_anonymous(self):
+        return True
+
+    @property
+    def is_authenticated(self):
+        return False
