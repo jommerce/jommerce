@@ -1,0 +1,15 @@
+name: Bug Report
+description: Create a report to help us improve
+labels: ["bug"]
+
+body:
+  - type: textarea
+    attributes:
+      label: What Bug?
+      description: Tell us what should happen and what happened instead
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Environment
