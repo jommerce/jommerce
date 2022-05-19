@@ -49,4 +49,12 @@ def identifier(username: str):
         )
 
 
+def ascii(username: str):
+    if not username.isascii():
+        raise ValidationError(
+            _("Your username characters must be ASCII."),
+            code="username_no_ascii",
+        )
+
+
 length = UsernameLengthValidator()
