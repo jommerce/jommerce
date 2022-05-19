@@ -86,6 +86,17 @@ class UsernameValidatorsTest(TestCase):
         for string in ["staff", "test_username", "user1234", "user_01234"]:
             self.assertIsNone(validate(string))
 
+    def test_validate_ascii(self):
+        validate = username_validators.ascii
+        expected_message = "Your username characters must be ASCII."
+        for string in ["تست"]:
+            with self.assertRaisesMessage(ValidationError, expected_message) as err:
+                validate(string)
+            self.assertEqual(err.exception.code, "username_no_ascii")
+
+        for string in ["Staff", "test_username", "user1234", "$user#test@"]:
+            self.assertIsNone(validate(string))
+
 
 class UsernameLengthValidatorTests(TestCase):
     def test_raise_when_min_length_is_equal_to_or_less_than_zero(self):
