@@ -2,6 +2,7 @@ from django.test import TestCase, override_settings
 from django.core.exceptions import ValidationError
 from djplus.auth.validators import get_password_validators, get_username_validators
 from djplus.auth.validators import password as password_validators
+from djplus.auth.validators import username as username_validators
 from djplus.auth.validators.password import PasswordLengthValidator
 from djplus.auth.validators.username import UsernameLengthValidator
 
@@ -72,6 +73,18 @@ class UsernameValidatorsTest(TestCase):
             "tests.auth.test_validators.validate_raise_error",
         ]):
             self.assertListEqual(get_username_validators(), [validate_return_none, validate_raise_error])
+
+    def test_validate_identifier(self):
+        validate = username_validators.identifier
+        expected_message = ("Your username must be a combination of letters or digits or an underscore "
+                            "and cannot start with a digit.")
+        for string in ["9user", "test user", "invalid$"]:
+            with self.assertRaisesMessage(ValidationError, expected_message) as err:
+                validate(string)
+            self.assertEqual(err.exception.code, "username_no_identifier")
+
+        for string in ["staff", "test_username", "user1234", "user_01234"]:
+            self.assertIsNone(validate(string))
 
 
 class UsernameLengthValidatorTests(TestCase):
