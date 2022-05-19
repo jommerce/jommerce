@@ -1,7 +1,10 @@
-from django.views.generic import FormView
+from django.shortcuts import render
 from .forms import LoginForm
 
 
-class LoginView(FormView):
-    template_name = "auth/login.html"
-    form_class = LoginForm
+def login(request):
+    form = LoginForm()
+    context = {
+        "form": form,
+    }
+    return render(request, "auth/login.html", context=context)
