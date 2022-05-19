@@ -91,13 +91,15 @@ class UsernameValidatorsTest(TestCase):
     def test_validate_ascii(self):
         validate = username_validators.ascii
         expected_message = "Your username characters must be ASCII."
-        for string in ["تست"]:
-            with self.assertRaisesMessage(ValidationError, expected_message) as err:
-                validate(string)
-            self.assertEqual(err.exception.code, "username_no_ascii")
+        for invalid in ["ᴮᴵᴳᴮᴵᴿᴰ", "Éric", "René", "أحمد", "ぁ"]:
+            with self.subTest(invalid=invalid):
+                with self.assertRaisesMessage(ValidationError, expected_message) as err:
+                    validate(invalid)
+                self.assertEqual(err.exception.code, "username_no_ascii")
 
-        for string in ["Staff", "test_username", "user1234", "$user#test@"]:
-            self.assertIsNone(validate(string))
+        for valid in ["glenn", "GLEnN", "jean#marc", "user_2022"]:
+            with self.subTest(valid=valid):
+                self.assertIsNone(validate(valid))
 
 
 class UsernameLengthValidatorTests(TestCase):
