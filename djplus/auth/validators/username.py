@@ -4,8 +4,8 @@ from django.utils.deconstruct import deconstructible
 
 
 @deconstructible
-class PasswordLengthValidator:
-    def __init__(self, min_length=8, max_length=100):
+class UsernameLengthValidator:
+    def __init__(self, min_length=5, max_length=32):
         if min_length is None and max_length is None:
             raise ValueError("Both 'min_length' and 'max_length' arguments cannot be None")
         if min_length is not None and min_length <= 0:
@@ -18,17 +18,17 @@ class PasswordLengthValidator:
         self.min_length = min_length
         self.max_length = max_length
 
-    def __call__(self, password):
-        if self.min_length and len(password) < self.min_length:
+    def __call__(self, username):
+        if self.min_length and len(username) < self.min_length:
             raise ValidationError(
-                _("Your password must be at least %(min_length)d characters long."),
-                code="password_too_short",
+                _("Your username must be at least %(min_length)d characters long."),
+                code="username_too_short",
                 params={"min_length": self.min_length},
             )
-        elif self.max_length and self.max_length < len(password):
+        elif self.max_length and self.max_length < len(username):
             raise ValidationError(
-                _("Your password must be at most %(max_length)d characters long."),
-                code="password_too_long",
+                _("Your username must be at most %(max_length)d characters long."),
+                code="username_too_long",
                 params={"max_length": self.max_length},
             )
 
@@ -40,37 +40,21 @@ class PasswordLengthValidator:
         )
 
 
-def number(password):
-    if not any(map(str.isdigit, password)):
+def identifier(username: str):
+    if not username.isidentifier():
         raise ValidationError(
-            _("at least one number"),
-            code="password_no_number",
+            _(("Your username must be a combination of letters or digits or an underscore "
+               "and cannot start with a digit.")),
+            code="username_no_identifier",
         )
 
 
-def lowercase(password):
-    if not any(map(str.islower, password)):
+def ascii(username: str):
+    if not username.isascii():
         raise ValidationError(
-            _("at least one lowercase letter"),
-            code="password_no_lowercase",
+            _("Your username characters must be ASCII."),
+            code="username_no_ascii",
         )
 
 
-def uppercase(password):
-    if not any(map(str.isupper, password)):
-        raise ValidationError(
-            _("at least one uppercase letter"),
-            code="password_no_uppercase",
-        )
-
-
-def symbol(password):
-    special_characters = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
-    if not any(char in special_characters for char in password):
-        raise ValidationError(
-            _("at least one special character"),
-            code="password_no_symbol",
-        )
-
-
-length = PasswordLengthValidator()
+length = UsernameLengthValidator()
