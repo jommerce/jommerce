@@ -40,4 +40,13 @@ class UsernameLengthValidator:
         )
 
 
+def identifier(username: str):
+    if not username.isidentifier():
+        raise ValidationError(
+            _(("Your username must be a combination of letters or digits or an underscore "
+               "and cannot start with a digit.")),
+            code="username_no_identifier",
+        )
+
+
 length = UsernameLengthValidator()
