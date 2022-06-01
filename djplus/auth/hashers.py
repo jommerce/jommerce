@@ -55,3 +55,26 @@ class PBKDF2PasswordHasher(BasePasswordHasher):
         self.digest_size = int(digest_size)
         return constant_time_compare(hashed_password, self.hash(raw_password))
 
+
+class Argon2PasswordHasher(BasePasswordHasher):
+    def hash(self, password):
+        pass
+
+    def verify(self, raw_password, hashed_password):
+        pass
+
+
+class BcryptPasswordHasher(BasePasswordHasher):
+    def hash(self, password):
+        pass
+
+    def verify(self, raw_password, hashed_password):
+        pass
+
+
+class ScryptPasswordHasher(BasePasswordHasher):
+    def hash(self, password):
+        pass
+
+    def verify(self, raw_password, hashed_password):
+        pass
