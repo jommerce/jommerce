@@ -1,12 +1,11 @@
 import base64
 import hashlib
+from abc import ABC, abstractmethod
 from django.utils.crypto import pbkdf2, get_random_string, constant_time_compare
 
 
-class PBKDF2PasswordHasher:
-    def __init__(self, iterations=320000):
-        self.iterations = iterations
-        self._salt = None
+class BasePasswordHasher(ABC):
+    _salt = None
 
     @property
     def salt(self):
@@ -20,6 +19,19 @@ class PBKDF2PasswordHasher:
     @salt.deleter
     def salt(self):
         self._salt = None
+
+    @abstractmethod
+    def hash(self, password):
+        pass
+
+    @abstractmethod
+    def verify(self, raw_password, hashed_password):
+        pass
+
+
+class PBKDF2PasswordHasher(BasePasswordHasher):
+    def __init__(self, iterations=320000):
+        self.iterations = iterations
 
     def _check_password(self, password):
         if not isinstance(password, str):

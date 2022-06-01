@@ -1,6 +1,31 @@
+from unittest.mock import patch
 from django.test import TestCase
 from django.utils.crypto import get_random_string
-from djplus.auth.hashers import PBKDF2PasswordHasher
+from djplus.auth.hashers import BasePasswordHasher, PBKDF2PasswordHasher
+
+
+class BasePasswordHasherTests(TestCase):
+    def test_abstract(self):
+        expected_error = "Can't instantiate abstract class"
+        with self.assertRaisesMessage(TypeError, expected_error):
+            BasePasswordHasher()
+
+    @patch("djplus.auth.hashers.BasePasswordHasher.__abstractmethods__", set())
+    def test_salt_property(self):
+        hasher = BasePasswordHasher()
+        salt = hasher.salt
+        self.assertEqual(salt, hasher.salt)
+
+        del hasher.salt
+        self.assertNotEqual(salt, hasher.salt)
+        self.assertIsNotNone(hasher.salt)
+        self.assertNotEqual(hasher.salt, "")
+
+        hasher.salt = "my salt"
+        self.assertEqual(hasher.salt, "my salt")
+
+        del hasher.salt
+        self.assertNotEqual(hasher.salt, "my salt")
 
 
 class PBKDF2PasswordHasherTests(TestCase):
