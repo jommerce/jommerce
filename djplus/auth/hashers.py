@@ -1,7 +1,8 @@
 import base64
 import hashlib
 from abc import ABC, abstractmethod
-from django.utils.crypto import pbkdf2, get_random_string, constant_time_compare
+from django.utils.encoding import force_bytes
+from django.utils.crypto import get_random_string, constant_time_compare
 
 
 class BasePasswordHasher(ABC):
@@ -30,17 +31,27 @@ class BasePasswordHasher(ABC):
 
 
 class PBKDF2PasswordHasher(BasePasswordHasher):
-    def __init__(self, iterations=320000):
+    def __init__(self, iterations=320000, digest_name="sha256", digest_size=None):
         self.iterations = iterations
+        self.digest_name = digest_name
+        self.digest_size = digest_size or getattr(hashlib, digest_name)().digest_size
 
     def hash(self, password):
-        hashed = pbkdf2(password, self.salt, self.iterations, digest=hashlib.sha256)
+        hashed = hashlib.pbkdf2_hmac(
+            self.digest_name,
+            force_bytes(password),
+            force_bytes(self.salt),
+            self.iterations,
+            dklen=self.digest_size,
+        )
         hashed = base64.b64encode(hashed).decode("ascii").strip()
-        hashed_password = "$".join((hashed, self.salt, str(self.iterations)))
+        hashed_password = "$".join((self.digest_name, str(self.digest_size), str(self.iterations), self.salt, hashed))
         del self.salt
         return hashed_password
 
     def verify(self, raw_password, hashed_password):
-        hashed, self.salt, iterations = hashed_password.split("$")
+        self.digest_name, digest_size, iterations, self.salt, hashed = hashed_password.split("$")
         self.iterations = int(iterations)
+        self.digest_size = int(digest_size)
         return constant_time_compare(hashed_password, self.hash(raw_password))
+
