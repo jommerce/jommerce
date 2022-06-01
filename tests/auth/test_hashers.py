@@ -30,7 +30,7 @@ class BasePasswordHasherTests(TestCase):
 
 class PBKDF2PasswordHasherTests(TestCase):
     password = get_random_string(length=6)
-    hasher = PBKDF2PasswordHasher()
+    hasher = PBKDF2PasswordHasher(iterations=1)
     hashed_password = hasher.hash(password)
 
     def test_hash_password(self):
