@@ -33,12 +33,7 @@ class PBKDF2PasswordHasher(BasePasswordHasher):
     def __init__(self, iterations=320000):
         self.iterations = iterations
 
-    def _check_password(self, password):
-        if not isinstance(password, str):
-            raise TypeError("Password must be a string")
-
     def hash(self, password):
-        self._check_password(password)
         hashed = pbkdf2(password, self.salt, self.iterations, digest=hashlib.sha256)
         hashed = base64.b64encode(hashed).decode("ascii").strip()
         hashed_password = "$".join((hashed, self.salt, str(self.iterations)))
@@ -46,7 +41,6 @@ class PBKDF2PasswordHasher(BasePasswordHasher):
         return hashed_password
 
     def verify(self, raw_password, hashed_password):
-        self._check_password(raw_password)
         hashed, self.salt, iterations = hashed_password.split("$")
         self.iterations = int(iterations)
         return constant_time_compare(hashed_password, self.hash(raw_password))

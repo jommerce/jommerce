@@ -44,12 +44,6 @@ class PBKDF2PasswordHasherTests(TestCase):
         hashed_password2 = self.hasher.hash(self.password)
         self.assertNotEqual(hashed_password2, self.hashed_password)
 
-    def test_invalid_password(self):
-        expected_error = "Password must be a string"
-        for password in {1, 3.14, None, b"bytes_password"}:
-            with self.assertRaisesMessage(TypeError, expected_error):
-                self.hasher.hash(password)
-
     def test_hashed_password_must_be_string(self):
         self.assertIsInstance(self.hashed_password, str)
 
