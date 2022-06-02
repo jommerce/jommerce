@@ -31,7 +31,7 @@ class BasePasswordHasher(ABC):
 
 
 class PBKDF2PasswordHasher(BasePasswordHasher):
-    def __init__(self, iterations=320000, digest_name="sha256", digest_size=None):
+    def __init__(self, iterations=480_000, digest_name="sha256", digest_size=None):
         self.iterations = iterations
         self.digest_name = digest_name
         self.digest_size = digest_size or getattr(hashlib, digest_name)().digest_size
