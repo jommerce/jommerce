@@ -4,6 +4,11 @@ from abc import ABC, abstractmethod
 from django.utils.encoding import force_bytes
 from django.utils.crypto import get_random_string, constant_time_compare
 
+try:
+    import argon2
+except ImportError:
+    pass
+
 
 class BasePasswordHasher(ABC):
     _salt = None
@@ -57,11 +62,49 @@ class PBKDF2PasswordHasher(BasePasswordHasher):
 
 
 class Argon2PasswordHasher(BasePasswordHasher):
+    def __init__(self, time_cost=2, memory_cost=102_400, parallelism=8, hash_length=32, salt_length=16, type="argon2id", version=19):
+        self.time_cost = time_cost
+        self.memory_cost = memory_cost
+        self.parallelism = parallelism
+        self.hash_length = hash_length
+        self.salt_length = salt_length
+        self.type = type
+        self.version = version
+
+    @property
+    def type(self):
+        return self._type
+
+    @type.setter
+    def type(self, value):
+        if value == "argon2id":
+            self._type = argon2.Type.ID
+        elif value == "argon2i":
+            self._type = argon2.Type.I
+        elif value == "argon2d":
+            self._type = argon2.Type.D
+        else:
+            raise ValueError("'type' must be one of these values. {'argon2id', 'argon2i', 'argon2d'}")
+
     def hash(self, password):
-        pass
+        hashed_password = argon2.low_level.hash_secret(
+            password.encode(),
+            self.salt.encode(),
+            time_cost=self.time_cost,
+            memory_cost=self.memory_cost,
+            parallelism=self.parallelism,
+            hash_len=self.hash_length,
+            type=self.type,
+            version=self.version,
+        ).decode("ascii")
+        del self.salt
+        return hashed_password
 
     def verify(self, raw_password, hashed_password):
-        pass
+        try:
+            return argon2.PasswordHasher().verify(hashed_password, raw_password)
+        except argon2.exceptions.VerificationError:
+            return False
 
 
 class BcryptPasswordHasher(BasePasswordHasher):

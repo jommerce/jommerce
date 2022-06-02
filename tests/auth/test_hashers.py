@@ -78,6 +78,19 @@ class PBKDF2PasswordHasherTest(PasswordHasherTestMixin, TestCase):
 class Argon2PasswordHasherTest(PasswordHasherTestMixin, TestCase):
     hasher = Argon2PasswordHasher()
 
+    def test_type_property(self):
+        self.hasher.type = "argon2id"
+        self.assertIs(self.hasher.type, argon2.Type.ID)
+
+        self.hasher.type = "argon2i"
+        self.assertIs(self.hasher.type, argon2.Type.I)
+
+        self.hasher.type = "argon2d"
+        self.assertIs(self.hasher.type, argon2.Type.D)
+
+        with self.assertRaisesMessage(ValueError, "'type' must be one of these values. {'argon2id', 'argon2i', 'argon2d'}"):
+            self.hasher.type = "other"
+
 
 @unittest.skipUnless(bcrypt, "bcrypt not installed")
 class BcryptPasswordHasherTest(PasswordHasherTestMixin, TestCase):
