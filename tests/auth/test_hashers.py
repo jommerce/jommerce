@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 from django.test import TestCase
-from django.utils.crypto import get_random_string
+from djplus.auth.utils import generate_random_string
 from djplus.auth.hashers import (
     BasePasswordHasher,
     PBKDF2PasswordHasher,
@@ -46,7 +46,7 @@ class BasePasswordHasherTest(TestCase):
 
 
 class PasswordHasherTestMixin:
-    password = get_random_string(length=6)
+    password = generate_random_string(length=6)
 
     @classmethod
     def setUpTestData(cls):
@@ -57,7 +57,7 @@ class PasswordHasherTestMixin:
 
     def test_verify_hashed_password(self):
         self.assertTrue(self.hasher.verify(self.password, self.hashed_password))
-        self.assertFalse(self.hasher.verify(get_random_string(length=6), self.hashed_password))
+        self.assertFalse(self.hasher.verify(generate_random_string(length=6), self.hashed_password))
 
     def test_use_salt(self):
         hashed_password2 = self.hasher.hash(self.password)

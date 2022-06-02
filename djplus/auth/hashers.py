@@ -2,7 +2,8 @@ import base64
 import hashlib
 from abc import ABC, abstractmethod
 from django.utils.encoding import force_bytes
-from django.utils.crypto import get_random_string, constant_time_compare
+from django.utils.crypto import constant_time_compare
+from .utils import generate_random_string
 
 try:
     import argon2
@@ -15,7 +16,7 @@ class BasePasswordHasher(ABC):
 
     @property
     def salt(self):
-        self._salt = self._salt or get_random_string(length=32)
+        self._salt = self._salt or generate_random_string(length=32, symbol=False)
         return self._salt
 
     @salt.setter
