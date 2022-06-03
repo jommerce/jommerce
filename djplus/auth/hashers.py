@@ -4,12 +4,18 @@ import functools
 from abc import ABC, abstractmethod
 from django.utils.encoding import force_bytes
 from django.utils.crypto import constant_time_compare
+from django.utils.module_loading import import_string
+from django.conf import settings
 from .utils import generate_random_string
 
 try:
     import argon2
 except ImportError:
     pass
+
+
+def get_default_hasher():
+    return import_string(settings.AUTH_PASSWORD_HASHER)
 
 
 class BasePasswordHasher(ABC):

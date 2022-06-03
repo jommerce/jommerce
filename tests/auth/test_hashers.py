@@ -2,6 +2,7 @@ import unittest
 from django.test import TestCase
 from djplus.auth.utils import generate_random_string
 from djplus.auth.hashers import (
+    get_default_hasher,
     BasePasswordHasher,
     PBKDF2PasswordHasher,
     Argon2PasswordHasher,
@@ -18,6 +19,18 @@ try:
     import bcrypt
 except ImportError:
     bcrypt = None
+
+pbkdf2_hasher = PBKDF2PasswordHasher(iterations=1)
+argon2_hasher = Argon2PasswordHasher(memory_cost=8, time_cost=1, parallelism=1)
+
+
+class GetDefaultHasherTest(TestCase):
+    def test_get_default_hasher(self):
+        with self.settings(AUTH_PASSWORD_HASHER="tests.auth.test_hashers.pbkdf2_hasher"):
+            self.assertIs(get_default_hasher(), pbkdf2_hasher)
+
+        with self.settings(AUTH_PASSWORD_HASHER="tests.auth.test_hashers.argon2_hasher"):
+            self.assertIs(get_default_hasher(), argon2_hasher)
 
 
 class BasePasswordHasherTest(TestCase):
@@ -53,12 +66,12 @@ class PasswordHasherTestMixin:
 
 
 class PBKDF2PasswordHasherTest(PasswordHasherTestMixin, TestCase):
-    hasher = PBKDF2PasswordHasher(iterations=1)
+    hasher = pbkdf2_hasher
 
 
 @unittest.skipUnless(argon2, "argon2-cffi not installed")
 class Argon2PasswordHasherTest(PasswordHasherTestMixin, TestCase):
-    hasher = Argon2PasswordHasher(time_cost=1, memory_cost=8, parallelism=1)
+    hasher = argon2_hasher
 
     def test_type_property(self):
         self.hasher.type = "argon2id"
