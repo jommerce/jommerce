@@ -1,5 +1,6 @@
 import base64
 import hashlib
+import functools
 from abc import ABC, abstractmethod
 from django.utils.encoding import force_bytes
 from django.utils.crypto import constant_time_compare
@@ -12,21 +13,6 @@ except ImportError:
 
 
 class BasePasswordHasher(ABC):
-    _salt = None
-
-    @property
-    def salt(self):
-        self._salt = self._salt or generate_random_string(length=32, symbol=False)
-        return self._salt
-
-    @salt.setter
-    def salt(self, value):
-        self._salt = str(value)
-
-    @salt.deleter
-    def salt(self):
-        self._salt = None
-
     @abstractmethod
     def hash(self, password):
         pass
@@ -35,13 +21,30 @@ class BasePasswordHasher(ABC):
     def verify(self, raw_password, hashed_password):
         pass
 
+    @staticmethod
+    def generate_salt_if_none(func_=None):
+        def decorator(func):
+            @functools.wraps(func)
+            def wrapper(self, *args, **kwargs):
+                self.salt = self.salt or generate_random_string(32, symbol=False)
+                hashed_password = func(self, *args, **kwargs)
+                self.salt = None
+                return hashed_password
+            return wrapper
+        if func_ is None:
+            return decorator
+        else:
+            return decorator(func_)
+
 
 class PBKDF2PasswordHasher(BasePasswordHasher):
-    def __init__(self, iterations=480_000, digest_name="sha256", digest_size=None):
+    def __init__(self, iterations=480_000, digest_name="sha256", salt=None, digest_size=None):
         self.iterations = iterations
         self.digest_name = digest_name
+        self.salt = salt
         self.digest_size = digest_size or getattr(hashlib, digest_name)().digest_size
 
+    @BasePasswordHasher.generate_salt_if_none
     def hash(self, password):
         hashed = hashlib.pbkdf2_hmac(
             self.digest_name,
@@ -51,9 +54,7 @@ class PBKDF2PasswordHasher(BasePasswordHasher):
             dklen=self.digest_size,
         )
         hashed = base64.b64encode(hashed).decode("ascii").strip()
-        hashed_password = "$".join((self.digest_name, str(self.iterations), self.salt, hashed))
-        del self.salt
-        return hashed_password
+        return "$".join((self.digest_name, str(self.iterations), self.salt, hashed))
 
     def verify(self, raw_password, hashed_password):
         self.digest_name, iterations, self.salt, hashed = hashed_password.split("$")
@@ -62,7 +63,7 @@ class PBKDF2PasswordHasher(BasePasswordHasher):
 
 
 class Argon2PasswordHasher(BasePasswordHasher):
-    def __init__(self, time_cost=2, memory_cost=102_400, parallelism=8, hash_length=32, salt_length=16, type="argon2id", version=19):
+    def __init__(self, time_cost=2, memory_cost=102_400, parallelism=8, salt=None, hash_length=32, salt_length=16, type="argon2id", version=19):
         self.time_cost = time_cost
         self.memory_cost = memory_cost
         self.parallelism = parallelism
@@ -70,6 +71,7 @@ class Argon2PasswordHasher(BasePasswordHasher):
         self.salt_length = salt_length
         self.type = type
         self.version = version
+        self.salt = salt
 
     @property
     def type(self):
@@ -86,8 +88,9 @@ class Argon2PasswordHasher(BasePasswordHasher):
         else:
             raise ValueError("'type' must be one of these values. {'argon2id', 'argon2i', 'argon2d'}")
 
+    @BasePasswordHasher.generate_salt_if_none
     def hash(self, password):
-        hashed_password = argon2.low_level.hash_secret(
+        return argon2.low_level.hash_secret(
             password.encode(),
             self.salt.encode(),
             time_cost=self.time_cost,
@@ -97,8 +100,6 @@ class Argon2PasswordHasher(BasePasswordHasher):
             type=self.type,
             version=self.version,
         ).decode("ascii")
-        del self.salt
-        return hashed_password
 
     def verify(self, raw_password, hashed_password):
         try:
