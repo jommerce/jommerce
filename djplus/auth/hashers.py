@@ -51,14 +51,13 @@ class PBKDF2PasswordHasher(BasePasswordHasher):
             dklen=self.digest_size,
         )
         hashed = base64.b64encode(hashed).decode("ascii").strip()
-        hashed_password = "$".join((self.digest_name, str(self.digest_size), str(self.iterations), self.salt, hashed))
+        hashed_password = "$".join((self.digest_name, str(self.iterations), self.salt, hashed))
         del self.salt
         return hashed_password
 
     def verify(self, raw_password, hashed_password):
-        self.digest_name, digest_size, iterations, self.salt, hashed = hashed_password.split("$")
+        self.digest_name, iterations, self.salt, hashed = hashed_password.split("$")
         self.iterations = int(iterations)
-        self.digest_size = int(digest_size)
         return constant_time_compare(hashed_password, self.hash(raw_password))
 
 
