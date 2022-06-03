@@ -58,7 +58,7 @@ class PBKDF2PasswordHasherTest(PasswordHasherTestMixin, TestCase):
 
 @unittest.skipUnless(argon2, "argon2-cffi not installed")
 class Argon2PasswordHasherTest(PasswordHasherTestMixin, TestCase):
-    hasher = Argon2PasswordHasher()
+    hasher = Argon2PasswordHasher(time_cost=1, memory_cost=8, parallelism=1)
 
     def test_type_property(self):
         self.hasher.type = "argon2id"
