@@ -68,10 +68,16 @@ class PasswordHasherTestMixin:
 class PBKDF2PasswordHasherTest(PasswordHasherTestMixin, TestCase):
     hasher = pbkdf2_hasher
 
+    def test_name(self):
+        self.assertEqual(self.hasher.name, "pbkdf2")
+
 
 @unittest.skipUnless(argon2, "argon2-cffi not installed")
 class Argon2PasswordHasherTest(PasswordHasherTestMixin, TestCase):
     hasher = argon2_hasher
+
+    def test_name(self):
+        self.assertEqual(self.hasher.name, "argon2")
 
     def test_type_property(self):
         self.hasher.type = "argon2id"
@@ -91,6 +97,12 @@ class Argon2PasswordHasherTest(PasswordHasherTestMixin, TestCase):
 class BcryptPasswordHasherTest(PasswordHasherTestMixin, TestCase):
     hasher = BcryptPasswordHasher()
 
+    def test_name(self):
+        self.assertEqual(self.hasher.name, "bcrypt")
+
 
 class ScryptPasswordHasherTest(PasswordHasherTestMixin, TestCase):
     hasher = ScryptPasswordHasher()
+
+    def test_name(self):
+        self.assertEqual(self.hasher.name, "scrypt")
