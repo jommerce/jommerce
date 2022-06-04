@@ -22,6 +22,8 @@ except ImportError:
 
 pbkdf2_hasher = PBKDF2PasswordHasher(iterations=1)
 argon2_hasher = Argon2PasswordHasher(memory_cost=8, time_cost=1, parallelism=1)
+bcrypt_hasher = BcryptPasswordHasher(rounds=4)
+scrypt_hasher = ScryptPasswordHasher(work_factor=2)
 
 
 class GetDefaultHasherTest(TestCase):
@@ -95,14 +97,14 @@ class Argon2PasswordHasherTest(PasswordHasherTestMixin, TestCase):
 
 @unittest.skipUnless(bcrypt, "bcrypt not installed")
 class BcryptPasswordHasherTest(PasswordHasherTestMixin, TestCase):
-    hasher = BcryptPasswordHasher()
+    hasher = bcrypt_hasher
 
     def test_name(self):
         self.assertEqual(self.hasher.name, "bcrypt")
 
 
 class ScryptPasswordHasherTest(PasswordHasherTestMixin, TestCase):
-    hasher = ScryptPasswordHasher()
+    hasher = scrypt_hasher
 
     def test_name(self):
         self.assertEqual(self.hasher.name, "scrypt")
