@@ -3,8 +3,6 @@ import hashlib
 import secrets
 import binascii
 from abc import ABC, abstractmethod
-from django.utils.module_loading import import_string
-from django.conf import settings
 from .utils import generate_random_string
 
 try:
@@ -16,10 +14,6 @@ try:
     import bcrypt
 except ImportError:
     pass
-
-
-def get_default_hasher():
-    return import_string(settings.AUTH_PASSWORD_HASHER)
 
 
 class BasePasswordHasher(ABC):

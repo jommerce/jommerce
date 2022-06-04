@@ -2,7 +2,6 @@ import unittest
 from django.test import TestCase
 from djplus.auth.utils import generate_random_string
 from djplus.auth.hashers import (
-    get_default_hasher,
     BasePasswordHasher,
     PBKDF2PasswordHasher,
     Argon2PasswordHasher,
@@ -24,15 +23,6 @@ pbkdf2_hasher = PBKDF2PasswordHasher(iterations=1)
 argon2_hasher = Argon2PasswordHasher(memory_cost=8, time_cost=1, parallelism=1)
 bcrypt_hasher = BcryptPasswordHasher(rounds=4)
 scrypt_hasher = ScryptPasswordHasher(work_factor=2)
-
-
-class GetDefaultHasherTest(TestCase):
-    def test_get_default_hasher(self):
-        with self.settings(AUTH_PASSWORD_HASHER="tests.auth.test_hashers.pbkdf2_hasher"):
-            self.assertIs(get_default_hasher(), pbkdf2_hasher)
-
-        with self.settings(AUTH_PASSWORD_HASHER="tests.auth.test_hashers.argon2_hasher"):
-            self.assertIs(get_default_hasher(), argon2_hasher)
 
 
 class BasePasswordHasherTest(TestCase):
