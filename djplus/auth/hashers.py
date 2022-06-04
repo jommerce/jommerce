@@ -1,10 +1,8 @@
 import base64
 import hashlib
+import secrets
 import binascii
-import functools
 from abc import ABC, abstractmethod
-from django.utils.encoding import force_bytes
-from django.utils.crypto import constant_time_compare
 from django.utils.module_loading import import_string
 from django.conf import settings
 from .utils import generate_random_string
@@ -25,134 +23,105 @@ def get_default_hasher():
 
 
 class BasePasswordHasher(ABC):
-    @abstractmethod
-    def hash(self, password):
-        pass
+    salt_length = 32
 
     @abstractmethod
+    def hash(self, password, salt=None):
+        pass
+
     def verify(self, raw_password, hashed_password):
-        pass
-
-    @staticmethod
-    def generate_salt_if_none(func_=None):
-        def decorator(func):
-            @functools.wraps(func)
-            def wrapper(self, *args, **kwargs):
-                self.salt = self.salt or generate_random_string(32, symbol=False)
-                hashed_password = func(self, *args, **kwargs)
-                self.salt = None
-                return hashed_password
-            return wrapper
-        if func_ is None:
-            return decorator
-        else:
-            return decorator(func_)
+        salt = hashed_password[:self.salt_length]
+        return secrets.compare_digest(hashed_password.encode(), self.hash(raw_password, salt).encode())
 
 
 class PBKDF2PasswordHasher(BasePasswordHasher):
-    def __init__(self, iterations=480_000, digest_name="sha256", salt=None, digest_size=None):
+    def __init__(self, iterations=480_000, digest_name="sha256", digest_size=None, salt_length=32):
         self.iterations = iterations
         self.digest_name = digest_name
-        self.salt = salt
-        self.digest_size = digest_size or getattr(hashlib, digest_name)().digest_size
+        self.digest_size = digest_size
+        self.salt_length = salt_length
 
-    @BasePasswordHasher.generate_salt_if_none
-    def hash(self, password):
+    def hash(self, password, salt=None):
+        salt = salt or generate_random_string(self.salt_length, symbol=False)
         hashed = hashlib.pbkdf2_hmac(
             self.digest_name,
-            force_bytes(password),
-            force_bytes(self.salt),
+            password.encode(),
+            salt.encode(),
             self.iterations,
             dklen=self.digest_size,
         )
         hashed = base64.b64encode(hashed).decode("ascii").strip()
-        return "$".join((self.digest_name, str(self.iterations), self.salt, hashed))
-
-    def verify(self, raw_password, hashed_password):
-        self.digest_name, iterations, self.salt, hashed = hashed_password.split("$")
-        self.iterations = int(iterations)
-        return constant_time_compare(hashed_password, self.hash(raw_password))
+        return salt + hashed
 
 
 class Argon2PasswordHasher(BasePasswordHasher):
-    def __init__(self, time_cost=2, memory_cost=102_400, parallelism=8, salt=None, hash_length=32, salt_length=16, type="argon2id", version=19):
+    def __init__(self, time_cost=2, memory_cost=102_400, parallelism=8, hash_length=32, salt_length=16, type="argon2id", version=19):
         self.time_cost = time_cost
         self.memory_cost = memory_cost
         self.parallelism = parallelism
         self.hash_length = hash_length
         self.salt_length = salt_length
-        self.type = type
         self.version = version
-        self.salt = salt
 
-    @property
-    def type(self):
-        return self._type
-
-    @type.setter
-    def type(self, value):
-        if value == "argon2id":
-            self._type = argon2.Type.ID
-        elif value == "argon2i":
-            self._type = argon2.Type.I
-        elif value == "argon2d":
-            self._type = argon2.Type.D
+        if type == "argon2id":
+            self.type = argon2.Type.ID
+        elif type == "argon2d":
+            self.type = argon2.Type.D
+        elif type == "argon2i":
+            self.type = argon2.Type.I
         else:
             raise ValueError("'type' must be one of these values. {'argon2id', 'argon2i', 'argon2d'}")
 
-    @BasePasswordHasher.generate_salt_if_none
-    def hash(self, password):
-        return argon2.low_level.hash_secret(
+    def hash(self, password, salt=None):
+        salt = salt or generate_random_string(self.salt_length, symbol=False)
+        hashed = argon2.low_level.hash_secret(
             password.encode(),
-            self.salt.encode(),
+            salt.encode(),
             time_cost=self.time_cost,
             memory_cost=self.memory_cost,
             parallelism=self.parallelism,
             hash_len=self.hash_length,
             type=self.type,
             version=self.version,
-        ).decode("ascii")
-
-    def verify(self, raw_password, hashed_password):
-        try:
-            return argon2.PasswordHasher().verify(hashed_password, raw_password)
-        except argon2.exceptions.VerificationError:
-            return False
+        ).decode("ascii").rsplit("$", 1)[1]
+        return salt + hashed
 
 
 class BcryptPasswordHasher(BasePasswordHasher):
-    def __init__(self, digest=hashlib.sha256, rounds=12, salt=None):
+    def __init__(self, digest=hashlib.sha256, rounds=12, prefix=b"2b"):
         self.digest = digest
-        self.rounds = rounds
-        self.salt = salt
+        self.rounds = "0" + str(rounds) if rounds < 10 else str(rounds)
+        self.prefix = prefix
 
-    def hash(self, password):
+    def hash(self, password, salt=None):
         password = password.encode()
-        self.salt = self.salt or bcrypt.gensalt(self.rounds)
         if self.digest is not None:
             password = binascii.hexlify(self.digest(password).digest())
-        hashed_password = bcrypt.hashpw(password, self.salt).decode("ascii")
-        self.salt = None
-        return hashed_password
+        return bcrypt.hashpw(password, bcrypt.gensalt(int(self.rounds), self.prefix)).decode("ascii").rsplit("$", 1)[1]
 
     def verify(self, raw_password, hashed_password):
-        self.salt = hashed_password.encode("ascii")
-        return constant_time_compare(hashed_password, self.hash(raw_password))
+        password = raw_password.encode()
+        if self.digest is not None:
+            password = binascii.hexlify(self.digest(password).digest())
+        return bcrypt.checkpw(
+            password,
+            b"$" + self.prefix + b"$" + str(self.rounds).encode() + b"$" + hashed_password.encode(),
+        )
 
 
 class ScryptPasswordHasher(BasePasswordHasher):
-    def __init__(self, block_size=8, parallelism=1, work_factor=2**14, maxmem=0, salt=None):
+    def __init__(self, block_size=8, parallelism=1, work_factor=2**14, maxmem=0, salt_length=32):
         self.block_size = block_size
         self.parallelism = parallelism
         self.work_factor = work_factor
         self.maxmem = maxmem
-        self.salt = salt
+        self.salt_length = salt_length
 
-    @BasePasswordHasher.generate_salt_if_none
-    def hash(self, password):
+    def hash(self, password, salt=None):
+        salt = salt or generate_random_string(self.salt_length, symbol=False)
         hash_ = hashlib.scrypt(
             password.encode(),
-            salt=self.salt.encode(),
+            salt=salt.encode(),
             n=self.work_factor,
             r=self.block_size,
             p=self.parallelism,
@@ -160,11 +129,4 @@ class ScryptPasswordHasher(BasePasswordHasher):
             dklen=64,
         )
         hash_ = base64.b64encode(hash_).decode("ascii").strip()
-        return "$".join((str(self.work_factor), self.salt, str(self.block_size), str(self.parallelism), hash_))
-
-    def verify(self, raw_password, hashed_password):
-        work_factor, self.salt, block_size, parallelism, hashed = hashed_password.split("$")
-        self.work_factor = int(work_factor)
-        self.block_size = int(block_size)
-        self.parallelism = int(parallelism)
-        return constant_time_compare(hashed_password, self.hash(raw_password))
+        return salt + hash_
