@@ -50,8 +50,6 @@ class BasePasswordHasher(ABC):
 
 
 class PBKDF2PasswordHasher(BasePasswordHasher):
-    name = "pbkdf2"
-
     def __init__(self, iterations=480_000, digest_name="sha256", salt=None, digest_size=None):
         self.iterations = iterations
         self.digest_name = digest_name
@@ -77,8 +75,6 @@ class PBKDF2PasswordHasher(BasePasswordHasher):
 
 
 class Argon2PasswordHasher(BasePasswordHasher):
-    name = "argon2"
-
     def __init__(self, time_cost=2, memory_cost=102_400, parallelism=8, salt=None, hash_length=32, salt_length=16, type="argon2id", version=19):
         self.time_cost = time_cost
         self.memory_cost = memory_cost
@@ -125,8 +121,6 @@ class Argon2PasswordHasher(BasePasswordHasher):
 
 
 class BcryptPasswordHasher(BasePasswordHasher):
-    name = "bcrypt"
-
     def __init__(self, digest=hashlib.sha256, rounds=12, salt=None):
         self.digest = digest
         self.rounds = rounds
@@ -147,8 +141,6 @@ class BcryptPasswordHasher(BasePasswordHasher):
 
 
 class ScryptPasswordHasher(BasePasswordHasher):
-    name = "scrypt"
-
     def __init__(self, block_size=8, parallelism=1, work_factor=2**14, maxmem=0, salt=None):
         self.block_size = block_size
         self.parallelism = parallelism
