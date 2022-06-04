@@ -1,5 +1,6 @@
 import base64
 import hashlib
+import binascii
 import functools
 from abc import ABC, abstractmethod
 from django.utils.encoding import force_bytes
@@ -10,6 +11,11 @@ from .utils import generate_random_string
 
 try:
     import argon2
+except ImportError:
+    pass
+
+try:
+    import bcrypt
 except ImportError:
     pass
 
@@ -121,18 +127,52 @@ class Argon2PasswordHasher(BasePasswordHasher):
 class BcryptPasswordHasher(BasePasswordHasher):
     name = "bcrypt"
 
+    def __init__(self, digest=hashlib.sha256, rounds=12, salt=None):
+        self.digest = digest
+        self.rounds = rounds
+        self.salt = salt
+
     def hash(self, password):
-        pass
+        password = password.encode()
+        self.salt = self.salt or bcrypt.gensalt(self.rounds)
+        if self.digest is not None:
+            password = binascii.hexlify(self.digest(password).digest())
+        hashed_password = bcrypt.hashpw(password, self.salt).decode("ascii")
+        self.salt = None
+        return hashed_password
 
     def verify(self, raw_password, hashed_password):
-        pass
+        self.salt = hashed_password.encode("ascii")
+        return constant_time_compare(hashed_password, self.hash(raw_password))
 
 
 class ScryptPasswordHasher(BasePasswordHasher):
     name = "scrypt"
 
+    def __init__(self, block_size=8, parallelism=1, work_factor=2**14, maxmem=0, salt=None):
+        self.block_size = block_size
+        self.parallelism = parallelism
+        self.work_factor = work_factor
+        self.maxmem = maxmem
+        self.salt = salt
+
+    @BasePasswordHasher.generate_salt_if_none
     def hash(self, password):
-        pass
+        hash_ = hashlib.scrypt(
+            password.encode(),
+            salt=self.salt.encode(),
+            n=self.work_factor,
+            r=self.block_size,
+            p=self.parallelism,
+            maxmem=self.maxmem,
+            dklen=64,
+        )
+        hash_ = base64.b64encode(hash_).decode("ascii").strip()
+        return "$".join((str(self.work_factor), self.salt, str(self.block_size), str(self.parallelism), hash_))
 
     def verify(self, raw_password, hashed_password):
-        pass
+        work_factor, self.salt, block_size, parallelism, hashed = hashed_password.split("$")
+        self.work_factor = int(work_factor)
+        self.block_size = int(block_size)
+        self.parallelism = int(parallelism)
+        return constant_time_compare(hashed_password, self.hash(raw_password))
