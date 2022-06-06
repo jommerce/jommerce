@@ -1,7 +1,9 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from djplus.auth.models import User
+from djplus.auth.utils import generate_random_string
 
 
+@override_settings(AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.pbkdf2_hasher"])
 class UserModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -36,3 +38,30 @@ class UserModelTest(TestCase):
         self.assertFalse(user1.is_anonymous)
         user2 = User.objects.get(pk=2)
         self.assertFalse(user2.is_anonymous)
+
+    def test_upgrade_password_hasher(self):
+        password = generate_random_string(length=12)
+        with self.settings(AUTH_PASSWORD_HASHERS=[
+            "tests.auth.test_hashers.pbkdf2_hasher",
+            "tests.auth.test_hashers.scrypt_hasher",
+        ]):
+            user = User.objects.create(email="test@gmail.com", password=password)
+            self.assertTrue(user.verify_password(password))
+
+        with self.settings(AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.scrypt_hasher"]):
+            self.assertFalse(user.verify_password(password))
+
+        with self.settings(AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.pbkdf2_hasher"]):
+            self.assertTrue(user.verify_password(password))
+
+        with self.settings(AUTH_PASSWORD_HASHERS=[
+            "tests.auth.test_hashers.scrypt_hasher",
+            "tests.auth.test_hashers.pbkdf2_hasher",
+        ]):
+            self.assertTrue(user.verify_password(password))
+
+        with self.settings(AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.scrypt_hasher"]):
+            self.assertTrue(user.verify_password(password))
+
+        with self.settings(AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.pbkdf2_hasher"]):
+            self.assertFalse(user.verify_password(password))
