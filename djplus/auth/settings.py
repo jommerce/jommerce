@@ -11,3 +11,4 @@ AUTH_USERNAME_VALIDATORS = [
     "djplus.auth.validators.username.ascii",
     "djplus.auth.validators.username.identifier",
 ]
+AUTH_PASSWORD_HASHERS = ["djplus.auth.hashers.default"]
