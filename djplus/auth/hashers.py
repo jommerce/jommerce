@@ -2,6 +2,7 @@ import base64
 import hashlib
 import secrets
 import binascii
+import functools
 from abc import ABC, abstractmethod
 from django.conf import settings
 from django.utils.module_loading import import_string
@@ -18,6 +19,7 @@ except ImportError:
     pass
 
 
+@functools.lru_cache
 def get_hashers():
     return [import_string(hasher_path) for hasher_path in settings.AUTH_PASSWORD_HASHERS]
 
