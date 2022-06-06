@@ -3,6 +3,8 @@ import hashlib
 import secrets
 import binascii
 from abc import ABC, abstractmethod
+from django.conf import settings
+from django.utils.module_loading import import_string
 from .utils import generate_random_string
 
 try:
@@ -14,6 +16,10 @@ try:
     import bcrypt
 except ImportError:
     pass
+
+
+def get_hashers():
+    return [import_string(hasher_path) for hasher_path in settings.AUTH_PASSWORD_HASHERS]
 
 
 class BasePasswordHasher(ABC):
@@ -124,3 +130,6 @@ class ScryptPasswordHasher(BasePasswordHasher):
         )
         hash_ = base64.b64encode(hash_).decode("ascii").strip()
         return salt + hash_
+
+
+default = PBKDF2PasswordHasher(iterations=480_000, digest_name="sha256", digest_size=None, salt_length=32)

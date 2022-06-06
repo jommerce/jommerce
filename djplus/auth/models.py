@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.hashers import make_password as hash_password, check_password as verify_password
+from .hashers import get_hashers
 
 
 class User(models.Model):
@@ -14,7 +14,8 @@ class User(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk is None or self.__original_password != self.password:
-            self.password = hash_password(self.password)
+            hasher = get_hashers()[0]
+            self.password = hasher.hash(self.password)
         super().save(*args, **kwargs)
         self.__original_password = self.password
 
@@ -35,4 +36,12 @@ class User(models.Model):
         return True
 
     def verify_password(self, raw_password):
-        return verify_password(raw_password, self.password)
+        need_rehash = False
+        for hasher in get_hashers():
+            if hasher.verify(raw_password, self.password):
+                if need_rehash:
+                    self.password = raw_password
+                    self.save()
+                return True
+            need_rehash = True
+        return False
