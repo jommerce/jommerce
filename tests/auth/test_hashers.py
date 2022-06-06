@@ -20,9 +20,11 @@ except ImportError:
     bcrypt = None
 
 pbkdf2_hasher = PBKDF2PasswordHasher(iterations=1)
-argon2_hasher = Argon2PasswordHasher(memory_cost=8, time_cost=1, parallelism=1)
-bcrypt_hasher = BcryptPasswordHasher(rounds=4)
 scrypt_hasher = ScryptPasswordHasher(work_factor=2)
+if argon2:
+    argon2_hasher = Argon2PasswordHasher(memory_cost=8, time_cost=1, parallelism=1)
+if bcrypt:
+    bcrypt_hasher = BcryptPasswordHasher(rounds=4)
 
 
 class BasePasswordHasherTest(TestCase):
