@@ -16,14 +16,14 @@ class UserModelTest(TestCase):
         self.assertNotEqual(user2.password, "123456")
         self.assertNotEqual(user1.password, user2.password)
 
-    def test_check_password(self):
+    def test_verify_password(self):
         user = User.objects.get(pk=1)
-        self.assertTrue(user.check_password("123456"))
-        self.assertFalse(user.check_password("password"))
+        self.assertTrue(user.verify_password("123456"))
+        self.assertFalse(user.verify_password("password"))
 
         user = User.objects.get(pk=3)
-        self.assertTrue(user.check_password("password"))
-        self.assertFalse(user.check_password("123456"))
+        self.assertTrue(user.verify_password("password"))
+        self.assertFalse(user.verify_password("123456"))
 
     def test_is_authenticated(self):
         user1 = User.objects.get(pk=1)

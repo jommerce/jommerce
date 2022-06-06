@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.hashers import make_password as hash_password, check_password
+from django.contrib.auth.hashers import make_password as hash_password, check_password as verify_password
 
 
 class User(models.Model):
@@ -34,5 +34,5 @@ class User(models.Model):
         """
         return True
 
-    def check_password(self, raw_password):
-        return check_password(raw_password, self.password)
+    def verify_password(self, raw_password):
+        return verify_password(raw_password, self.password)
