@@ -46,6 +46,7 @@ class User(models.Model):
                     self.save()
                 return True
             need_rehash = True
+        return False
 
 
 class Session(models.Model):
