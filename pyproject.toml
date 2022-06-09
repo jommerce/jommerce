@@ -44,6 +44,7 @@ argon2 = ["argon2-cffi"]
 django-debug-toolbar = "^3.2.4"
 ipython = "^8.2.0"
 Sphinx = "^5.0.1"
+sphinx-rtd-theme = "^1.0.0"
 
 [tool.poetry.scripts]
 djplus = "djplus.__main__:main"
