@@ -10,6 +10,8 @@ Welcome to djplus's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   instructions
+
 
 
 Indices and tables
