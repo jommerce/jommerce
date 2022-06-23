@@ -1,14 +1,19 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from .validators import get_password_validators, get_username_validators
 from .hashers import get_hashers
 
 
 class User(models.Model):
-    username = models.CharField(max_length=32, unique=True, validators=get_username_validators())
-    email = models.EmailField(max_length=64, unique=True)
-    password = models.CharField(max_length=128, validators=get_password_validators())
+    username = models.CharField(_("username"), max_length=32, unique=True, validators=get_username_validators())
+    email = models.EmailField(_("email"), max_length=64, unique=True)
+    password = models.CharField(_("password"), max_length=128, validators=get_password_validators())
 
     __original_password = None
+
+    class Meta:
+        verbose_name = _("user")
+        verbose_name_plural = _("users")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
