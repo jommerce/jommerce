@@ -12,3 +12,4 @@ AUTH_USERNAME_VALIDATORS = [
     "djplus.auth.validators.username.identifier",
 ]
 AUTH_PASSWORD_HASHERS = ["djplus.auth.hashers.default"]
+AUTH_SESSION_COOKIE_NAME = "session_key"
