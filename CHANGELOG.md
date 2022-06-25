@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
-- Default `DEFAULT_AUTO_FIELD` to `AutoField`.
+- Default `DEFAULT_AUTO_FIELD` to `AutoField` in the project template.
+- Run the server with local settings in the project template.
 
 ## [1.1.0] - 2022-06-25
 ### Added
