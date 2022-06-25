@@ -104,3 +104,9 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Authentication
+AUTH_PASSWORD_HASHERS = (
+    "tests.auth.test_hashers.pbkdf2_hasher",
+)
