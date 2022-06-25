@@ -2,7 +2,7 @@ from django.core.management import execute_from_command_line
 from django.core.management.utils import get_random_secret_key
 from pathlib import Path
 
-DIR_PROJECT_TEMPLATE = Path(__file__).parent / "project_template"
+PROJECT_TEMPLATE_DIR = Path(__file__).parent / "project_template"
 
 
 def main():
@@ -11,7 +11,7 @@ def main():
         "django-admin",
         "startproject",
         "--template",
-        str(DIR_PROJECT_TEMPLATE),
+        str(PROJECT_TEMPLATE_DIR),
         "--name",
         ".gitignore",
         str(project_name),
