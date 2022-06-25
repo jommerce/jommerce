@@ -12,6 +12,8 @@ def main():
         "startproject",
         "--template",
         str(DIR_PROJECT_TEMPLATE),
+        "--name",
+        ".gitignore",
         str(project_name),
         ".",
     ])
