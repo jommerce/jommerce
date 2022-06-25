@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "djplus"
-version = "1.0.0"
+version = "1.1.0"
 description = "django ready apps"
 license = "MIT"
 authors = ["githashem <PersonalHashem@gmail.com>"]
@@ -33,10 +33,18 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.8"
 Django = "^4.0.3"
+bcrypt = {version = "^3.2.2", optional = true}
+argon2-cffi = {version = "^21.3.0", optional = true}
+
+[tool.poetry.extras]
+bcrypt = ["bcrypt"]
+argon2 = ["argon2-cffi"]
 
 [tool.poetry.dev-dependencies]
 django-debug-toolbar = "^3.2.4"
 ipython = "^8.2.0"
+Sphinx = "^5.0.1"
+sphinx-rtd-theme = "^1.0.0"
 
 [tool.poetry.scripts]
 djplus = "djplus.__main__:main"
