@@ -1,21 +1,23 @@
-from django.core.management import execute_from_command_line
+from django.core.management.templates import TemplateCommand
 from django.core.management.utils import get_random_secret_key
 from pathlib import Path
 
-DIR_PROJECT_TEMPLATE = Path(__file__).parent / "project_template"
+PROJECT_TEMPLATE_DIR = Path(__file__).parent / "project_template"
 
 
 def main():
-    project_name = input("project_name [config]: ").strip() or "config"
-    execute_from_command_line([
-        "django-admin",
-        "startproject",
-        "--template",
-        str(DIR_PROJECT_TEMPLATE),
-        str(project_name),
-        ".",
-    ])
-    print(f'SECRET_KEY = "{get_random_secret_key()}"')
+    TemplateCommand().handle(
+        "project",
+        name=input("project_name[config]: ").strip() or "config",
+        target=str(Path.cwd()),
+        template=str(PROJECT_TEMPLATE_DIR),
+        files=[".gitignore"],
+        extensions=[".py", ".py-tpl"],
+        exclude=[],
+        verbosity=0,
+
+        secret_key=get_random_secret_key(),
+    )
 
 
 if __name__ == "__main__":

@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2022-06-29
+### Fixed
+- Fixed the error of uninstalled packages with the help of `requirements` in the project template.
+### Changed
+- Default `DEFAULT_AUTO_FIELD` to `AutoField` in the project template.
+- Run the server with local settings in the project template.
+
 ## [1.1.0] - 2022-06-25
 ### Added
 - add initial app called `auth`
