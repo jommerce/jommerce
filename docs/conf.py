@@ -22,7 +22,7 @@ copyright = '2022, Hashem'
 author = 'Hashem'
 
 # The full version, including alpha/beta/rc tags
-release = 'v1.0.0'
+release = 'v1.1.1'
 
 
 # -- General configuration ---------------------------------------------------
