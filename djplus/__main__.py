@@ -15,8 +15,9 @@ def main():
         extensions=[".py", ".py-tpl"],
         exclude=[],
         verbosity=0,
+
+        secret_key=get_random_secret_key(),
     )
-    print(f'SECRET_KEY = "{get_random_secret_key()}"')
 
 
 if __name__ == "__main__":
