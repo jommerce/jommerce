@@ -32,6 +32,7 @@ def main():
         verbosity=0,
 
         secret_key=get_random_secret_key(),
+        domain_name=input("domain_name[example.local]: ").strip() or "example.local",
         **config,
     )
 
