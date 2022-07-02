@@ -85,6 +85,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+PASSWORD_HASHERS = [{% if argon2 %}
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+{% elif bcrypt %}
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+{% else %}
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+{% endif %}]
 
 # Internationalization
 # ----------------------------------------------------------------------------------------------------------------------
