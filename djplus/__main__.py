@@ -6,6 +6,13 @@ import json
 PROJECT_TEMPLATE_DIR = Path(__file__).parent / "project_template"
 
 
+def generate_config_file():
+    with open(Path.home() / "djplus.json", "w") as file:
+        json.dump({
+            "debug_toolbar": True,
+        }, file, indent=4)
+
+
 def main():
     try:
         with open(Path.home() / "djplus.json") as file:

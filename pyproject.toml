@@ -48,6 +48,7 @@ sphinx-rtd-theme = "^1.0.0"
 
 [tool.poetry.scripts]
 djplus = "djplus.__main__:main"
+djplusconfig = "djplus.__main__:generate_config_file"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
