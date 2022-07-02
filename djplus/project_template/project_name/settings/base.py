@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # General
 # ----------------------------------------------------------------------------------------------------------------------
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 DEBUG = True
 ALLOWED_HOSTS = []
 ROOT_URLCONF = '{{project_name}}.urls'
