@@ -1,4 +1,4 @@
-import os
+from os import environ as SECRETS # noqa
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -6,9 +6,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # General
 # ----------------------------------------------------------------------------------------------------------------------
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+SECRET_KEY = SECRETS.get("DJANGO_SECRET_KEY")
 DEBUG = True
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split()
+ALLOWED_HOSTS = SECRETS.get("DJANGO_ALLOWED_HOSTS", "").split()
 ROOT_URLCONF = '{{project_name}}.urls'
 WSGI_APPLICATION = '{{project_name}}.wsgi.application'
 
