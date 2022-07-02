@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # ----------------------------------------------------------------------------------------------------------------------
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split()
 ROOT_URLCONF = '{{project_name}}.urls'
 WSGI_APPLICATION = '{{project_name}}.wsgi.application'
 
