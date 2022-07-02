@@ -1,1 +1,2 @@
+-r base.txt
 {% if debug_toolbar %}django-debug-toolbar==3.5.0{% endif %}
