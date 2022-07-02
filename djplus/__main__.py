@@ -19,7 +19,7 @@ def main():
         target=str(Path.cwd()),
         template=str(PROJECT_TEMPLATE_DIR),
         files=[".gitignore"],
-        extensions=[".py", ".py-tpl"],
+        extensions=[".py", ".py-tpl", ".txt"],
         exclude=[],
         verbosity=0,
 
