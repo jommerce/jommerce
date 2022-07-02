@@ -10,6 +10,7 @@ def generate_config_file():
     with open(Path.home() / "djplus.json", "w") as file:
         json.dump({
             "debug_toolbar": True,
+            "argon2": True,
         }, file, indent=4)
 
 

@@ -84,8 +84,11 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-
+{% if argon2 %}
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+]
+{% endif %}
 # Internationalization
 # ----------------------------------------------------------------------------------------------------------------------
 LANGUAGE_CODE = 'en-us'
