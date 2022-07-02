@@ -13,3 +13,6 @@ body:
   - type: textarea
     attributes:
       label: Environment
+      description: Djplus version? Python version? Django version? browser type? ...
+    validations:
+      required: true
