@@ -7,3 +7,6 @@
 </div>
 
 ![djplus version](https://img.shields.io/pypi/v/djplus?style=flat-square)
+![django version](https://img.shields.io/pypi/djversions/djplus?style=flat-square)
+![python version](https://img.shields.io/pypi/pyversions/djplus?style=flat-square)
+![license](https://img.shields.io/pypi/l/djplus?color=blue&style=flat-square)
