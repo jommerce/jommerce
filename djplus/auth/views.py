@@ -8,3 +8,11 @@ def login(request):
         "form": form,
     }
     return render(request, "auth/login.html", context=context)
+
+
+def logout(request):
+    pass
+
+
+def register(request):
+    pass
