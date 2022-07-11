@@ -55,8 +55,14 @@ class User(models.Model):
 
 
 class Session(models.Model):
-    key = models.CharField(max_length=32, primary_key=True)
-    user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="sessions")
+    id = models.CharField(_("id"), max_length=32, primary_key=True)
+    expire_date = models.DateTimeField(_("expire_date"), db_index=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sessions", verbose_name=_("user"))
+    ip = models.GenericIPAddressField(_("ip"))
+
+    class Meta:
+        verbose_name = _("session")
+        verbose_name_plural = _("sessions")
 
 
 class AnonymousUser:

@@ -30,7 +30,7 @@ class AuthenticationMiddlewareTest(TestCase):
         self.assertIsNone(self.request.session)
 
     def test_the_session_key_does_exist_in_the_database(self):
-        self.request.COOKIES[settings.AUTH_SESSION_COOKIE_NAME] = self.session.key
+        self.request.COOKIES[settings.AUTH_SESSION_COOKIE_NAME] = self.session.id
         self.middleware(self.request)
         self.assertNotIsInstance(self.request.user, AnonymousUser)
         self.assertIsNotNone(self.request.session)
