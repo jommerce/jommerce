@@ -5,9 +5,16 @@ from .hashers import get_hashers
 
 
 class User(models.Model):
+    ACTIVE = 0
+    INACTIVE = 1
+
     username = models.CharField(_("username"), max_length=32, unique=True, validators=get_username_validators())
     email = models.EmailField(_("email"), max_length=64, unique=True)
     password = models.CharField(_("password"), max_length=128, validators=get_password_validators())
+    status = models.SmallIntegerField(_("status"), default=ACTIVE, choices=(
+        (ACTIVE, _("active")),
+        (INACTIVE, _("inactive")),
+    ))
 
     __original_password = None
 
