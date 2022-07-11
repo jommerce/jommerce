@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - add `argon2-cffi` and `bcrypt` packages to project template.
 - add `djplusconfig` command to generate config file called `djplus.json`.
+- add `status` field to `User` model.
+### Changed
+- change `Session` model.
+### Backwards incompatible changes
+1. run `python manage.py migrate auth 0001`
+2. update `djplus`
+3. run `python manage.py migrate`
 
 ## [1.1.1] - 2022-06-29
 ### Fixed
