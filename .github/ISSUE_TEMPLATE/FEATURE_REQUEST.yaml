@@ -3,6 +3,16 @@ description: Suggest an idea for improving Djplus
 labels: ["enhancement"]
 
 body:
+  - type: dropdown
+    attributes:
+      label: Which app is relevant/related to the feature request?
+      options:
+        - command-line/project-template
+        - auth
+        - other/i don't know
+    validations:
+      required: true
+
   - type: textarea
     attributes:
       label: What feature?

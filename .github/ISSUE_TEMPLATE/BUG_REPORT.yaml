@@ -3,6 +3,16 @@ description: Create a report to help us improve
 labels: ["bug"]
 
 body:
+  - type: dropdown
+    attributes:
+      label: Which app is the source of the bug?
+      options:
+        - command-line/project-template
+        - auth
+        - other/i don't know
+    validations:
+      required: true
+
   - type: textarea
     attributes:
       label: What Bug?
