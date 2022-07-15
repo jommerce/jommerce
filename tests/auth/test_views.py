@@ -2,70 +2,68 @@ from django.test import TestCase, override_settings
 from djplus.auth.models import User
 
 
-class AuthViewsTestCaseMixin:
-    user_data = {
-        "username": "test",
-        "password": "123456",
-    }
+@override_settings(ROOT_URLCONF="djplus.auth.urls")
+class RedirectAfterLogin(TestCase):
+    """ AUTH_LOGIN_REDIRECT_URL setting """
 
     @classmethod
     def setUpTestData(cls):
-        User.objects.create(**cls.user_data)
-        return super(AuthViewsTestCaseMixin, cls).setUpTestData()
+        User.objects.create(username="test", password="123456")
 
-    def logout(self):
-        self.client.post("/logout/")
+    def setUp(self) -> None:
+        self.response = self.client.post("/login/", data={"username": "test", "password": "123456"})
 
-    def login(self):
-        self.client.post("/login/", data=self.user_data)
+    @override_settings(AUTH_LOGIN_REDIRECT_URL="/custom/")
+    def test_redirect_to_a_custom_url(self):
+        self.assertRedirects(self.response, "/custom/", fetch_redirect_response=False)
 
+    @override_settings(AUTH_LOGIN_REDIRECT_URL="/")
+    def test_redirect_to_home_page(self):
+        self.assertRedirects(self.response, "/", fetch_redirect_response=False)
 
-@override_settings(ROOT_URLCONF="djplus.auth.urls")
-class LoginViewTest(AuthViewsTestCaseMixin, TestCase):
-    def test_login_redirect_url_setting(self):
-        for url in {"/custom/", "/"}:
-            with self.subTest(AUTH_LOGIN_REDIRECT_URL=url), self.settings(AUTH_LOGIN_REDIRECT_URL=url):
-                self.logout()
-                response = self.client.post("/login/", data=self.user_data)
-                self.assertRedirects(response, url, fetch_redirect_response=False)
-
-        with self.subTest(AUTH_LOGIN_REDIRECT_URL=None), self.settings(AUTH_LOGIN_REDIRECT_URL=None):
-            self.logout()
-            response = self.client.post("/login/", data=self.user_data)
-            self.assertEqual(response.status_code, 200)
-            self.assertTemplateUsed(response, "auth/login.html")
+    @override_settings(AUTH_LOGIN_REDIRECT_URL=None)
+    def test_not_redirect(self):
+        self.assertEqual(self.response.status_code, 200)
+        self.assertTemplateUsed(self.response, "auth/login.html")
 
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
-class LogoutViewTest(AuthViewsTestCaseMixin, TestCase):
-    @override_settings(AUTH_SESSION_COOKIE_NAME="custom")
-    def test_logout_with_custom_session_cookie_name(self):
-        response = self.client.post("/logout/")
-        self.assertNotIn("custom", response.cookies)
+class RedirectAfterLogout(TestCase):
+    """ AUTH_LOGOUT_REDIRECT_URL setting """
 
-    def test_logout_redirect_url_setting(self):
-        for url in {"/custom/", "/"}:
-            with self.subTest(AUTH_LOGOUT_REDIRECT_URL=url), self.settings(AUTH_LOGOUT_REDIRECT_URL=url):
-                self.login()
-                response = self.client.post("/logout/")
-                self.assertRedirects(response, url, fetch_redirect_response=False)
+    def setUp(self) -> None:
+        self.response = self.client.post("/logout/")
 
-        with self.subTest(AUTH_LOGOUT_REDIRECT_URL=None), self.settings(AUTH_LOGOUT_REDIRECT_URL=None):
-            self.login()
-            response = self.client.post("/logout/")
-            self.assertEqual(response.status_code, 200)
-            self.assertTemplateUsed(response, "auth/logout.html")
+    @override_settings(AUTH_LOGOUT_REDIRECT_URL="/custom/")
+    def test_redirect_to_a_custom_url(self):
+        self.assertRedirects(self.response, "/custom/", fetch_redirect_response=False)
+
+    @override_settings(AUTH_LOGOUT_REDIRECT_URL="/")
+    def test_redirect_to_home_page(self):
+        self.assertRedirects(self.response, "/", fetch_redirect_response=False)
+
+    @override_settings(AUTH_LOGOUT_REDIRECT_URL=None)
+    def test_not_redirect(self):
+        self.assertEqual(self.response.status_code, 200)
+        self.assertTemplateUsed(self.response, "auth/logout.html")
 
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
-class SignupViewTest(AuthViewsTestCaseMixin, TestCase):
-    def test_signup_redirect_url_setting(self):
-        for url in {"/custom/", "/"}:
-            with self.subTest(AUTH_SIGNUP_REDIRECT_URL=url), self.settings(AUTH_SIGNUP_REDIRECT_URL=url):
-                response = self.client.post("/signup/", data={"username": "user1", "password": "123456"})
-                self.assertRedirects(response, url, fetch_redirect_response=False)
+class RedirectAfterSignup(TestCase):
+    """ AUTH_SIGNUP_REDIRECT_URL setting """
 
-        with self.subTest(AUTH_SIGNUP_REDIRECT_URL=None), self.settings(AUTH_SIGNUP_REDIRECT_URL=None):
-            response = self.client.post("/signup/", data={"username": "user2", "password": "123456"})
-            self.assertEqual(response.status_code, 200)
-            self.assertTemplateUsed(response, "auth/signup.html")
+    def setUp(self) -> None:
+        self.response = self.client.post("/signup/", data={"username": "test", "password": "123456"})
+
+    @override_settings(AUTH_SIGNUP_REDIRECT_URL="/custom/")
+    def test_redirect_to_a_custom_url(self):
+        self.assertRedirects(self.response, "/custom/", fetch_redirect_response=False)
+
+    @override_settings(AUTH_SIGNUP_REDIRECT_URL="/")
+    def test_redirect_to_home_page(self):
+        self.assertRedirects(self.response, "/", fetch_redirect_response=False)
+
+    @override_settings(AUTH_SIGNUP_REDIRECT_URL=None)
+    def test_not_redirect(self):
+        self.assertEqual(self.response.status_code, 200)
+        self.assertTemplateUsed(self.response, "auth/signup.html")
