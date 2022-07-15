@@ -13,14 +13,21 @@ class LoginViewTest(TestCase):
     def setUpTestData(cls):
         User.objects.create(**cls.user_data)
 
-    def setUp(self) -> None:
+    def logout(self):
         self.client.post("/logout/")
 
     def test_login_redirect_url_setting(self):
         for url in {"/custom/", "/"}:
             with self.subTest(AUTH_LOGIN_REDIRECT_URL=url), self.settings(AUTH_LOGIN_REDIRECT_URL=url):
+                self.logout()
                 response = self.client.post("/login/", data=self.user_data)
                 self.assertRedirects(response, url, fetch_redirect_response=False)
+
+        with self.subTest(AUTH_LOGIN_REDIRECT_URL=None), self.settings(AUTH_LOGIN_REDIRECT_URL=None):
+            self.logout()
+            response = self.client.post("/login/", data=self.user_data)
+            self.assertEqual(response.status_code, 200)
+            self.assertTemplateUsed(response, "auth/login.html")
 
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
