@@ -2,8 +2,7 @@ from django.test import TestCase, override_settings
 from djplus.auth.models import User
 
 
-@override_settings(ROOT_URLCONF="djplus.auth.urls")
-class LoginViewTest(TestCase):
+class AuthViewsTestCaseMixin:
     user_data = {
         "username": "test",
         "password": "123456",
@@ -12,10 +11,17 @@ class LoginViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         User.objects.create(**cls.user_data)
+        return super(AuthViewsTestCaseMixin, cls).setUpTestData()
 
     def logout(self):
         self.client.post("/logout/")
 
+    def login(self):
+        self.client.post("/login/", data=self.user_data)
+
+
+@override_settings(ROOT_URLCONF="djplus.auth.urls")
+class LoginViewTest(AuthViewsTestCaseMixin, TestCase):
     def test_login_redirect_url_setting(self):
         for url in {"/custom/", "/"}:
             with self.subTest(AUTH_LOGIN_REDIRECT_URL=url), self.settings(AUTH_LOGIN_REDIRECT_URL=url):
@@ -31,19 +37,7 @@ class LoginViewTest(TestCase):
 
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
-class LogoutViewTest(TestCase):
-    user_data = {
-        "username": "test",
-        "password": "123456",
-    }
-
-    @classmethod
-    def setUpTestData(cls):
-        User.objects.create(**cls.user_data)
-
-    def login(self):
-        self.client.post("/login/", data=self.user_data)
-
+class LogoutViewTest(AuthViewsTestCaseMixin, TestCase):
     @override_settings(AUTH_SESSION_COOKIE_NAME="custom")
     def test_logout_with_custom_session_cookie_name(self):
         response = self.client.post("/logout/")
@@ -64,7 +58,7 @@ class LogoutViewTest(TestCase):
 
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
-class SignupViewTest(TestCase):
+class SignupViewTest(AuthViewsTestCaseMixin, TestCase):
     def test_signup_redirect_url_setting(self):
         for url in {"/custom/", "/"}:
             with self.subTest(AUTH_SIGNUP_REDIRECT_URL=url), self.settings(AUTH_SIGNUP_REDIRECT_URL=url):
