@@ -1,6 +1,7 @@
 from django.test import TestCase, RequestFactory
 from django.http import HttpResponse
 from django.conf import settings
+from django.utils import timezone
 from djplus.auth.middleware import AuthenticationMiddleware, AnonymousUser
 from djplus.auth.utils import generate_random_string
 from djplus.auth.models import User, Session
@@ -10,7 +11,12 @@ class AuthenticationMiddlewareTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         user = User.objects.create(username="test", email="test@example.com", password="123456")
-        session = Session.objects.create(user=user, key=generate_random_string(length=32))
+        session = Session.objects.create(
+            user=user,
+            id=generate_random_string(length=32),
+            expire_date=timezone.now() + timezone.timedelta(1),
+            ip="127.0.0.1",
+        )
         cls.user = user
         cls.session = session
 
