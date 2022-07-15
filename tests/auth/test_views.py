@@ -37,7 +37,7 @@ class LogoutViewTest(TestCase):
     def setUpTestData(cls):
         User.objects.create(**cls.user_data)
 
-    def setUp(self) -> None:
+    def login(self):
         self.client.post("/login/", data=self.user_data)
 
     @override_settings(AUTH_SESSION_COOKIE_NAME="custom")
@@ -45,14 +45,15 @@ class LogoutViewTest(TestCase):
         response = self.client.post("/logout/")
         self.assertNotIn("custom", response.cookies)
 
-    @override_settings(AUTH_LOGOUT_REDIRECT_URL="/custom/")
     def test_logout_redirect_url_setting(self):
-        response = self.client.post("/logout/")
-        self.assertRedirects(response, "/custom/", fetch_redirect_response=False)
+        for url in {"/custom/", "/"}:
+            with self.subTest(AUTH_LOGOUT_REDIRECT_URL=url), self.settings(AUTH_LOGOUT_REDIRECT_URL=url):
+                self.login()
+                response = self.client.post("/logout/")
+                self.assertRedirects(response, url, fetch_redirect_response=False)
 
-    @override_settings(AUTH_LOGOUT_REDIRECT_URL=None)
-    def test_when_logout_redirect_url_setting_is_none(self):
-        response = self.client.post("/logout/")
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "auth/logout.html")
-        self.assertNotIn(settings.AUTH_SESSION_COOKIE_NAME, response.cookies)
+        with self.subTest(AUTH_LOGOUT_REDIRECT_URL=None), self.settings(AUTH_LOGOUT_REDIRECT_URL=None):
+            self.login()
+            response = self.client.post("/logout/")
+            self.assertEqual(response.status_code, 200)
+            self.assertTemplateUsed(response, "auth/logout.html")
