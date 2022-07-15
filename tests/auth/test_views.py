@@ -1,7 +1,4 @@
 from django.test import TestCase, override_settings
-from django.urls import reverse
-from django.conf import settings
-from djplus.auth.forms import LoginForm
 from djplus.auth.models import User
 
 
