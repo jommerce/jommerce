@@ -11,10 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - add `status` field to `User` model.
 ### Changed
 - change `Session` model.
+- rename `register` to `signup`.
 ### Backwards incompatible changes
-1. run `python manage.py migrate auth 0001`
-2. update `djplus`
-3. run `python manage.py migrate`
+- rename named url called `register` to `signup`.
+- change `Session` model.
+  1. run `python manage.py migrate auth 0001`
+  2. update `djplus`
+  3. run `python manage.py migrate`
 
 ## [1.1.1] - 2022-06-29
 ### Fixed

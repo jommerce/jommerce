@@ -14,5 +14,5 @@ def logout(request):
     pass
 
 
-def register(request):
+def signup(request):
     pass

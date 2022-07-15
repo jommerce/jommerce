@@ -16,8 +16,8 @@ class NamedUrlsTest(TestCase):
         except NoReverseMatch:
             self.fail("Reversal of url named 'logout' failed with NoReverseMatch")
 
-    def test_register(self):
+    def test_signup(self):
         try:
-            self.assertEqual(reverse("register"), "/register/")
+            self.assertEqual(reverse("signup"), "/signup/")
         except NoReverseMatch:
-            self.fail("Reversal of url named 'register' failed with NoReverseMatch")
+            self.fail("Reversal of url named 'signup' failed with NoReverseMatch")
