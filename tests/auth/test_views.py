@@ -54,3 +54,17 @@ class LogoutViewTest(TestCase):
             response = self.client.post("/logout/")
             self.assertEqual(response.status_code, 200)
             self.assertTemplateUsed(response, "auth/logout.html")
+
+
+@override_settings(ROOT_URLCONF="djplus.auth.urls")
+class SignupViewTest(TestCase):
+    def test_signup_redirect_url_setting(self):
+        for url in {"/custom/", "/"}:
+            with self.subTest(AUTH_SIGNUP_REDIRECT_URL=url), self.settings(AUTH_SIGNUP_REDIRECT_URL=url):
+                response = self.client.post("/signup/", data={"username": "user1", "password": "123456"})
+                self.assertRedirects(response, url, fetch_redirect_response=False)
+
+        with self.subTest(AUTH_SIGNUP_REDIRECT_URL=None), self.settings(AUTH_SIGNUP_REDIRECT_URL=None):
+            response = self.client.post("/signup/", data={"username": "user2", "password": "123456"})
+            self.assertEqual(response.status_code, 200)
+            self.assertTemplateUsed(response, "auth/signup.html")
