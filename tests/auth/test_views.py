@@ -1,4 +1,4 @@
-from django.test import TestCase, override_settings
+from django.test import TestCase, override_settings, modify_settings
 from djplus.auth.models import User
 
 
@@ -67,3 +67,28 @@ class RedirectAfterSignup(TestCase):
     def test_not_redirect(self):
         self.assertEqual(self.response.status_code, 200)
         self.assertTemplateUsed(self.response, "auth/signup.html")
+
+
+@override_settings(ROOT_URLCONF="djplus.auth.urls")
+@modify_settings(MIDDLEWARE={"append": "djplus.auth.middleware.AuthenticationMiddleware"})
+class AccessLoginPageWhenUserIsAuthenticated(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        User.objects.create(username="test", password="123456")
+
+    def setUp(self) -> None:
+        self.client.post("/login/", data={"username": "test", "password": "123456"})
+        self.response = self.client.get("/login/")
+
+    @override_settings(AUTH_LOGIN_REDIRECT_URL="/custom/")
+    def test_redirect_to_a_custom_url(self):
+        self.assertRedirects(self.response, "/custom/", fetch_redirect_response=False)
+
+    @override_settings(AUTH_LOGIN_REDIRECT_URL="/")
+    def test_redirect_to_home_page(self):
+        self.assertRedirects(self.response, "/", fetch_redirect_response=False)
+
+    @override_settings(AUTH_LOGIN_REDIRECT_URL=None)
+    def test_not_redirect(self):
+        self.assertEqual(self.response.status_code, 200)
+        self.assertTemplateUsed(self.response, "auth/login.html")
