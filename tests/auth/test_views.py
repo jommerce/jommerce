@@ -92,3 +92,21 @@ class AccessLoginPageWhenUserIsAuthenticated(TestCase):
     def test_not_redirect(self):
         self.assertEqual(self.response.status_code, 200)
         self.assertTemplateUsed(self.response, "auth/login.html")
+
+
+@override_settings(ROOT_URLCONF="djplus.auth.urls")
+@modify_settings(MIDDLEWARE={"append": "djplus.auth.middleware.AuthenticationMiddleware"})
+class AccessLoginPageWhenUserIsAnonymous(TestCase):
+    def setUp(self) -> None:
+        self.client.post("/logout/")
+        self.response = self.client.get("/login/")
+
+    def test_use_login_template(self):
+        self.assertTemplateUsed(self.response, "auth/login.html")
+
+    def test_status_code(self):
+        self.assertEqual(self.response.status_code, 200)
+
+    @override_settings(AUTH_LOGIN_REDIRECT_URL="/custom/")
+    def test_no_redirect(self):
+        self.assertNotEqual(self.response.status_code, 302)
