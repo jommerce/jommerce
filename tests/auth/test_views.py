@@ -110,3 +110,28 @@ class AccessLoginPageWhenUserIsAnonymous(TestCase):
     @override_settings(AUTH_LOGIN_REDIRECT_URL="/custom/")
     def test_no_redirect(self):
         self.assertNotEqual(self.response.status_code, 302)
+
+
+@override_settings(ROOT_URLCONF="djplus.auth.urls")
+@modify_settings(MIDDLEWARE={"append": "djplus.auth.middleware.AuthenticationMiddleware"})
+class AccessSignupPageWhenUserIsAuthenticated(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        User.objects.create(username="test", password="123456")
+
+    def setUp(self) -> None:
+        self.client.post("/login/", data={"username": "test", "password": "123456"})
+        self.response = self.client.get("/signup/")
+
+    @override_settings(AUTH_SIGNUP_REDIRECT_URL="/custom/")
+    def test_redirect_to_a_custom_url(self):
+        self.assertRedirects(self.response, "/custom/", fetch_redirect_response=False)
+
+    @override_settings(AUTH_SIGNUP_REDIRECT_URL="/")
+    def test_redirect_to_home_page(self):
+        self.assertRedirects(self.response, "/", fetch_redirect_response=False)
+
+    @override_settings(AUTH_SIGNUP_REDIRECT_URL=None)
+    def test_no_redirect(self):
+        self.assertEqual(self.response.status_code, 200)
+        self.assertTemplateUsed(self.response, "auth/signup.html")
