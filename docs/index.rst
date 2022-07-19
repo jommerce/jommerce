@@ -10,3 +10,4 @@ and these apps can be customized with Django settings.
    :maxdepth: 2
 
    installation
+   auth/index
