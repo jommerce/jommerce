@@ -8,3 +8,5 @@ and these apps can be customized with Django settings.
 
 .. toctree::
    :maxdepth: 2
+
+   installation
