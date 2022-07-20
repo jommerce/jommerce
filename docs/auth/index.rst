@@ -9,3 +9,4 @@ auth
     :maxdepth: 1
 
     installation
+    configuration
