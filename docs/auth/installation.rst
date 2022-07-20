@@ -53,3 +53,6 @@ Add ``"djplus.auth.middleware.AuthenticationMiddleware"`` to your ``MIDDLEWARE``
         # ...
     ]
 
+.. warning::
+
+    Delete ``"django.contrib.auth"`` from your ``INSTALLED_APPS`` setting.
