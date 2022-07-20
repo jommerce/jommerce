@@ -17,4 +17,5 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   cli
    auth/index
