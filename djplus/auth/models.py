@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from .validators import get_password_validators, get_username_validators
 from .hashers import get_hashers
@@ -63,8 +64,15 @@ class User(models.Model):
 
 class Session(models.Model):
     id = models.CharField(_("id"), max_length=32, primary_key=True)
+    user = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="sessions",
+        verbose_name=_("user"),
+        null=True,
+        default=None,
+    )
     expire_date = models.DateTimeField(_("expire_date"), db_index=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sessions", verbose_name=_("user"))
     ip = models.GenericIPAddressField(_("ip"))
 
     class Meta:

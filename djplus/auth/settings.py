@@ -15,7 +15,7 @@ AUTH_PASSWORD_HASHERS = ["djplus.auth.hashers.default"]
 AUTH_LOGIN_REDIRECT_URL = "/"
 AUTH_LOGOUT_REDIRECT_URL = "/"
 AUTH_SIGNUP_REDIRECT_URL = "/"
-
+AUTH_USER_MODEL = "auth.User"
 
 # Sessions
 # ----------------------------------------------------------------------------------------------------------------------
