@@ -8,15 +8,15 @@ class AuthenticationMiddleware:
         self.get_response = get_response
 
     def __call__(self, request: HttpRequest):
-        session_key = request.COOKIES.get(settings.AUTH_SESSION_COOKIE_NAME, None)
         try:
-            session = Session.objects.get(pk=session_key)
+            session = Session.objects.get(pk=request.COOKIES.get(settings.AUTH_SESSION_COOKIE_NAME, None))
         except Session.DoesNotExist:
-            request.session = None
+            request.session = Session()
             request.user = AnonymousUser()
         else:
             request.session = session
-            request.user = session.user
+            request.user = session.user or AnonymousUser()
+
         response = self.get_response(request)
 
         response.set_cookie(
