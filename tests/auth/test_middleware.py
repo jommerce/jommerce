@@ -1,7 +1,6 @@
 from django.test import TestCase, RequestFactory
 from django.http import HttpResponse
 from django.conf import settings
-from django.utils import timezone
 from djplus.auth.middleware import AuthenticationMiddleware, AnonymousUser
 from djplus.auth.models import User, Session
 
@@ -35,8 +34,7 @@ class IdentifyUser(TestCase):
         self.assertIsNone(self.request.session.user)
 
     def test_identify_an_anonymous_user_whose_session_does_exist_in_the_database(self):
-        Session.objects.create(id="anonymous_session", ip="127.0.0.1",
-                               expire_date=timezone.now() + timezone.timedelta(1))
+        Session.objects.create(id="anonymous_session")
 
         self.request.COOKIES[SESSION_COOKIE_NAME] = "anonymous_session"
         self.middleware(self.request)
@@ -51,8 +49,7 @@ class IdentifyUser(TestCase):
 
     def test_identify_authenticated_user_whose_session_exists_in_the_database(self):
         user = User.objects.create(email="test@example.com", password="123456")
-        session = Session.objects.create(id="user_session", user=user, ip="127.0.0.1",
-                                         expire_date=timezone.now() + timezone.timedelta(1))
+        session = Session.objects.create(id="user_session", user=user)
 
         self.request.COOKIES[SESSION_COOKIE_NAME] = "user_session"
         self.middleware(self.request)

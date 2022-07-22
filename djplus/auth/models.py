@@ -74,8 +74,6 @@ class Session(models.Model):
         null=True,
         default=None,
     )
-    expire_date = models.DateTimeField(_("expire_date"), db_index=True)
-    ip = models.GenericIPAddressField(_("ip"))
 
     class Meta:
         verbose_name = _("session")

@@ -91,6 +91,6 @@ class SessionModel(TestCase):
         length = Session._meta.get_field("id").max_length
         self.assertEqual(len(Session().id), length)
         self.assertIsInstance(Session().id, str)
-        session = Session.objects.create(expire_date=timezone.now(), ip="127.0.0.1")
+        session = Session.objects.create()
         self.assertEqual(len(session.id), length)
         self.assertIsInstance(session.id, str)
