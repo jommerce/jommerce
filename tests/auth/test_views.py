@@ -8,10 +8,10 @@ class RedirectAfterLogin(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        User.objects.create(username="test", password="123456")
+        User.objects.create(email="test@example.com", password="123456")
 
     def setUp(self) -> None:
-        self.response = self.client.post("/login/", data={"username": "test", "password": "123456"})
+        self.response = self.client.post("/login/", data={"email": "test@example.com", "password": "123456"})
 
     @override_settings(AUTH_LOGIN_REDIRECT_URL="/custom/")
     def test_redirect_to_a_custom_url(self):
@@ -53,7 +53,7 @@ class RedirectAfterSignup(TestCase):
     """ AUTH_SIGNUP_REDIRECT_URL setting """
 
     def setUp(self) -> None:
-        self.response = self.client.post("/signup/", data={"username": "test", "password": "123456"})
+        self.response = self.client.post("/signup/", data={"email": "test@example.com", "password": "123456"})
 
     @override_settings(AUTH_SIGNUP_REDIRECT_URL="/custom/")
     def test_redirect_to_a_custom_url(self):
@@ -74,10 +74,10 @@ class RedirectAfterSignup(TestCase):
 class AccessLoginPageWhenUserIsAuthenticated(TestCase):
     @classmethod
     def setUpTestData(cls):
-        User.objects.create(username="test", password="123456")
+        User.objects.create(email="test@example.com", password="123456")
 
     def setUp(self) -> None:
-        self.client.post("/login/", data={"username": "test", "password": "123456"})
+        self.client.post("/login/", data={"email": "test@example.com", "password": "123456"})
         self.response = self.client.get("/login/")
 
     @override_settings(AUTH_LOGIN_REDIRECT_URL="/custom/")
@@ -117,10 +117,10 @@ class AccessLoginPageWhenUserIsAnonymous(TestCase):
 class AccessSignupPageWhenUserIsAuthenticated(TestCase):
     @classmethod
     def setUpTestData(cls):
-        User.objects.create(username="test", password="123456")
+        User.objects.create(email="test@example.com", password="123456")
 
     def setUp(self) -> None:
-        self.client.post("/login/", data={"username": "test", "password": "123456"})
+        self.client.post("/login/", data={"email": "test@example.com", "password": "123456"})
         self.response = self.client.get("/signup/")
 
     @override_settings(AUTH_SIGNUP_REDIRECT_URL="/custom/")
@@ -160,10 +160,10 @@ class AccessSignupPageWhenUserIsAnonymous(TestCase):
 class AccessLogoutPageWhenUserIsAuthenticated(TestCase):
     @classmethod
     def setUpTestData(cls):
-        User.objects.create(username="test", password="123456")
+        User.objects.create(email="test@example.com", password="123456")
 
     def setUp(self) -> None:
-        self.client.post("/login/", data={"username": "test", "password": "123456"})
+        self.client.post("/login/", data={"email": "example.com", "password": "123456"})
         self.response = self.client.get("/logout/")
 
     @override_settings(AUTH_LOGOUT_REDIRECT_URL="/custom/")
