@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from .validators import get_password_validators, get_username_validators
+from .utils import generate_random_string
 from .hashers import get_hashers
 
 
@@ -62,8 +63,17 @@ class User(models.Model):
         return False
 
 
+def generate_session_id():
+    while True:
+        session_id = generate_random_string(32)
+        try:
+            Session.objects.get(pk=session_id)
+        except Session.DoesNotExist:
+            return session_id
+
+
 class Session(models.Model):
-    id = models.CharField(_("id"), max_length=32, primary_key=True)
+    id = models.CharField(_("id"), max_length=32, primary_key=True, default=generate_session_id)
     user = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

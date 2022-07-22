@@ -1,5 +1,6 @@
 from django.test import TestCase, override_settings
-from djplus.auth.models import User, AnonymousUser
+from django.utils import timezone
+from djplus.auth.models import User, AnonymousUser, Session
 from djplus.auth.utils import generate_random_string
 
 
@@ -83,3 +84,13 @@ class AnonymousUserTest(TestCase):
         self.assertTrue(self.user.is_anonymous)
         with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_anonymous'"):
             self.user.is_anonymous = False
+
+
+class SessionModel(TestCase):
+    def test_generate_session_id(self):
+        length = Session._meta.get_field("id").max_length
+        self.assertEqual(len(Session().id), length)
+        self.assertIsInstance(Session().id, str)
+        session = Session.objects.create(expire_date=timezone.now(), ip="127.0.0.1")
+        self.assertEqual(len(session.id), length)
+        self.assertIsInstance(session.id, str)
