@@ -1,5 +1,6 @@
-from django.test import TestCase, override_settings
+from django.test import TestCase, override_settings, RequestFactory
 from djplus.auth.models import User
+from djplus.auth import views
 
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
@@ -44,3 +45,11 @@ class SignupViewTests(TestCase):
     def test_redirect_user_to_custom_page_after_successfully_sign_up(self):
         response = self.client.post("/signup/", data={"email": "staff@domain.com", "password": "password"})
         self.assertRedirects(response, "/custom/", fetch_redirect_response=False)
+
+    @override_settings(AUTH_SIGNUP_REDIRECT_URL="/test/")
+    def test_redirect_authenticated_user_to_custom_page_when_accessing_signup_page(self):
+        request = RequestFactory().get("/signup/")
+        request.user = User.objects.create(email="test@example.com", password="123456")
+        response = views.signup(request)
+        self.assertRedirects(response, "/test/", fetch_redirect_response=False)
+
