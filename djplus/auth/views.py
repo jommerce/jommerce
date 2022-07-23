@@ -13,7 +13,8 @@ def login(request):
 
 def logout(request):
     if hasattr(request, "user"):
-        return redirect(settings.AUTH_LOGOUT_REDIRECT_URL)
+        if settings.AUTH_LOGOUT_REDIRECT_URL:
+            return redirect(settings.AUTH_LOGOUT_REDIRECT_URL)
     if request.method == "POST":
         return redirect(settings.AUTH_LOGOUT_REDIRECT_URL)
     return render(request, "auth/logout.html")
