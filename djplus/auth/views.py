@@ -12,7 +12,7 @@ def login(request):
 
 
 def logout(request):
-    if hasattr(request, "user") and request.user.is_anonymous:
+    if hasattr(request, "user"):
         return redirect(settings.AUTH_LOGOUT_REDIRECT_URL)
     if request.method == "POST":
         return redirect(settings.AUTH_LOGOUT_REDIRECT_URL)
