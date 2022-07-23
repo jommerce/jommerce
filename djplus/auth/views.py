@@ -10,4 +10,4 @@ def logout(request):
 
 
 def signup(request):
-    pass
+    return render(request, "auth/signup.html")
