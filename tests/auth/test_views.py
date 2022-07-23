@@ -1,6 +1,23 @@
-from django.test import TestCase, override_settings, RequestFactory
+from django.test import TestCase, override_settings
 from djplus.auth.models import User, AnonymousUser
-from djplus.auth import views
+
+
+class AuthenticatedUserMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        request.user = User(email="test@example.com", password="123456")
+        return self.get_response(request)
+
+
+class AnonymousUserMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        request.user = AnonymousUser()
+        return self.get_response(request)
 
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
@@ -16,20 +33,18 @@ class LoginViewTests(TestCase):
         self.assertRedirects(response, "/custom/", fetch_redirect_response=False)
 
     @override_settings(AUTH_LOGIN_REDIRECT_URL="/test/")
+    @override_settings(MIDDLEWARE=["tests.auth.test_views.AuthenticatedUserMiddleware"])
     def test_redirect_authenticated_user_to_custom_page_when_accessing_login_page(self):
-        request = RequestFactory().get("/login/")
-        request.user = User.objects.create(email="test@example.com", password="123456")
-        response = views.login(request)
+        response = self.client.get("/login/")
         self.assertRedirects(response, "/test/", fetch_redirect_response=False)
 
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
 class LogoutViewTests(TestCase):
     @override_settings(AUTH_LOGOUT_REDIRECT_URL="/goodbye/")
+    @override_settings(MIDDLEWARE=["tests.auth.test_views.AuthenticatedUserMiddleware"])
     def test_redirect_authenticated_user_when_accessing_logout_page(self):
-        request = RequestFactory().get("/logout/")
-        request.user = User.objects.create(email="test@example.com", password="123456")
-        response = views.logout(request)
+        response = self.client.get("/logout/")
         self.assertRedirects(response, "/goodbye/", fetch_redirect_response=False)
 
     @override_settings(AUTH_LOGOUT_REDIRECT_URL="/custom/")
@@ -38,10 +53,9 @@ class LogoutViewTests(TestCase):
         self.assertRedirects(response, "/custom/", fetch_redirect_response=False)
 
     @override_settings(AUTH_LOGOUT_REDIRECT_URL="/test/")
+    @override_settings(MIDDLEWARE=["tests.auth.test_views.AnonymousUserMiddleware"])
     def test_redirect_anonymous_user_when_accessing_logout_page(self):
-        request = RequestFactory().get("/logout/")
-        request.user = AnonymousUser()
-        response = views.logout(request)
+        response = self.client.get("/logout/")
         self.assertRedirects(response, "/test/", fetch_redirect_response=False)
 
 
@@ -64,9 +78,7 @@ class SignupViewTests(TestCase):
         self.assertRedirects(response, "/custom/", fetch_redirect_response=False)
 
     @override_settings(AUTH_SIGNUP_REDIRECT_URL="/test/")
+    @override_settings(MIDDLEWARE=["tests.auth.test_views.AuthenticatedUserMiddleware"])
     def test_redirect_authenticated_user_to_custom_page_when_accessing_signup_page(self):
-        request = RequestFactory().get("/signup/")
-        request.user = User.objects.create(email="test@example.com", password="123456")
-        response = views.signup(request)
+        response = self.client.get("/signup/")
         self.assertRedirects(response, "/test/", fetch_redirect_response=False)
-
