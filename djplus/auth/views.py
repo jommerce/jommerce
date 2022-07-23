@@ -16,6 +16,8 @@ def logout(request):
 
 
 def signup(request):
+    if hasattr(request, "user") and request.user.is_authenticated:
+        return redirect(settings.AUTH_SIGNUP_REDIRECT_URL)
     if request.method == "POST":
         User.objects.create(email=request.POST["email"], password=request.POST["password"])
         return redirect(settings.AUTH_SIGNUP_REDIRECT_URL)
