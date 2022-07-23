@@ -58,6 +58,12 @@ class LogoutViewTests(TestCase):
         response = self.client.get("/logout/")
         self.assertRedirects(response, "/test/", fetch_redirect_response=False)
 
+    @override_settings(AUTH_LOGOUT_REDIRECT_URL=None)
+    @override_settings(MIDDLEWARE=["tests.auth.test_views.AuthenticatedUserMiddleware"])
+    def test_template_name_when_authenticated_user_get_logout_page(self):
+        response = self.client.get("/logout/")
+        self.assertTemplateUsed(response, "auth/logout.html")
+
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
 class SignupViewTests(TestCase):
