@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import User
 
 
 def login(request):
@@ -10,4 +11,6 @@ def logout(request):
 
 
 def signup(request):
+    if request.method == "POST":
+        User.objects.create(email=request.POST["email"], password=request.POST["password"])
     return render(request, "auth/signup.html")
