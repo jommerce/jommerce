@@ -8,6 +8,12 @@ class LoginViewTests(TestCase):
         response = self.client.get("/login/")
         self.assertTemplateUsed(response, "auth/login.html")
 
+    @override_settings(AUTH_LOGIN_REDIRECT_URL="/custom/")
+    def test_redirect_user_to_custom_page_after_successfully_log_in(self):
+        User.objects.create(email="test@example.com", password="123456")
+        response = self.client.post("/login/", data={"email": "test@example.com", "password": "123456"})
+        self.assertRedirects(response, "/custom/", fetch_redirect_response=False)
+
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
 class LogoutViewTests(TestCase):
