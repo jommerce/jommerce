@@ -6,7 +6,7 @@ def login(request):
 
 
 def logout(request):
-    pass
+    return render(request, "auth/logout.html")
 
 
 def signup(request):
