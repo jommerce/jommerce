@@ -4,6 +4,8 @@ from .models import User
 
 
 def login(request):
+    if hasattr(request, "user") and request.user.is_authenticated:
+        return redirect(settings.AUTH_LOGIN_REDIRECT_URL)
     if request.method == "POST":
         return redirect(settings.AUTH_LOGIN_REDIRECT_URL)
     return render(request, "auth/login.html")
