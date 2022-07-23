@@ -10,6 +10,8 @@ def login(request):
 
 
 def logout(request):
+    if request.method == "POST":
+        return redirect(settings.AUTH_LOGOUT_REDIRECT_URL)
     return render(request, "auth/logout.html")
 
 
