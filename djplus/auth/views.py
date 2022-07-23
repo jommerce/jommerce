@@ -12,6 +12,8 @@ def login(request):
 
 
 def logout(request):
+    if hasattr(request, "user") and request.user.is_anonymous:
+        return redirect(settings.AUTH_LOGOUT_REDIRECT_URL)
     if request.method == "POST":
         return redirect(settings.AUTH_LOGOUT_REDIRECT_URL)
     return render(request, "auth/logout.html")
