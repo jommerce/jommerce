@@ -1,5 +1,5 @@
 from django.test import TestCase, override_settings, RequestFactory
-from djplus.auth.models import User
+from djplus.auth.models import User, AnonymousUser
 from djplus.auth import views
 
 
@@ -33,6 +33,13 @@ class LogoutViewTests(TestCase):
     def test_redirect_user_to_custom_page_after_successfully_log_out(self):
         response = self.client.post("/logout/")
         self.assertRedirects(response, "/custom/", fetch_redirect_response=False)
+
+    @override_settings(AUTH_LOGOUT_REDIRECT_URL="/test/")
+    def test_redirect_anonymous_user_when_accessing_logout_page(self):
+        request = RequestFactory().get("/logout/")
+        request.user = AnonymousUser()
+        response = views.logout(request)
+        self.assertRedirects(response, "/test/", fetch_redirect_response=False)
 
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
