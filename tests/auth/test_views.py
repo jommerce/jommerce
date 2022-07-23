@@ -28,3 +28,8 @@ class SignupViewTests(TestCase):
             User.objects.get(email="staff@domain.com")
         except User.DoesNotExist:
             self.fail("The desired user is not saved in the database.")
+
+    @override_settings(AUTH_SIGNUP_REDIRECT_URL="/custom/")
+    def test_redirect_user_to_custom_page_after_successfully_sign_up(self):
+        response = self.client.post("/signup/", data={"email": "staff@domain.com", "password": "password"})
+        self.assertRedirects(response, "/custom/", fetch_redirect_response=False)
