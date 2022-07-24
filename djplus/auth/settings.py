@@ -20,7 +20,7 @@ AUTH_USER_MODEL = "auth.User"
 # Sessions
 # ----------------------------------------------------------------------------------------------------------------------
 # Cookie name. This can be whatever you want.
-AUTH_SESSION_COOKIE_NAME = "sessionid"
+AUTH_SESSION_COOKIE_NAME = "session_key"
 # Age of cookie, in seconds (default: 2 weeks).
 AUTH_SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 * 2
 # A string like "example.com", or None for standard domain cookie.

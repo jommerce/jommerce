@@ -6,7 +6,7 @@ AUTH_SESSION_COOKIE_NAME
 ------------------------
 .. code-block:: python
 
-    AUTH_SESSION_COOKIE_NAME = "sessionid"
+    AUTH_SESSION_COOKIE_NAME = "session_key"
 
 The name of the cookie to use for sessions. This can be whatever you want
 (as long as it’s different from the other cookie names in your application).
