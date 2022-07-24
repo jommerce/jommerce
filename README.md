@@ -15,3 +15,8 @@
 Dj+ is More than a reusable app that solves 80% of the needs of any website project.
 (such as blog, store, academy, authentication, admin, contact us, about us, forum, ... etc.)
 and these apps can be customized with Django settings.
+
+# how to install?
+```shell
+pip install djplus
+```
