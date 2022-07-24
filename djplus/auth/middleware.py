@@ -21,6 +21,8 @@ class AuthenticationMiddleware:
 
         if request.session.is_empty:
             request.session.delete()
+        else:
+            request.session.save()
 
         response.set_cookie(
             settings.AUTH_SESSION_COOKIE_NAME,
