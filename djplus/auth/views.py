@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
-from .forms import LoginForm
+from .forms import LoginForm, SignupForm
 from .models import User
 
 
@@ -27,4 +27,4 @@ def signup(request):
     if request.method == "POST":
         User.objects.create(email=request.POST["email"], password=request.POST["password"])
         return redirect(settings.AUTH_SIGNUP_REDIRECT_URL)
-    return render(request, "auth/signup.html")
+    return render(request, "auth/signup.html", context={"form": SignupForm()})
