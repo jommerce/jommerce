@@ -94,3 +94,11 @@ class SessionModel(TestCase):
         session = Session.objects.create()
         self.assertEqual(len(session.id), length)
         self.assertIsInstance(session.id, str)
+
+    def test_a_empty_session(self):
+        session = Session()
+        self.assertTrue(session.is_empty)
+
+    def test_a_full_session(self):
+        session = Session(user=User())
+        self.assertFalse(session.is_empty)
