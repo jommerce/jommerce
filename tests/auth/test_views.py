@@ -94,3 +94,8 @@ class SignupViewTests(TestCase):
     def test_redirect_authenticated_user_to_custom_page_when_accessing_signup_page(self):
         response = self.client.get("/signup/")
         self.assertRedirects(response, "/test/", fetch_redirect_response=False)
+
+    def test_signup_form(self):
+        response = self.client.get("/signup/")
+        self.assertIn("form", response.context)
+        self.assertIsInstance(response.context["form"], forms.SignupForm)
