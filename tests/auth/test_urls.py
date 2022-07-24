@@ -3,21 +3,18 @@ from django.urls import reverse, NoReverseMatch
 
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
-class AccessUrlsByName(TestCase):
-    def test_access_login_url(self):
+class UrlPatternsTests(TestCase):
+    def assertReverse(self, url, name, args=[], kwargs={}):
         try:
-            self.assertEqual(reverse("login"), "/login/")
+            self.assertEqual(url, reverse(name, args=args, kwargs=kwargs))
         except NoReverseMatch:
-            self.fail("Reversal of url named 'login' failed with NoReverseMatch")
+            self.fail(f"Reversal of url named '{name}' failed with NoReverseMatch")
 
-    def test_access_logout_url(self):
-        try:
-            self.assertEqual(reverse("logout"), "/logout/")
-        except NoReverseMatch:
-            self.fail("Reversal of url named 'logout' failed with NoReverseMatch")
+    def test_reverse_login_name(self):
+        self.assertReverse("/login/", "login")
 
-    def test_access_signup_url(self):
-        try:
-            self.assertEqual(reverse("signup"), "/signup/")
-        except NoReverseMatch:
-            self.fail("Reversal of url named 'signup' failed with NoReverseMatch")
+    def test_reverse_logout_name(self):
+        self.assertReverse("/logout/", "logout")
+
+    def test_reverse_signup_name(self):
+        self.assertReverse("/signup/", "signup")
