@@ -7,6 +7,22 @@ from djplus.auth.models import User, Session
 SESSION_COOKIE_NAME = settings.AUTH_SESSION_COOKIE_NAME
 
 
+class AuthenticationMiddlewareTests(TestCase):
+    def test_not_saving_empty_sessions(self):
+        def view(request_):
+            request_.session.save()
+            return HttpResponse()
+        request = RequestFactory().get("/")
+        middleware = AuthenticationMiddleware(view)
+        middleware(request)
+        try:
+            Session.objects.get(id=request.session.id)
+        except Session.DoesNotExist:
+            pass
+        else:
+            self.fail("The desired session was created")
+
+
 class IdentifyUser(TestCase):
     def setUp(self) -> None:
         self.request = RequestFactory().get("/")
