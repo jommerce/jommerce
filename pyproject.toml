@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "djplus"
 version = "1.1.1"
-description = "django ready apps"
+description = "More than a reusable app"
 license = "MIT"
 authors = ["githashem <PersonalHashem@gmail.com>"]
 readme = "README.md"

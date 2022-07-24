@@ -12,6 +12,6 @@
 ![license](https://img.shields.io/pypi/l/djplus?color=blue&style=flat-square)
 
 # what is djplus?
-Djplus is a package of ready-made Django apps that solves 80% of the needs of any website project.
-(such as blog, store, academy, authentication, admin, contact us, about us, etc.)
+Dj+ is More than a reusable app that solves 80% of the needs of any website project.
+(such as blog, store, academy, authentication, admin, contact us, about us, forum, ... etc.)
 and these apps can be customized with Django settings.
