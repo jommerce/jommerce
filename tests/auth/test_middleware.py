@@ -72,6 +72,17 @@ class AuthenticationMiddlewareTests(TestCase):
         else:
             self.fail("The desired session was created")
 
+    def test_saving_full_sessions(self):
+        def view(request):
+            request.session.user = User.objects.create(email="test@example.com", password="123456")
+            return HttpResponse()
+        middleware = AuthenticationMiddleware(view)
+        middleware(self.request)
+        try:
+            Session.objects.get(id=self.request.session.id)
+        except Session.DoesNotExist:
+            self.fail("The desired session has not been saved")
+
     def test_secure_session_cookie(self):
         with self.settings(AUTH_SESSION_COOKIE_SECURE=True):
             response = self.middleware(self.request)
