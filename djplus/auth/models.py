@@ -79,6 +79,10 @@ class Session(models.Model):
         verbose_name = _("session")
         verbose_name_plural = _("sessions")
 
+    @property
+    def is_empty(self):
+        return False if self.user else True
+
 
 class AnonymousUser:
     @property
