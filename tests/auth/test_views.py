@@ -1,5 +1,6 @@
 from django.test import TestCase, override_settings
 from djplus.auth.models import User, AnonymousUser
+from djplus.auth import forms
 
 
 class AuthenticatedUserMiddleware:
@@ -37,6 +38,11 @@ class LoginViewTests(TestCase):
     def test_redirect_authenticated_user_to_custom_page_when_accessing_login_page(self):
         response = self.client.get("/login/")
         self.assertRedirects(response, "/test/", fetch_redirect_response=False)
+
+    def test_login_form(self):
+        response = self.client.get("/login/")
+        self.assertIn("form", response.context)
+        self.assertIsInstance(response.context["form"], forms.LoginForm)
 
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
