@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
+from .forms import LoginForm
 from .models import User
 
 
@@ -8,7 +9,7 @@ def login(request):
         return redirect(settings.AUTH_LOGIN_REDIRECT_URL)
     if request.method == "POST":
         return redirect(settings.AUTH_LOGIN_REDIRECT_URL)
-    return render(request, "auth/login.html")
+    return render(request, "auth/login.html", context={"form": LoginForm()})
 
 
 def logout(request):
