@@ -15,14 +15,7 @@ body:
 
   - type: textarea
     attributes:
-      label: What feature?
+      label: Description
       description: A clear and concise description of what you want to happen
-    validations:
-      required: true
-
-  - type: textarea
-    attributes:
-      label: Why?
-      description: Why is this change important to you? How would you use it? How can it benefit other users?
     validations:
       required: true
