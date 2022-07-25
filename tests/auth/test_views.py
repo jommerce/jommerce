@@ -108,3 +108,8 @@ class SignupViewTests(TestCase):
         response = self.client.get("/signup/")
         self.assertIn("form", response.context)
         self.assertIsInstance(response.context["form"], forms.SignupForm)
+
+    def test_sign_up_user_that_exists_in_the_database(self):
+        User.objects.create(email="test@example.com", password="123456")
+        response = self.client.post("/signup/", data={"email": "test@example.com", "password": "123456"})
+        self.assertFormError(response, "form", "email", ["This email already exists."])
