@@ -1,5 +1,5 @@
 from django.test import TestCase, override_settings
-from djplus.auth.models import User, AnonymousUser
+from djplus.auth.models import User, AnonymousUser, Session
 from djplus.auth import forms
 
 
@@ -9,6 +9,7 @@ class AuthenticatedUserMiddleware:
 
     def __call__(self, request):
         request.user = User(email="test@example.com", password="123456")
+        request.session = Session()
         return self.get_response(request)
 
 
@@ -18,6 +19,7 @@ class AnonymousUserMiddleware:
 
     def __call__(self, request):
         request.user = AnonymousUser()
+        request.session = Session()
         return self.get_response(request)
 
 
@@ -27,7 +29,20 @@ class LoginViewTests(TestCase):
         response = self.client.get("/login/")
         self.assertTemplateUsed(response, "auth/login.html")
 
+    @override_settings(AUTH_SESSION_COOKIE_NAME="session_id")
+    @override_settings(MIDDLEWARE=["djplus.auth.middleware.AuthenticationMiddleware"])
+    def test_create_cookie_when_log_in_user(self):
+        user = User.objects.create(email="test@example.com", password="123456")
+        response = self.client.post("/login/", data={"email": "test@example.com", "password": "123456"})
+        self.assertIn("session_id", response.cookies)
+        try:
+            session = Session.objects.get(pk=response.cookies["session_id"].value)
+        except Session.DoesNotExist:
+            self.fail("The desired session was not created")
+        self.assertEqual(session.user, user)
+
     @override_settings(AUTH_LOGIN_REDIRECT_URL="/custom/")
+    @override_settings(MIDDLEWARE=["tests.auth.test_views.AnonymousUserMiddleware"])
     def test_redirect_user_to_custom_page_after_successfully_log_in(self):
         User.objects.create(email="test@example.com", password="123456")
         response = self.client.post("/login/", data={"email": "test@example.com", "password": "123456"})
