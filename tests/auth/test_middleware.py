@@ -8,6 +8,12 @@ SESSION_COOKIE_NAME = settings.AUTH_SESSION_COOKIE_NAME
 
 
 class AuthenticationMiddlewareTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        user = User.objects.create(email="test@example.com", password="123456")
+        cls.session = Session.objects.create(id="user_session", user=user)
+        cls.user = user
+
     def setUp(self) -> None:
         self.request = RequestFactory().get("/")
         self.middleware = AuthenticationMiddleware(lambda req: HttpResponse())
@@ -48,16 +54,13 @@ class AuthenticationMiddlewareTests(TestCase):
         self.assertIsNone(self.request.session.user)
 
     def test_identify_authenticated_user_whose_session_exists_in_the_database(self):
-        user = User.objects.create(email="test@example.com", password="123456")
-        session = Session.objects.create(id="user_session", user=user)
-
         self.request.COOKIES[SESSION_COOKIE_NAME] = "user_session"
         self.middleware(self.request)
         self.assertIsInstance(self.request.user, User)
         self.assertIsNotNone(self.request.session.user)
-        self.assertEqual(self.request.user, user)
-        self.assertEqual(self.request.session, session)
-        self.assertEqual(self.request.session.user, user)
+        self.assertEqual(self.request.user, self.user)
+        self.assertEqual(self.request.session, self.session)
+        self.assertEqual(self.request.session.user, self.user)
 
     def test_not_saving_empty_sessions(self):
         def view(request):
@@ -74,7 +77,7 @@ class AuthenticationMiddlewareTests(TestCase):
 
     def test_saving_full_sessions(self):
         def view(request):
-            request.session.user = User.objects.create(email="test@example.com", password="123456")
+            request.session.user = User.objects.create(email="staff@example.com", password="123456")
             return HttpResponse()
         middleware = AuthenticationMiddleware(view)
         middleware(self.request)
@@ -84,6 +87,7 @@ class AuthenticationMiddlewareTests(TestCase):
             self.fail("The desired session has not been saved")
 
     def test_secure_session_cookie(self):
+        self.request.COOKIES[SESSION_COOKIE_NAME] = "user_session"
         with self.settings(AUTH_SESSION_COOKIE_SECURE=True):
             response = self.middleware(self.request)
             self.assertTrue(response.cookies[SESSION_COOKIE_NAME]["secure"])
@@ -92,6 +96,7 @@ class AuthenticationMiddlewareTests(TestCase):
             self.assertFalse(response.cookies[SESSION_COOKIE_NAME]["secure"])
 
     def test_httponly_session_cookie(self):
+        self.request.COOKIES[SESSION_COOKIE_NAME] = "user_session"
         with self.settings(AUTH_SESSION_COOKIE_HTTPONLY=True):
             response = self.middleware(self.request)
             self.assertTrue(response.cookies[SESSION_COOKIE_NAME]["httponly"])
@@ -100,6 +105,7 @@ class AuthenticationMiddlewareTests(TestCase):
             self.assertFalse(response.cookies[SESSION_COOKIE_NAME]["httponly"])
 
     def test_samesite_session_cookie(self):
+        self.request.COOKIES[SESSION_COOKIE_NAME] = "user_session"
         with self.settings(AUTH_SESSION_COOKIE_SAMESITE="Strict"):
             response = self.middleware(self.request)
             self.assertEqual(response.cookies[SESSION_COOKIE_NAME]["samesite"], "Strict")
@@ -114,6 +120,8 @@ class AuthenticationMiddlewareTests(TestCase):
             self.assertFalse(response.cookies[SESSION_COOKIE_NAME]["samesite"])
 
     def test_domain_session_cookie(self):
+        self.request.COOKIES[SESSION_COOKIE_NAME] = "user_session"
+        self.request.COOKIES[SESSION_COOKIE_NAME] = "user_session"
         with self.settings(AUTH_SESSION_COOKIE_DOMAIN=".example.com"):
             response = self.middleware(self.request)
             self.assertEqual(response.cookies[SESSION_COOKIE_NAME]["domain"], ".example.com")
@@ -125,6 +133,7 @@ class AuthenticationMiddlewareTests(TestCase):
             self.assertEqual(response.cookies[SESSION_COOKIE_NAME]["domain"], "")
 
     def test_path_session_cookie(self):
+        self.request.COOKIES[SESSION_COOKIE_NAME] = "user_session"
         with self.settings(AUTH_SESSION_COOKIE_PATH="/"):
             response = self.middleware(self.request)
             self.assertEqual(response.cookies[SESSION_COOKIE_NAME]["path"], "/")
@@ -136,6 +145,7 @@ class AuthenticationMiddlewareTests(TestCase):
             self.assertEqual(response.cookies[SESSION_COOKIE_NAME]["path"], "/example/")
 
     def test_age_session_cookie(self):
+        self.request.COOKIES[SESSION_COOKIE_NAME] = "user_session"
         with self.settings(AUTH_SESSION_COOKIE_AGE=10):
             response = self.middleware(self.request)
             self.assertEqual(response.cookies[SESSION_COOKIE_NAME]["max-age"], 10)
@@ -145,8 +155,10 @@ class AuthenticationMiddlewareTests(TestCase):
 
     def test_name_session_cookie(self):
         with self.settings(AUTH_SESSION_COOKIE_NAME="custom"):
+            self.request.COOKIES["custom"] = "user_session"
             response = self.middleware(self.request)
             self.assertIn("custom", response.cookies)
         with self.settings(AUTH_SESSION_COOKIE_NAME="session_key"):
+            self.request.COOKIES["session_key"] = "user_session"
             response = self.middleware(self.request)
             self.assertIn("session_key", response.cookies)

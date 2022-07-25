@@ -78,6 +78,7 @@ class LogoutViewTests(TestCase):
         self.assertRedirects(response, "/goodbye/", fetch_redirect_response=False)
 
     @override_settings(AUTH_LOGOUT_REDIRECT_URL="/custom/")
+    @override_settings(MIDDLEWARE=["tests.auth.test_views.AuthenticatedUserMiddleware"])
     def test_redirect_user_to_custom_page_after_successfully_log_out(self):
         response = self.client.post("/logout/")
         self.assertRedirects(response, "/custom/", fetch_redirect_response=False)
@@ -93,6 +94,14 @@ class LogoutViewTests(TestCase):
     def test_template_name_when_authenticated_user_get_logout_page(self):
         response = self.client.get("/logout/")
         self.assertTemplateUsed(response, "auth/logout.html")
+
+    @override_settings(AUTH_SESSION_COOKIE_NAME="session_key")
+    @override_settings(MIDDLEWARE=["djplus.auth.middleware.AuthenticationMiddleware"])
+    def test_delete_cookie_when_log_out_user(self):
+        User.objects.create(email="test@example.com", password="123456")
+        self.client.post("/login/", data={"email": "test@example.com", "password": "123456"})
+        response = self.client.post("/logout/")
+        self.assertNotIn("session_key", response.cookies)
 
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
