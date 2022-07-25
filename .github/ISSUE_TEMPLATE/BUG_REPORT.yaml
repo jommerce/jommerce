@@ -10,6 +10,9 @@ body:
         - command-line/project template/app template
         - templates/static
         - auth
+        - admin
+        - blog
+        - shop
         - other/i don't know
     validations:
       required: true
