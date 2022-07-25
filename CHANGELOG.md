@@ -8,16 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - add `argon2-cffi` and `bcrypt` packages to project template.
 - add `djplusconfig` command to generate config file called `djplus.json`.
-### Changed
-- change `Session` model.
-- rename `register` to `signup`.
-### Backwards incompatible changes
-- rename named url called `register` to `signup`.
-- remove field `username` from `User` model.
-- change `Session` model.
-  1. run `python manage.py migrate auth 0001`
-  2. update `djplus`
-  3. run `python manage.py migrate`
+- Implement `login`, `logout` and `signup` views in `auth` app.
+### Breaking Change
+- Change `User` model from `auth` app.
+- Change `Session` model from `auth` app.
+- Remove all migration files and create another one.
 
 ## [1.1.1] - 2022-06-29
 ### Fixed
