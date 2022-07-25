@@ -1,15 +1,22 @@
 from django.shortcuts import render, redirect
+from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from .forms import LoginForm, SignupForm
 from .models import User
 
 
 def login(request):
+    form = LoginForm(request.POST or None)
     if hasattr(request, "user") and request.user.is_authenticated:
         return redirect(settings.AUTH_LOGIN_REDIRECT_URL)
     if request.method == "POST":
-        return redirect(settings.AUTH_LOGIN_REDIRECT_URL)
-    return render(request, "auth/login.html", context={"form": LoginForm()})
+        try:
+            User.objects.get(email=request.POST["email"])
+        except User.DoesNotExist:
+            form.add_error("email", _("This email does not exist."))
+        else:
+            return redirect(settings.AUTH_LOGIN_REDIRECT_URL)
+    return render(request, "auth/login.html", context={"form": form})
 
 
 def logout(request):
