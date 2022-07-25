@@ -1,0 +1,24 @@
+name: Documentation
+description: Suggest edits for the Djplus documentation
+labels: ["documentation"]
+
+body:
+  - type: dropdown
+    attributes:
+      label: Which part of Djplus documentation?
+      options:
+        - command-line/project template/app template
+        - templates/static
+        - auth
+        - admin
+        - blog
+        - shop
+        - other/i don't know
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Details
+    validations:
+      required: true
