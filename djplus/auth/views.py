@@ -26,7 +26,9 @@ def login(request):
 def logout(request):
     if hasattr(request, "user") or request.method == "POST":
         if settings.AUTH_LOGOUT_REDIRECT_URL:
+            request.session.user = None
             return redirect(settings.AUTH_LOGOUT_REDIRECT_URL)
+    request.session.user = None
     return render(request, "auth/logout.html")
 
 

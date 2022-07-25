@@ -24,15 +24,16 @@ class AuthenticationMiddleware:
         else:
             request.session.save()
 
-        response.set_cookie(
-            settings.AUTH_SESSION_COOKIE_NAME,
-            request.session.id,
-            max_age=settings.AUTH_SESSION_COOKIE_AGE,
-            expires=None,
-            domain=settings.AUTH_SESSION_COOKIE_DOMAIN,
-            path=settings.AUTH_SESSION_COOKIE_PATH,
-            secure=settings.AUTH_SESSION_COOKIE_SECURE,
-            httponly=settings.AUTH_SESSION_COOKIE_HTTPONLY,
-            samesite=settings.AUTH_SESSION_COOKIE_SAMESITE,
-        )
+        if request.session.user:
+            response.set_cookie(
+                settings.AUTH_SESSION_COOKIE_NAME,
+                request.session.id,
+                max_age=settings.AUTH_SESSION_COOKIE_AGE,
+                expires=None,
+                domain=settings.AUTH_SESSION_COOKIE_DOMAIN,
+                path=settings.AUTH_SESSION_COOKIE_PATH,
+                secure=settings.AUTH_SESSION_COOKIE_SECURE,
+                httponly=settings.AUTH_SESSION_COOKIE_HTTPONLY,
+                samesite=settings.AUTH_SESSION_COOKIE_SAMESITE,
+            )
         return response
