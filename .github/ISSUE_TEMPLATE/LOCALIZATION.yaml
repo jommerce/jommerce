@@ -1,11 +1,11 @@
-name: Feature Request
-description: Suggest an idea for improving Djplus
-labels: ["enhancement"]
+name: Localization
+description: Localizing djplus apps
+labels: ["localization"]
 
 body:
   - type: dropdown
     attributes:
-      label: Which app is relevant/related to the feature request?
+      label: Which one of the djplus sections?
       options:
         - command-line/project template/app template
         - templates/static
@@ -17,9 +17,12 @@ body:
     validations:
       required: true
 
-  - type: textarea
+  - type: input
     attributes:
-      label: Description
-      description: A clear and concise description of what you want to happen
+      label: What languages?
     validations:
       required: true
+
+  - type: textarea
+    attributes:
+      label: Anything else?

@@ -1,4 +1,4 @@
-import os
+from os import environ as SECRETS # noqa
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -6,9 +6,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # General
 # ----------------------------------------------------------------------------------------------------------------------
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = SECRETS.get("DJANGO_SECRET_KEY")
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = SECRETS.get("DJANGO_ALLOWED_HOSTS", "").split()
 ROOT_URLCONF = '{{project_name}}.urls'
 WSGI_APPLICATION = '{{project_name}}.wsgi.application'
 
@@ -85,6 +85,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+PASSWORD_HASHERS = [{% if argon2 %}
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+{% elif bcrypt %}
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+{% else %}
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+{% endif %}]
 
 # Internationalization
 # ----------------------------------------------------------------------------------------------------------------------
@@ -104,6 +111,9 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"

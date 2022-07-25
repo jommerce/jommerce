@@ -64,13 +64,16 @@ class Argon2PasswordHasher(BasePasswordHasher):
         self.hash_length = hash_length
         self.salt_length = salt_length
         self.version = version
+        self._type = type
 
-        if type == "argon2id":
-            self.type = argon2.Type.ID
-        elif type == "argon2d":
-            self.type = argon2.Type.D
-        elif type == "argon2i":
-            self.type = argon2.Type.I
+    @property
+    def type(self):
+        if self._type == "argon2id":
+            return argon2.Type.ID
+        elif self._type == "argon2d":
+            return argon2.Type.D
+        elif self._type == "argon2i":
+            return argon2.Type.I
         else:
             raise ValueError("'type' must be one of these values. {'argon2id', 'argon2i', 'argon2d'}")
 

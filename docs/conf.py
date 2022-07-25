@@ -10,6 +10,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import datetime
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
@@ -18,11 +19,11 @@
 # -- Project information -----------------------------------------------------
 
 project = 'djplus'
-copyright = '2022, Hashem'
-author = 'Hashem'
+copyright = "{}, Django Debug Toolbar developers and contributors".format(datetime.date.today().year)
+
 
 # The full version, including alpha/beta/rc tags
-release = 'v1.1.1'
+release = "2.0.0"
 
 
 # -- General configuration ---------------------------------------------------

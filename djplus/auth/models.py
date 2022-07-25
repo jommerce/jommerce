@@ -1,11 +1,12 @@
 from django.db import models
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from .validators import get_password_validators, get_username_validators
+from .utils import generate_random_string
 from .hashers import get_hashers
 
 
 class User(models.Model):
-    username = models.CharField(_("username"), max_length=32, unique=True, validators=get_username_validators())
     email = models.EmailField(_("email"), max_length=64, unique=True)
     password = models.CharField(_("password"), max_length=128, validators=get_password_validators())
 
@@ -54,9 +55,33 @@ class User(models.Model):
         return False
 
 
+def generate_session_id():
+    while True:
+        session_id = generate_random_string(32)
+        try:
+            Session.objects.get(pk=session_id)
+        except Session.DoesNotExist:
+            return session_id
+
+
 class Session(models.Model):
-    key = models.CharField(max_length=32, primary_key=True)
-    user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="sessions")
+    id = models.CharField(_("id"), max_length=32, primary_key=True, default=generate_session_id)
+    user = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="sessions",
+        verbose_name=_("user"),
+        null=True,
+        default=None,
+    )
+
+    class Meta:
+        verbose_name = _("session")
+        verbose_name_plural = _("sessions")
+
+    @property
+    def is_empty(self):
+        return False if self.user else True
 
 
 class AnonymousUser:

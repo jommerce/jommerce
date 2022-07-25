@@ -3,13 +3,38 @@ description: Create a report to help us improve
 labels: ["bug"]
 
 body:
-  - type: textarea
+  - type: dropdown
     attributes:
-      label: What Bug?
-      description: Tell us what should happen and what happened instead
+      label: Which app is the source of the bug?
+      options:
+        - command-line/project template/app template
+        - templates/static
+        - auth
+        - admin
+        - blog
+        - shop
+        - other/i don't know
     validations:
       required: true
 
   - type: textarea
     attributes:
-      label: Environment
+      label: What should happen?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: What happened instead?
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Djplus version?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Anything else?

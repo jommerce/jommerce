@@ -1,5 +1,6 @@
 from django.test import TestCase, override_settings
-from djplus.auth.models import User, AnonymousUser
+from django.utils import timezone
+from djplus.auth.models import User, AnonymousUser, Session
 from djplus.auth.utils import generate_random_string
 
 
@@ -7,9 +8,9 @@ from djplus.auth.utils import generate_random_string
 class UserModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        User.objects.create(username="user1", email="user1@gmail.com", password="123456")
-        User.objects.create(username="user2", email="user2@gmail.com", password="123456")
-        User.objects.create(username="user3", email="user3@gmail.com", password="password")
+        User.objects.create(email="user1@gmail.com", password="123456")
+        User.objects.create(email="user2@gmail.com", password="123456")
+        User.objects.create(email="user3@gmail.com", password="password")
 
     def test_password_hashing_with_salt(self):
         user1 = User.objects.get(pk=1)
@@ -83,3 +84,21 @@ class AnonymousUserTest(TestCase):
         self.assertTrue(self.user.is_anonymous)
         with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_anonymous'"):
             self.user.is_anonymous = False
+
+
+class SessionModel(TestCase):
+    def test_generate_session_id(self):
+        length = Session._meta.get_field("id").max_length
+        self.assertEqual(len(Session().id), length)
+        self.assertIsInstance(Session().id, str)
+        session = Session.objects.create()
+        self.assertEqual(len(session.id), length)
+        self.assertIsInstance(session.id, str)
+
+    def test_a_empty_session(self):
+        session = Session()
+        self.assertTrue(session.is_empty)
+
+    def test_a_full_session(self):
+        session = Session(user=User())
+        self.assertFalse(session.is_empty)
