@@ -16,6 +16,7 @@ def login(request):
             form.add_error("email", _("This email does not exist."))
         else:
             if user.verify_password(request.POST["password"]):
+                request.session.user = user
                 return redirect(settings.AUTH_LOGIN_REDIRECT_URL)
             else:
                 form.add_error("password", _("Incorrect password"))
