@@ -44,6 +44,10 @@ class LoginViewTests(TestCase):
         self.assertIn("form", response.context)
         self.assertIsInstance(response.context["form"], forms.LoginForm)
 
+    def test_log_in_a_user_that_does_not_exist_in_the_database(self):
+        response = self.client.post("/login/", data={"email": "fake@example.com", "password": "123456"})
+        self.assertFormError(response, "form", "email", ["This email does not exist."])
+
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
 class LogoutViewTests(TestCase):
