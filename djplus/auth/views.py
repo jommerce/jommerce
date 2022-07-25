@@ -32,9 +32,15 @@ def logout(request):
 
 
 def signup(request):
+    form = SignupForm(request.POST or None)
     if hasattr(request, "user") and request.user.is_authenticated:
         return redirect(settings.AUTH_SIGNUP_REDIRECT_URL)
     if request.method == "POST":
-        User.objects.create(email=request.POST["email"], password=request.POST["password"])
-        return redirect(settings.AUTH_SIGNUP_REDIRECT_URL)
-    return render(request, "auth/signup.html", context={"form": SignupForm()})
+        try:
+            User.objects.get(email=request.POST["email"])
+        except User.DoesNotExist:
+            User.objects.create(email=request.POST["email"], password=request.POST["password"])
+            return redirect(settings.AUTH_SIGNUP_REDIRECT_URL)
+        else:
+            form.add_error("email", _("This email already exists."))
+    return render(request, "auth/signup.html", context={"form": form})
