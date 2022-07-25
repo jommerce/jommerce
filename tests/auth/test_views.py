@@ -48,6 +48,11 @@ class LoginViewTests(TestCase):
         response = self.client.post("/login/", data={"email": "fake@example.com", "password": "123456"})
         self.assertFormError(response, "form", "email", ["This email does not exist."])
 
+    def test_log_in_user_who_entered_the_wrong_password(self):
+        User.objects.create(email="test@example.com", password="123456")
+        response = self.client.post("/login/", data={"email": "test@example.com", "password": "111111"})
+        self.assertFormError(response, "form", "password", ["Incorrect password"])
+
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
 class LogoutViewTests(TestCase):
