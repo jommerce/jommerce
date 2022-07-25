@@ -7,7 +7,8 @@ body:
     attributes:
       label: Which app is the source of the bug?
       options:
-        - command-line/project-template
+        - command-line/project template/app template
+        - templates/static
         - auth
         - other/i don't know
     validations:
