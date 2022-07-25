@@ -1,0 +1,28 @@
+name: Localization
+description: Localizing djplus apps
+labels: ["localization"]
+
+body:
+  - type: dropdown
+    attributes:
+      label: Which one of the djplus sections?
+      options:
+        - command-line/project template/app template
+        - templates/static
+        - auth
+        - admin
+        - blog
+        - shop
+        - other/i don't know
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: What languages?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Anything else?
