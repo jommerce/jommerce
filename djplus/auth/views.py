@@ -11,11 +11,14 @@ def login(request):
         return redirect(settings.AUTH_LOGIN_REDIRECT_URL)
     if request.method == "POST":
         try:
-            User.objects.get(email=request.POST["email"])
+            user = User.objects.get(email=request.POST["email"])
         except User.DoesNotExist:
             form.add_error("email", _("This email does not exist."))
         else:
-            return redirect(settings.AUTH_LOGIN_REDIRECT_URL)
+            if user.verify_password(request.POST["password"]):
+                return redirect(settings.AUTH_LOGIN_REDIRECT_URL)
+            else:
+                form.add_error("password", _("Incorrect password"))
     return render(request, "auth/login.html", context={"form": form})
 
 
