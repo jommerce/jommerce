@@ -112,6 +112,11 @@ class Session(models.Model):
         self.accessed = True
         return self.data.items()
 
+    def clear(self):
+        self.accessed = True
+        self.modified = True
+        return self.data.clear()
+
 
 class AnonymousUser:
     @property
