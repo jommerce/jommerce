@@ -74,6 +74,7 @@ class Session(models.Model):
         null=True,
         default=None,
     )
+    data = models.JSONField(_("data"), default=dict, blank=True)
 
     class Meta:
         verbose_name = _("session")
