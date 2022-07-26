@@ -102,6 +102,8 @@ class SessionModel(TestCase):
     def test_a_full_session(self):
         session = Session(user=User())
         self.assertFalse(session.is_empty)
+        session = Session(data={"key": "value"})
+        self.assertFalse(session.is_empty)
 
     def test_store_data_in_session(self):
         session = Session()

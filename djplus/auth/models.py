@@ -88,7 +88,7 @@ class Session(models.Model):
 
     @property
     def is_empty(self):
-        return False if self.user else True
+        return False if self.user or self.data else True
 
 
 class AnonymousUser:
