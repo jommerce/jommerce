@@ -1,89 +1,72 @@
-from django.test import TestCase, override_settings
-from django.utils import timezone
+from django.test import TestCase
 from djplus.auth.models import User, AnonymousUser, Session
-from djplus.auth.utils import generate_random_string
 
 
-@override_settings(AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.pbkdf2_hasher"])
-class UserModelTest(TestCase):
+class UserModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        User.objects.create(email="user1@gmail.com", password="123456")
-        User.objects.create(email="user2@gmail.com", password="123456")
-        User.objects.create(email="user3@gmail.com", password="password")
+        cls.user = User.objects.create(email="test@example.com", password="123456")
 
-    def test_password_hashing_with_salt(self):
-        user1 = User.objects.get(pk=1)
-        self.assertNotEqual(user1.password, "123456")
-        user2 = User.objects.get(pk=2)
-        self.assertNotEqual(user2.password, "123456")
-        self.assertNotEqual(user1.password, user2.password)
+    def test_use_salt_in_password_hashing(self):
+        user = User.objects.create(email="user@gmail.com", password="123456")
+        self.assertNotEqual(self.user.password, "123456")
+        self.assertNotEqual(user.password, "123456")
+        self.assertNotEqual(self.user.password, user.password)
 
     def test_verify_password(self):
-        user = User.objects.get(pk=1)
-        self.assertTrue(user.verify_password("123456"))
-        self.assertFalse(user.verify_password("password"))
-
-        user = User.objects.get(pk=3)
-        self.assertTrue(user.verify_password("password"))
-        self.assertFalse(user.verify_password("123456"))
+        self.assertIs(self.user.verify_password("123456"), True)
+        self.assertIs(self.user.verify_password("password"), False)
+        user = User.objects.create(email="user@gmail.com", password="password")
+        self.assertIs(user.verify_password("123456"), False)
+        self.assertIs(user.verify_password("password"), True)
 
     def test_is_authenticated(self):
-        user = User.objects.get(pk=1)
-        self.assertTrue(user.is_authenticated)
-
+        self.assertIs(self.user.is_authenticated, True)
         with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_authenticated'"):
-            user.is_authenticated = False
+            self.user.is_authenticated = False
 
     def test_is_anonymous(self):
-        user = User.objects.get(pk=1)
-        self.assertFalse(user.is_anonymous)
-
+        self.assertIs(self.user.is_anonymous, False)
         with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_anonymous'"):
-            user.is_anonymous = True
+            self.user.is_anonymous = True
 
     def test_upgrade_password_hasher(self):
-        password = generate_random_string(length=12)
+        password = "p@ssword"
         with self.settings(AUTH_PASSWORD_HASHERS=[
             "tests.auth.test_hashers.pbkdf2_hasher",
             "tests.auth.test_hashers.scrypt_hasher",
         ]):
-            user = User.objects.create(email="test@gmail.com", password=password)
-            self.assertTrue(user.verify_password(password))
-
+            user = User.objects.create(email="user@gmail.com", password=password)
+            self.assertIs(user.verify_password(password), True)
         with self.settings(AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.scrypt_hasher"]):
-            self.assertFalse(user.verify_password(password))
-
+            self.assertIs(user.verify_password(password), False)
         with self.settings(AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.pbkdf2_hasher"]):
-            self.assertTrue(user.verify_password(password))
-
+            self.assertIs(user.verify_password(password), True)
         with self.settings(AUTH_PASSWORD_HASHERS=[
             "tests.auth.test_hashers.scrypt_hasher",
             "tests.auth.test_hashers.pbkdf2_hasher",
         ]):
-            self.assertTrue(user.verify_password(password))
-
+            self.assertIs(user.verify_password(password), True)
         with self.settings(AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.scrypt_hasher"]):
-            self.assertTrue(user.verify_password(password))
-
+            self.assertIs(user.verify_password(password), True)
         with self.settings(AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.pbkdf2_hasher"]):
-            self.assertFalse(user.verify_password(password))
+            self.assertIs(user.verify_password(password), False)
 
 
-class AnonymousUserTest(TestCase):
+class AnonymousUserTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = AnonymousUser()
 
     def test_is_authenticated(self):
-        self.assertFalse(self.user.is_authenticated)
+        self.assertIs(self.user.is_authenticated, False)
         with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_authenticated'"):
-            self.user.is_authenticated = True
+            self.user.is_authenticated = True  # noqa
 
     def test_is_anonymous(self):
-        self.assertTrue(self.user.is_anonymous)
+        self.assertIs(self.user.is_anonymous, True)
         with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_anonymous'"):
-            self.user.is_anonymous = False
+            self.user.is_anonymous = False  # noqa
 
 
 class SessionModelTests(TestCase):
