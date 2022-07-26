@@ -126,6 +126,12 @@ class Session(models.Model):
         self.modified = True
         return self.data.clear()
 
+    def setdefault(self, key, default=None):
+        self.accessed = True
+        if key not in self.data:
+            self.modified = True
+        return self.data.setdefault(key, default)
+
 
 class AnonymousUser:
     @property

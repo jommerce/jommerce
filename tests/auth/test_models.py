@@ -177,3 +177,25 @@ class SessionModelTests(TestCase):
         self.assertEqual(self.session.data, {})
         self.assertIs(self.session.accessed, True)
         self.assertIs(self.session.modified, True)
+
+    def test_setdefault(self):
+        self.session["key"] = "value"
+        self.session.modified = False
+        self.session.accessed = False
+        self.assertEqual(self.session.setdefault("key"), "value")
+        self.assertIs(self.session.accessed, True)
+        self.assertIs(self.session.modified, False)
+
+        self.session.modified = False
+        self.session.accessed = False
+        self.assertIsNone(self.session.setdefault("test"))
+        self.assertIn("test", self.session.data)
+        self.assertIs(self.session.accessed, True)
+        self.assertIs(self.session.modified, True)
+
+        self.session.modified = False
+        self.session.accessed = False
+        self.assertEqual(self.session.setdefault("test key", default="test value"), "test value")
+        self.assertIn("test key", self.session.data)
+        self.assertIs(self.session.accessed, True)
+        self.assertIs(self.session.modified, True)
