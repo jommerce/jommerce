@@ -86,38 +86,32 @@ class AnonymousUserTest(TestCase):
             self.user.is_anonymous = False
 
 
-class SessionModel(TestCase):
-    def test_generate_session_id(self):
-        length = Session._meta.get_field("id").max_length
-        self.assertEqual(len(Session().id), length)
-        self.assertIsInstance(Session().id, str)
-        session = Session.objects.create()
-        self.assertEqual(len(session.id), length)
-        self.assertIsInstance(session.id, str)
+class SessionModelTests(TestCase):
+    def setUp(self) -> None:
+        self.session = Session()
 
-    def test_a_empty_session(self):
-        session = Session()
-        self.assertTrue(session.is_empty)
+    def test_default_session_id(self):
+        max_length = Session._meta.get_field("id").max_length
+        self.assertIsInstance(self.session.id, str)
+        self.assertEqual(len(self.session.id), max_length)
+        self.assertNotEqual(self.session.id, Session().id)
 
-    def test_a_full_session(self):
-        session = Session(user=User())
-        self.assertFalse(session.is_empty)
-        session = Session(data={"key": "value"})
-        self.assertFalse(session.is_empty)
+    def test_empty_session(self):
+        self.assertIs(self.session.is_empty, True)
+        self.session.user = User()
+        self.assertIs(self.session.is_empty, False)
+        self.session.user = None
+        self.session["key"] = "value"
+        self.assertIs(self.session.is_empty, False)
+        self.session.data = {}
+        self.assertIs(self.session.is_empty, True)
 
     def test_store_data_in_session(self):
-        session = Session()
-        try:
-            session["key"] = "value"
-        except TypeError as err:
-            self.fail(err)
-        try:
-            self.assertEqual(session["key"], "value")
-        except TypeError as err:
-            self.fail(err)
+        self.session["key"] = "value"
+        self.assertEqual(self.session["key"], "value")
 
-    def test_get_method(self):
-        session = Session(data={"test": "value"})
-        self.assertEqual(session.get("test"), "value")
-        self.assertIsNone(session.get("key does not exist"))
-        self.assertEqual(session.get("key does not exist", "default"), "default")
+    def test_get(self):
+        self.session["test"] = "value"
+        self.assertEqual(self.session.get("test"), "value")
+        self.assertIsNone(self.session.get("key does not exist"))
+        self.assertEqual(self.session.get("key does not exist", "default"), "default")
