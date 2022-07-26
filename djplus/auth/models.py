@@ -83,6 +83,10 @@ class Session(models.Model):
         verbose_name = _("session")
         verbose_name_plural = _("sessions")
 
+    def __contains__(self, item):
+        self.accessed = True
+        return item in self.data
+
     def __getitem__(self, item):
         self.accessed = True
         return self.data[item]
@@ -90,6 +94,11 @@ class Session(models.Model):
     def __setitem__(self, key, value):
         self.modified = True
         self.data[key] = value
+
+    def __delitem__(self, key):
+        self.accessed = True
+        self.modified = True
+        del self.data[key]
 
     @property
     def is_empty(self):

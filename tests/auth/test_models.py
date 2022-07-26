@@ -100,6 +100,13 @@ class SessionModelTests(TestCase):
         self.assertIs(self.session.modified, False)
         self.assertIs(self.session.accessed, False)
 
+    def test_has_key(self):
+        self.session["key"] = "value"
+        self.session.accessed = False
+        self.session.modified = False
+        self.assertIn("key", self.session)
+        self.assertIs(self.session.accessed, True)
+
     def test_empty_session(self):
         self.assertIs(self.session.is_empty, True)
         self.session.user = User()
@@ -113,6 +120,15 @@ class SessionModelTests(TestCase):
     def test_store_data_in_session(self):
         self.session["key"] = "value"
         self.assertEqual(self.session["key"], "value")
+        self.assertIs(self.session.accessed, True)
+        self.assertIs(self.session.modified, True)
+
+    def test_delete_data_in_session(self):
+        self.session["key"] = "value"
+        self.session.modified = False
+        self.session.accessed = False
+        del self.session["key"]
+        self.assertNotIn("key", self.session.data)
         self.assertIs(self.session.accessed, True)
         self.assertIs(self.session.modified, True)
 
