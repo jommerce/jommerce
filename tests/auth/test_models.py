@@ -115,3 +115,9 @@ class SessionModel(TestCase):
             self.assertEqual(session["key"], "value")
         except TypeError as err:
             self.fail(err)
+
+    def test_get_method(self):
+        session = Session(data={"test": "value"})
+        self.assertEqual(session.get("test"), "value")
+        self.assertIsNone(session.get("key does not exist"))
+        self.assertEqual(session.get("key does not exist", "default"), "default")
