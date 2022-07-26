@@ -84,9 +84,11 @@ class Session(models.Model):
         verbose_name_plural = _("sessions")
 
     def __getitem__(self, item):
+        self.accessed = True
         return self.data[item]
 
     def __setitem__(self, key, value):
+        self.modified = True
         self.data[key] = value
 
     @property

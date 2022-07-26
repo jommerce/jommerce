@@ -113,6 +113,8 @@ class SessionModelTests(TestCase):
     def test_store_data_in_session(self):
         self.session["key"] = "value"
         self.assertEqual(self.session["key"], "value")
+        self.assertIs(self.session.accessed, True)
+        self.assertIs(self.session.modified, True)
 
     def test_get(self):
         self.session["key"] = "value"
@@ -137,7 +139,6 @@ class SessionModelTests(TestCase):
         self.session.accessed = False
         self.assertEqual(list(self.session.values()), ["value"])
         self.assertIs(self.session.accessed, True)
-        self.assertIs(self.session.modified, False)
 
     def test_keys(self):
         self.assertEqual(list(self.session.keys()), [])
@@ -147,4 +148,3 @@ class SessionModelTests(TestCase):
         self.session.modified = False
         self.assertEqual(list(self.session.keys()), ["key"])
         self.assertIs(self.session.accessed, True)
-        self.assertIs(self.session.modified, False)
