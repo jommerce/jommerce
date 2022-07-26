@@ -100,9 +100,9 @@ class Session(models.Model):
         self.modified = True
         del self.data[key]
 
-    @property
-    def is_empty(self):
-        return False if self.user or self.data else True
+    def save(self, *args, **kwargs):
+        if self.user or self.data:
+            return super().save(args, kwargs)
 
     def get(self, key, default=None):
         """ Return the value for key if key is in the dictionary, else default. """
