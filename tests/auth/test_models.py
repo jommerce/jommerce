@@ -129,3 +129,13 @@ class SessionModelTests(TestCase):
         self.assertEqual(list(self.session.values()), ["value"])
         self.assertIs(self.session.accessed, True)
         self.assertIs(self.session.modified, False)
+
+    def test_keys(self):
+        self.assertEqual(list(self.session.keys()), [])
+        self.assertIs(self.session.accessed, True)
+        self.session["key"] = "value"
+        self.session.accessed = False
+        self.session.modified = False
+        self.assertEqual(list(self.session.keys()), ["key"])
+        self.assertIs(self.session.accessed, True)
+        self.assertIs(self.session.modified, False)

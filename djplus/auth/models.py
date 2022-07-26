@@ -101,6 +101,10 @@ class Session(models.Model):
         self.accessed = True
         return self.data.values()
 
+    def keys(self):
+        self.accessed = True
+        return self.data.keys()
+
 
 class AnonymousUser:
     @property
