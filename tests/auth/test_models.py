@@ -102,3 +102,14 @@ class SessionModel(TestCase):
     def test_a_full_session(self):
         session = Session(user=User())
         self.assertFalse(session.is_empty)
+
+    def test_store_data_in_session(self):
+        session = Session()
+        try:
+            session["key"] = "value"
+        except TypeError as err:
+            self.fail(err)
+        try:
+            self.assertEqual(session["key"], "value")
+        except TypeError as err:
+            self.fail(err)
