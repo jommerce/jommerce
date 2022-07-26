@@ -88,7 +88,7 @@ class AnonymousUserTest(TestCase):
 
 class SessionModelTests(TestCase):
     def setUp(self) -> None:
-        self.session = Session()
+        self.session = Session(data={"key": "value"})
 
     def test_default_session_id(self):
         max_length = Session._meta.get_field("id").max_length
@@ -101,36 +101,29 @@ class SessionModelTests(TestCase):
         self.assertIs(self.session.accessed, False)
 
     def test_has_key(self):
-        self.session["key"] = "value"
-        self.session.accessed = False
-        self.session.modified = False
         self.assertIn("key", self.session)
         self.assertIs(self.session.accessed, True)
 
     def test_store_data_in_session(self):
-        self.session["key"] = "value"
-        self.assertEqual(self.session["key"], "value")
+        self.session["test key"] = "test value"
+        self.assertEqual(self.session["test key"], "test value")
         self.assertIs(self.session.accessed, True)
         self.assertIs(self.session.modified, True)
 
     def test_delete_data_in_session(self):
-        self.session["key"] = "value"
-        self.session.modified = False
-        self.session.accessed = False
         del self.session["key"]
         self.assertNotIn("key", self.session.data)
         self.assertIs(self.session.accessed, True)
         self.assertIs(self.session.modified, True)
 
     def test_do_not_save_empty_sessions(self):
+        self.session.user = None
+        self.session.data = {}
         self.session.save()
-        with self.assertRaises(Session.DoesNotExist):
+        with self.assertRaises(Session.DoesNotExist):  # noqa
             Session.objects.get(pk=self.session.id)
 
     def test_get(self):
-        self.session["key"] = "value"
-        self.session.modified = False
-        self.session.accessed = False
         self.assertEqual(self.session.get("key"), "value")
         self.assertIs(self.session.accessed, True)
 
@@ -143,58 +136,35 @@ class SessionModelTests(TestCase):
         self.assertIs(self.session.accessed, True)
 
     def test_values(self):
-        self.assertEqual(list(self.session.values()), [])
-        self.assertIs(self.session.accessed, True)
-        self.session["key"] = "value"
-        self.session.modified = False
-        self.session.accessed = False
         self.assertEqual(list(self.session.values()), ["value"])
         self.assertIs(self.session.accessed, True)
 
     def test_keys(self):
-        self.assertEqual(list(self.session.keys()), [])
-        self.assertIs(self.session.accessed, True)
-        self.session["key"] = "value"
-        self.session.accessed = False
-        self.session.modified = False
         self.assertEqual(list(self.session.keys()), ["key"])
         self.assertIs(self.session.accessed, True)
 
     def test_items(self):
-        self.assertEqual(list(self.session.items()), [])
-        self.assertIs(self.session.accessed, True)
-        self.session["key"] = "value"
-        self.session.accessed = False
-        self.session.modified = False
         self.assertEqual(list(self.session.items()), [("key", "value")])
         self.assertIs(self.session.accessed, True)
 
     def test_clear(self):
-        self.session["key"] = "value"
-        self.session.modified = False
-        self.session.accessed = False
         self.session.clear()
         self.assertEqual(self.session.data, {})
         self.assertIs(self.session.accessed, True)
         self.assertIs(self.session.modified, True)
 
     def test_setdefault(self):
-        self.session["key"] = "value"
-        self.session.modified = False
-        self.session.accessed = False
         self.assertEqual(self.session.setdefault("key"), "value")
         self.assertIs(self.session.accessed, True)
         self.assertIs(self.session.modified, False)
 
-        self.session.modified = False
-        self.session.accessed = False
-        self.assertIsNone(self.session.setdefault("test"))
-        self.assertIn("test", self.session.data)
+    def test_setdefault_default(self):
+        self.assertIsNone(self.session.setdefault("test key"))
+        self.assertIn("test key", self.session.data)
         self.assertIs(self.session.accessed, True)
         self.assertIs(self.session.modified, True)
 
-        self.session.modified = False
-        self.session.accessed = False
+    def test_setdefault_default_named_argument(self):
         self.assertEqual(self.session.setdefault("test key", default="test value"), "test value")
         self.assertIn("test key", self.session.data)
         self.assertIs(self.session.accessed, True)
