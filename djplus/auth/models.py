@@ -97,6 +97,10 @@ class Session(models.Model):
         """ Return the value for key if key is in the dictionary, else default. """
         return self.data.get(key, default)
 
+    def values(self):
+        self.accessed = True
+        return self.data.values()
+
 
 class AnonymousUser:
     @property
