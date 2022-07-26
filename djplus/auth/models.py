@@ -80,6 +80,12 @@ class Session(models.Model):
         verbose_name = _("session")
         verbose_name_plural = _("sessions")
 
+    def __getitem__(self, item):
+        return self.data[item]
+
+    def __setitem__(self, key, value):
+        self.data[key] = value
+
     @property
     def is_empty(self):
         return False if self.user else True
