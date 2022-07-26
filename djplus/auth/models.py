@@ -76,6 +76,9 @@ class Session(models.Model):
     )
     data = models.JSONField(_("data"), default=dict, blank=True)
 
+    modified = False
+    accessed = False
+
     class Meta:
         verbose_name = _("session")
         verbose_name_plural = _("sessions")

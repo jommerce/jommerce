@@ -96,6 +96,10 @@ class SessionModelTests(TestCase):
         self.assertEqual(len(self.session.id), max_length)
         self.assertNotEqual(self.session.id, Session().id)
 
+    def test_new_session(self):
+        self.assertIs(self.session.modified, False)
+        self.assertIs(self.session.accessed, False)
+
     def test_empty_session(self):
         self.assertIs(self.session.is_empty, True)
         self.session.user = User()
