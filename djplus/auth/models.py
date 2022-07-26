@@ -132,6 +132,11 @@ class Session(models.Model):
             self.modified = True
         return self.data.setdefault(key, default)
 
+    def update(self, dictionary):
+        self.accessed = True
+        self.modified = True
+        return self.data.update(dictionary)
+
 
 class AnonymousUser:
     @property
