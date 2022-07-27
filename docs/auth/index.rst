@@ -10,3 +10,4 @@ auth
 
     installation
     configuration
+    models
