@@ -74,14 +74,68 @@ class Session(models.Model):
         null=True,
         default=None,
     )
+    data = models.JSONField(_("data"), default=dict, blank=True)
+
+    modified = False
+    accessed = False
 
     class Meta:
         verbose_name = _("session")
         verbose_name_plural = _("sessions")
 
-    @property
-    def is_empty(self):
-        return False if self.user else True
+    def __contains__(self, item):
+        self.accessed = True
+        return item in self.data
+
+    def __getitem__(self, item):
+        self.accessed = True
+        return self.data[item]
+
+    def __setitem__(self, key, value):
+        self.modified = True
+        self.data[key] = value
+
+    def __delitem__(self, key):
+        self.accessed = True
+        self.modified = True
+        del self.data[key]
+
+    def save(self, *args, **kwargs):
+        if self.user or self.data:
+            return super().save(args, kwargs)
+
+    def get(self, key, default=None):
+        """ Return the value for key if key is in the dictionary, else default. """
+        self.accessed = True
+        return self.data.get(key, default)
+
+    def values(self):
+        self.accessed = True
+        return self.data.values()
+
+    def keys(self):
+        self.accessed = True
+        return self.data.keys()
+
+    def items(self):
+        self.accessed = True
+        return self.data.items()
+
+    def clear(self):
+        self.accessed = True
+        self.modified = True
+        return self.data.clear()
+
+    def setdefault(self, key, default=None):
+        self.accessed = True
+        if key not in self.data:
+            self.modified = True
+        return self.data.setdefault(key, default)
+
+    def update(self, dictionary):
+        self.accessed = True
+        self.modified = True
+        return self.data.update(dictionary)
 
 
 class AnonymousUser:
