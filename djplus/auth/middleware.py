@@ -19,10 +19,7 @@ class AuthenticationMiddleware:
 
         response = self.get_response(request)
 
-        if request.session.is_empty:
-            request.session.delete()
-        else:
-            request.session.save()
+        request.session.save()
 
         if request.session.user:
             response.set_cookie(
