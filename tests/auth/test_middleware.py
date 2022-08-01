@@ -69,12 +69,8 @@ class AuthenticationMiddlewareTests(TestCase):
             return HttpResponse()
         middleware = AuthenticationMiddleware(view)
         middleware(self.request)
-        try:
+        with self.assertRaises(Session.DoesNotExist): # noqa
             Session.objects.get(id=self.request.session.id)
-        except Session.DoesNotExist:
-            pass
-        else:
-            self.fail("The desired session was created")
 
     def test_saving_full_sessions(self):
         def view(request):
