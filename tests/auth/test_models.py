@@ -1,4 +1,5 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
+from django.utils import timezone
 from djplus.auth.models import User, AnonymousUser, Session
 
 
@@ -78,6 +79,10 @@ class SessionModelTests(TestCase):
         self.assertIsInstance(self.session.id, str)
         self.assertEqual(len(self.session.id), max_length)
         self.assertNotEqual(self.session.id, Session().id)
+
+    @override_settings(AUTH_SESSION_COOKIE_AGE=10)
+    def test_default_expire_date(self):
+        self.assertEqual(Session().expire_date, timezone.now() + timezone.timedelta(seconds=10))
 
     def test_new_session(self):
         self.assertIs(self.session.modified, False)
