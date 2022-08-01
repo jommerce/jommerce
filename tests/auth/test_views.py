@@ -25,6 +25,10 @@ class AnonymousUserMiddleware:
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
 class LoginViewTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create(email="test@example.com", password="123456")
+
     def test_template_name_for_login_page(self):
         response = self.client.get("/login/")
         self.assertTemplateUsed(response, "auth/login.html")
@@ -32,19 +36,14 @@ class LoginViewTests(TestCase):
     @override_settings(AUTH_SESSION_COOKIE_NAME="session_id")
     @override_settings(MIDDLEWARE=["djplus.auth.middleware.AuthenticationMiddleware"])
     def test_create_cookie_when_log_in_user(self):
-        user = User.objects.create(email="test@example.com", password="123456")
         response = self.client.post("/login/", data={"email": "test@example.com", "password": "123456"})
         self.assertIn("session_id", response.cookies)
-        try:
-            session = Session.objects.get(pk=response.cookies["session_id"].value)
-        except Session.DoesNotExist:
-            self.fail("The desired session was not created")
-        self.assertEqual(session.user, user)
+        session = Session.objects.get(pk=response.cookies["session_id"].value)
+        self.assertEqual(session.user, self.user)
 
     @override_settings(AUTH_LOGIN_REDIRECT_URL="/custom/")
     @override_settings(MIDDLEWARE=["tests.auth.test_views.AnonymousUserMiddleware"])
     def test_redirect_user_to_custom_page_after_successfully_log_in(self):
-        User.objects.create(email="test@example.com", password="123456")
         response = self.client.post("/login/", data={"email": "test@example.com", "password": "123456"})
         self.assertRedirects(response, "/custom/", fetch_redirect_response=False)
 
@@ -64,7 +63,6 @@ class LoginViewTests(TestCase):
         self.assertFormError(response, "form", "email", ["This email does not exist."])
 
     def test_log_in_user_who_entered_the_wrong_password(self):
-        User.objects.create(email="test@example.com", password="123456")
         response = self.client.post("/login/", data={"email": "test@example.com", "password": "111111"})
         self.assertFormError(response, "form", "password", ["Incorrect password"])
 
