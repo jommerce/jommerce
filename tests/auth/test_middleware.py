@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.test import TestCase, RequestFactory
 from django.http import HttpResponse
 from django.conf import settings
@@ -86,6 +87,13 @@ class AuthenticationMiddlewareTests(TestCase):
         except Session.DoesNotExist:
             self.fail("The desired session has not been saved")
 
+    def test_delete_expired_session(self):
+        Session.objects.create(id="expired session", data={"key": "value"}, expire_date=datetime(2021, 8, 1))
+        self.request.COOKIES[SESSION_COOKIE_NAME] = "expired session"
+        self.middleware(self.request)
+        with self.assertRaises(Session.DoesNotExist):  # noqa
+            Session.objects.get(pk="expired session")
+
     def test_secure_session_cookie(self):
         self.request.COOKIES[SESSION_COOKIE_NAME] = "user_session"
         with self.settings(AUTH_SESSION_COOKIE_SECURE=True):
@@ -143,15 +151,6 @@ class AuthenticationMiddlewareTests(TestCase):
         with self.settings(AUTH_SESSION_COOKIE_PATH="/example/"):
             response = self.middleware(self.request)
             self.assertEqual(response.cookies[SESSION_COOKIE_NAME]["path"], "/example/")
-
-    def test_age_session_cookie(self):
-        self.request.COOKIES[SESSION_COOKIE_NAME] = "user_session"
-        with self.settings(AUTH_SESSION_COOKIE_AGE=10):
-            response = self.middleware(self.request)
-            self.assertEqual(response.cookies[SESSION_COOKIE_NAME]["max-age"], 10)
-        with self.settings(AUTH_SESSION_COOKIE_AGE=60 * 60 * 24):
-            response = self.middleware(self.request)
-            self.assertEqual(response.cookies[SESSION_COOKIE_NAME]["max-age"], 86400)
 
     def test_name_session_cookie(self):
         with self.settings(AUTH_SESSION_COOKIE_NAME="custom"):
