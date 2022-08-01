@@ -45,3 +45,6 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
 
 ]
+
+if find_spec("debug_toolbar"):
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
