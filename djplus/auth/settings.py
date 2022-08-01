@@ -12,6 +12,7 @@ AUTH_USERNAME_VALIDATORS = [
     "djplus.auth.validators.username.identifier",
 ]
 AUTH_PASSWORD_HASHERS = ["djplus.auth.hashers.default"]
+AUTH_LOGIN_URL = "/auth/login/"
 AUTH_LOGIN_REDIRECT_URL = "/"
 AUTH_LOGOUT_REDIRECT_URL = "/"
 AUTH_SIGNUP_REDIRECT_URL = "/"
