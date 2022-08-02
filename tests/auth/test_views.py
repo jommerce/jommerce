@@ -103,6 +103,13 @@ class LogoutViewTests(TestCase):
         self.assertTemplateUsed(response, "auth/logout.html")
         self.assertEqual(response.status_code, 200)
 
+    @override_settings(AUTH_LOGOUT_REDIRECT_URL=None)
+    @override_settings(AUTH_LOGIN_URL="/test/")
+    @override_settings(MIDDLEWARE=["tests.auth.test_views.AnonymousUserMiddleware"])
+    def test_get_logout_page_as_anonymous_user_when_logout_redirect_url_setting_is_none(self):
+        response = self.client.get("/logout/")
+        self.assertRedirects(response, "/test/", fetch_redirect_response=False)
+
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
 class SignupViewTests(TestCase):

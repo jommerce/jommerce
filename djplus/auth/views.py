@@ -28,6 +28,9 @@ def logout(request):
         if settings.AUTH_LOGOUT_REDIRECT_URL:
             request.session.user = None
             return redirect(settings.AUTH_LOGOUT_REDIRECT_URL)
+        else:
+            if request.user.is_anonymous:
+                return redirect(settings.AUTH_LOGIN_URL)
     request.session.user = None
     return render(request, "auth/logout.html")
 
