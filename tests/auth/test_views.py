@@ -29,11 +29,6 @@ class LoginViewTests(TestCase):
     def setUpTestData(cls):
         cls.user = User.objects.create(email="test@example.com", password="123456")
 
-    def test_get_login_page_as_anonymous_user(self):
-        response = self.client.get("/login/")
-        self.assertTemplateUsed(response, "auth/login.html")
-        self.assertEqual(response.status_code, 200)
-
     @override_settings(AUTH_SESSION_COOKIE_NAME="session_id")
     @override_settings(MIDDLEWARE=["djplus.auth.middleware.AuthenticationMiddleware"])
     def test_Login_successfully(self):
@@ -47,6 +42,11 @@ class LoginViewTests(TestCase):
     def test_redirect_after_login(self):
         response = self.client.post("/login/", data={"email": "test@example.com", "password": "123456"})
         self.assertRedirects(response, "/custom/", fetch_redirect_response=False)
+
+    def test_get_login_page_as_anonymous_user(self):
+        response = self.client.get("/login/")
+        self.assertTemplateUsed(response, "auth/login.html")
+        self.assertEqual(response.status_code, 200)
 
     @override_settings(AUTH_LOGIN_REDIRECT_URL="/test/")
     @override_settings(MIDDLEWARE=["tests.auth.test_views.AuthenticatedUserMiddleware"])
@@ -70,11 +70,13 @@ class LoginViewTests(TestCase):
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
 class LogoutViewTests(TestCase):
-    @override_settings(AUTH_LOGOUT_REDIRECT_URL="/goodbye/")
-    @override_settings(MIDDLEWARE=["tests.auth.test_views.AuthenticatedUserMiddleware"])
-    def test_get_logout_page_as_authenticated_user(self):
-        response = self.client.get("/logout/")
-        self.assertRedirects(response, "/goodbye/", fetch_redirect_response=False)
+    @override_settings(AUTH_SESSION_COOKIE_NAME="session_key")
+    @override_settings(MIDDLEWARE=["djplus.auth.middleware.AuthenticationMiddleware"])
+    def test_logout_successfully(self):
+        User.objects.create(email="test@example.com", password="123456")
+        self.client.post("/login/", data={"email": "test@example.com", "password": "123456"})
+        response = self.client.post("/logout/")
+        self.assertNotIn("session_key", response.cookies)
 
     @override_settings(AUTH_LOGOUT_REDIRECT_URL="/custom/")
     @override_settings(MIDDLEWARE=["tests.auth.test_views.AuthenticatedUserMiddleware"])
@@ -88,6 +90,12 @@ class LogoutViewTests(TestCase):
         response = self.client.get("/logout/")
         self.assertRedirects(response, "/test/", fetch_redirect_response=False)
 
+    @override_settings(AUTH_LOGOUT_REDIRECT_URL="/goodbye/")
+    @override_settings(MIDDLEWARE=["tests.auth.test_views.AuthenticatedUserMiddleware"])
+    def test_get_logout_page_as_authenticated_user(self):
+        response = self.client.get("/logout/")
+        self.assertRedirects(response, "/goodbye/", fetch_redirect_response=False)
+
     @override_settings(AUTH_LOGOUT_REDIRECT_URL=None)
     @override_settings(MIDDLEWARE=["tests.auth.test_views.AuthenticatedUserMiddleware"])
     def test_get_logout_page_as_authenticated_user_when_logout_redirect_url_setting_is_none(self):
@@ -95,22 +103,9 @@ class LogoutViewTests(TestCase):
         self.assertTemplateUsed(response, "auth/logout.html")
         self.assertEqual(response.status_code, 200)
 
-    @override_settings(AUTH_SESSION_COOKIE_NAME="session_key")
-    @override_settings(MIDDLEWARE=["djplus.auth.middleware.AuthenticationMiddleware"])
-    def test_logout_successfully(self):
-        User.objects.create(email="test@example.com", password="123456")
-        self.client.post("/login/", data={"email": "test@example.com", "password": "123456"})
-        response = self.client.post("/logout/")
-        self.assertNotIn("session_key", response.cookies)
-
 
 @override_settings(ROOT_URLCONF="djplus.auth.urls")
 class SignupViewTests(TestCase):
-    def test_get_signup_page_as_anonymous_user(self):
-        response = self.client.get("/signup/")
-        self.assertTemplateUsed(response, "auth/signup.html")
-        self.assertEqual(response.status_code, 200)
-
     def test_signup_successfully(self):
         self.client.post("/signup/", data={"email": "staff@domain.com", "password": "password"})
         try:
@@ -122,6 +117,11 @@ class SignupViewTests(TestCase):
     def test_redirect_after_signup(self):
         response = self.client.post("/signup/", data={"email": "staff@domain.com", "password": "password"})
         self.assertRedirects(response, "/custom/", fetch_redirect_response=False)
+
+    def test_get_signup_page_as_anonymous_user(self):
+        response = self.client.get("/signup/")
+        self.assertTemplateUsed(response, "auth/signup.html")
+        self.assertEqual(response.status_code, 200)
 
     @override_settings(AUTH_SIGNUP_REDIRECT_URL="/test/")
     @override_settings(MIDDLEWARE=["tests.auth.test_views.AuthenticatedUserMiddleware"])
