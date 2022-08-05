@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from .managers import PublishedManager
 
 
 class Post(models.Model):
@@ -16,6 +17,9 @@ class Post(models.Model):
     publication_date = models.DateTimeField(_("publication date"), null=True, blank=True, default=None)
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    objects = models.Manager()
+    published = PublishedManager()
 
     class Meta:
         verbose_name = _("post")
