@@ -12,3 +12,7 @@ class UrlPatternsTests(TestCase):
 
     def test_reverse_index_name(self):
         self.assertReverse("/", "index")
+
+    def test_reverse_post_name(self):
+        self.assertReverse("/what-is-python/", "post", args=["what-is-python"])
+        self.assertReverse("/what-is-django/", "post", kwargs={"slug": "what-is-django"})  # noqa
