@@ -1,23 +1,20 @@
 from django.core.management.templates import TemplateCommand
 from django.core.management.utils import get_random_secret_key
 from pathlib import Path
-import json
+import tomllib as toml
+import shutil
 
 PROJECT_TEMPLATE_DIR = Path(__file__).parent / "project_template"
 
 
 def generate_config_file():
-    with open(Path.home() / "djplus.json", "w") as file:
-        json.dump({
-            "debug_toolbar": True,
-            "argon2": True,
-        }, file, indent=4)
+    shutil.copyfile(Path(__file__).parent / "djplus.toml", Path.home() / "djplus.toml")
 
 
 def main():
     try:
-        with open(Path.home() / "djplus.json") as file:
-            config = json.load(file)
+        with open(Path.home() / "djplus.toml", "rb") as file:
+            config = toml.load(file)
     except FileNotFoundError:
         config = {}
 

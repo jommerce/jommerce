@@ -1,5 +1,6 @@
 from .models import Session, AnonymousUser
 from django.http import HttpRequest
+from django.utils import timezone
 from django.conf import settings
 
 
@@ -14,7 +15,11 @@ class AuthenticationMiddleware:
             request.session = Session()
             request.user = AnonymousUser()
         else:
-            request.session = session
+            if session.expire_date <= timezone.now():
+                session.delete()
+                request.session = Session()
+            else:
+                request.session = session
             request.user = session.user or AnonymousUser()
 
         response = self.get_response(request)
@@ -25,8 +30,7 @@ class AuthenticationMiddleware:
             response.set_cookie(
                 settings.AUTH_SESSION_COOKIE_NAME,
                 request.session.id,
-                max_age=settings.AUTH_SESSION_COOKIE_AGE,
-                expires=None,
+                expires=request.session.expire_date,
                 domain=settings.AUTH_SESSION_COOKIE_DOMAIN,
                 path=settings.AUTH_SESSION_COOKIE_PATH,
                 secure=settings.AUTH_SESSION_COOKIE_SECURE,

@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from .validators import get_password_validators, get_username_validators
 from .utils import generate_random_string
@@ -64,6 +65,10 @@ def generate_session_id():
             return session_id
 
 
+def get_default_expire_date():
+    return timezone.now() + timezone.timedelta(seconds=settings.AUTH_SESSION_COOKIE_AGE)
+
+
 class Session(models.Model):
     id = models.CharField(_("id"), max_length=32, primary_key=True, default=generate_session_id)
     user = models.ForeignKey(
@@ -74,6 +79,7 @@ class Session(models.Model):
         null=True,
         default=None,
     )
+    expire_date = models.DateTimeField(_("expire_date"), blank=True, default=get_default_expire_date)
     data = models.JSONField(_("data"), default=dict, blank=True)
 
     modified = False

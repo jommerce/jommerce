@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "djplus"
-version = "2.0.0"
+version = "2.1.0"
 description = "More than a reusable app"
 license = "MIT"
 authors = ["githashem <PersonalHashem@gmail.com>"]
@@ -14,6 +14,7 @@ include = [
     "LICENSE",
     "CHANGELOG.md",
     "djplus/project_template/*",
+    "djplus/djplus.toml",
 ]
 
 classifiers = [
@@ -27,7 +28,8 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
-     "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3 :: Only",
 ]
 
 [tool.poetry.dependencies]
@@ -36,9 +38,11 @@ Django = "^4.0.3"
 
 [tool.poetry.extras]
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 django-debug-toolbar = "^3.2.4"
 ipython = "^8.2.0"
+
+[tool.poetry.group.docs.dependencies]
 Sphinx = "^5.0.1"
 sphinx-rtd-theme = "^1.0.0"
 
@@ -47,5 +51,5 @@ djplus = "djplus.__main__:main"
 djplusconfig = "djplus.__main__:generate_config_file"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

@@ -20,3 +20,4 @@ Contents:
 
    cli
    auth/index
+   blog/index
