@@ -1,0 +1,2 @@
+debug_toolbar = true
+argon2 = true
