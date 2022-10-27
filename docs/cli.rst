@@ -12,4 +12,4 @@ djplus
 djplusconfig
 ============
 
-:synopsis: Command to generate the ``djplus.json`` file in the home directory
+:synopsis: Command to generate the ``djplus.toml`` file in the home directory
