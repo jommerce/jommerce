@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "djplus"
-version = "2.0.0"
+version = "2.1.0"
 description = "More than a reusable app"
 license = "MIT"
 authors = ["githashem <PersonalHashem@gmail.com>"]
@@ -28,7 +28,8 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
-     "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3 :: Only",
 ]
 
 [tool.poetry.dependencies]
