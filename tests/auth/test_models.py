@@ -23,12 +23,12 @@ class UserModelTests(TestCase):
 
     def test_is_authenticated(self):
         self.assertIs(self.user.is_authenticated, True)
-        with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_authenticated'"):
+        with self.assertRaises(AttributeError):
             self.user.is_authenticated = False
 
     def test_is_anonymous(self):
         self.assertIs(self.user.is_anonymous, False)
-        with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_anonymous'"):
+        with self.assertRaises(AttributeError):
             self.user.is_anonymous = True
 
     def test_upgrade_password_hasher(self):
@@ -61,12 +61,12 @@ class AnonymousUserTests(TestCase):
 
     def test_is_authenticated(self):
         self.assertIs(self.user.is_authenticated, False)
-        with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_authenticated'"):
+        with self.assertRaises(AttributeError):
             self.user.is_authenticated = True  # noqa
 
     def test_is_anonymous(self):
         self.assertIs(self.user.is_anonymous, True)
-        with self.assertRaisesMessage(AttributeError, "can't set attribute 'is_anonymous'"):
+        with self.assertRaises(AttributeError):
             self.user.is_anonymous = False  # noqa
 
 
