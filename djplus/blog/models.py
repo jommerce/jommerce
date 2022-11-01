@@ -60,3 +60,9 @@ class Category(models.Model):
         ]
         verbose_name = _("category")
         verbose_name_plural = _("categories")
+
+    def __str__(self):
+        if self.parent:
+            return str(self.parent) + " > " + self.name
+        else:
+            return self.name
