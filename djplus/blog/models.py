@@ -18,6 +18,13 @@ class Post(models.Model):
     publication_date = models.DateTimeField(_("publication date"), null=True, blank=True, default=None)
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+    category = models.ForeignKey(
+        to="blog.Category",
+        on_delete=models.SET_NULL,
+        verbose_name=_("category"),
+        null=True,
+        blank=True,
+    )
 
     objects = models.Manager()
     published = PublishedManager()
@@ -32,3 +39,24 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse("blog:post", args=[self.slug])
+
+
+class Category(models.Model):
+    name = models.CharField(_("name"), max_length=100)
+    slug = models.SlugField(_("slug"))
+    parent = models.ForeignKey(
+        to="self",
+        on_delete=models.CASCADE,
+        related_name="children",
+        verbose_name=_("parent"),
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=("slug", "parent"), name="unique_slugs_under_same_parent"),
+            models.UniqueConstraint(fields=("name", "parent"), name="unique_names_under_same_parent"),
+        ]
+        verbose_name = _("category")
+        verbose_name_plural = _("categories")
