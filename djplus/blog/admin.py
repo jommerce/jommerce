@@ -1,7 +1,13 @@
 from django.contrib import admin
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from .models import Post
+from .models import Post, Category
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ["__str__"]
+    prepopulated_fields = {"slug": ("name",)}
 
 
 @admin.register(Post)
