@@ -13,7 +13,7 @@ SECRET_KEY = SECRETS.get("DJANGO_SECRET_KEY")
 DEBUG = True
 ALLOWED_HOSTS = SECRETS.get("DJANGO_ALLOWED_HOSTS", "").split()
 ROOT_URLCONF = 'djplus.project.urls'
-WSGI_APPLICATION = 'djplus.wsgi.application'
+WSGI_APPLICATION = 'djplus.project.wsgi.application'
 
 
 # Apps
