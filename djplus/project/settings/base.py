@@ -1,5 +1,7 @@
 from os import environ as SECRETS # noqa
 from pathlib import Path
+from djplus.auth.settings import *
+
 
 BASE_DIR = Path.cwd()
 PROJECT_DIR = Path(__file__).resolve().parent.parent
@@ -17,6 +19,8 @@ WSGI_APPLICATION = 'djplus.wsgi.application'
 # Apps
 # ----------------------------------------------------------------------------------------------------------------------
 INSTALLED_APPS = [
+    "djplus.auth",
+    "djplus.blog",
     "django.contrib.staticfiles",
 ]
 
