@@ -1,8 +1,9 @@
 from django.urls import path, include
 from django.conf import settings
+from django.views.generic import TemplateView
 
 urlpatterns = [
-
+    path("", TemplateView.as_view(template_name="index.html"), name="index"),
 ]
 
 if "django.contrib.admin" in settings.INSTALLED_APPS:
