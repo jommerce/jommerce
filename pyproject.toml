@@ -14,6 +14,8 @@ include = [
     "LICENSE",
     "CHANGELOG.md",
     "djplus/project_template/*",
+    "djplus/templates/*",
+    "djplus/static/*",
     "djplus/djplus.toml",
 ]
 

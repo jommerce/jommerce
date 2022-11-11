@@ -6,7 +6,10 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'demo.settings')
+    if os.path.isfile("djplus/project/settings/local.py"):
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djplus.project.settings.local')
+    else:
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djplus.project.settings.dev')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
