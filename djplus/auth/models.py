@@ -81,6 +81,7 @@ class Session(models.Model):
     )
     expire_date = models.DateTimeField(_("expire_date"), blank=True, default=get_default_expire_date)
     data = models.JSONField(_("data"), default=dict, blank=True)
+    ip = models.GenericIPAddressField(_("IP"))
 
     modified = False
     accessed = False
