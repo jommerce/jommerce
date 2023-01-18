@@ -8,8 +8,12 @@ from .hashers import get_hashers
 
 
 class User(models.Model):
+    class Status(models.IntegerChoices):
+        INACTIVE = 0
+        ACTIVE = 1
     email = models.EmailField(_("email"), max_length=64, unique=True)
     password = models.CharField(_("password"), max_length=128, validators=get_password_validators())
+    status = models.SmallIntegerField(_("status"), choices=Status.choices, default=Status.INACTIVE)
 
     __original_password = None
 

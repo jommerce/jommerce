@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add initial djplus project.
 - Add `ip` field to `Session` model.
+- Add `status` field to `User` model.
 
 ## [2.1.0] - 2022-10-27
 ### Added
