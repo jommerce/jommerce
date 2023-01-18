@@ -2,6 +2,7 @@ from .models import Session, AnonymousUser
 from django.http import HttpRequest
 from django.utils import timezone
 from django.conf import settings
+from ipware import get_client_ip
 
 
 class AuthenticationMiddleware:
@@ -21,6 +22,9 @@ class AuthenticationMiddleware:
             else:
                 request.session = session
             request.user = session.user or AnonymousUser()
+
+        if not Session.ip:
+            Session.ip = get_client_ip(request)[0]
 
         response = self.get_response(request)
 
