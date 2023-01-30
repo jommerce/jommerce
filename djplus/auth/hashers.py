@@ -4,7 +4,7 @@ import secrets
 import binascii
 import functools
 from abc import ABC, abstractmethod
-from django.conf import settings
+from .conf import settings
 from django.utils.module_loading import import_string
 from .utils import generate_random_string
 

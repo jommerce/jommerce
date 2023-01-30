@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-from django.conf import settings
+from djplus.auth.conf import settings
 import djplus.auth.models
 import djplus.auth.validators.password
 from djplus.auth.validators import get_password_validators

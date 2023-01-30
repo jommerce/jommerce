@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
-from django.conf import settings
+from .conf import settings
 from .forms import LoginForm, SignupForm
 from .models import User
 

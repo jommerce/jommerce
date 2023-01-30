@@ -1,7 +1,7 @@
 from .models import Session, AnonymousUser
 from django.http import HttpRequest
 from django.utils import timezone
-from django.conf import settings
+from .conf import settings
 from ipware import get_client_ip
 
 

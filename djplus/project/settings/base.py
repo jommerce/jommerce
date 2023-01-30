@@ -1,6 +1,5 @@
 from os import environ as SECRETS # noqa
 from pathlib import Path
-from djplus.auth.settings import *
 
 
 BASE_DIR = Path.cwd()
