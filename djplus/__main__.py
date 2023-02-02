@@ -1,7 +1,10 @@
 from django.core.management.templates import TemplateCommand
 from django.core.management.utils import get_random_secret_key
 from pathlib import Path
-import tomllib as toml
+try:
+    import tomllib as toml
+except ModuleNotFoundError:
+    pass
 import shutil
 
 PROJECT_TEMPLATE_DIR = Path(__file__).parent / "project_template"
@@ -15,7 +18,7 @@ def main():
     try:
         with open(Path.home() / "djplus.toml", "rb") as file:
             config = toml.load(file)
-    except FileNotFoundError:
+    except (FileNotFoundError, ModuleNotFoundError):
         config = {}
 
     TemplateCommand().handle(
