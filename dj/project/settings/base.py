@@ -11,15 +11,15 @@ PROJECT_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = SECRETS.get("DJANGO_SECRET_KEY")
 DEBUG = True
 ALLOWED_HOSTS = SECRETS.get("DJANGO_ALLOWED_HOSTS", "").split()
-ROOT_URLCONF = 'djplus.project.urls'
-WSGI_APPLICATION = 'djplus.project.wsgi.application'
+ROOT_URLCONF = 'dj.project.urls'
+WSGI_APPLICATION = 'dj.project.wsgi.application'
 
 
 # Apps
 # ----------------------------------------------------------------------------------------------------------------------
 INSTALLED_APPS = [
-    "djplus.auth",
-    "djplus.blog",
+    "dj.auth",
+    "dj.blog",
     "django.contrib.staticfiles",
 ]
 
@@ -30,7 +30,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'djplus.auth.middleware.AuthenticationMiddleware',
+    'dj.auth.middleware.AuthenticationMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 

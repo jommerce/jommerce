@@ -13,10 +13,10 @@ include = [
     "README.md",
     "LICENSE",
     "CHANGELOG.md",
-    "djplus/project_template/*",
-    "djplus/templates/*",
-    "djplus/static/*",
-    "djplus/djplus.toml",
+    "dj/project_template/*",
+    "dj/templates/*",
+    "dj/static/*",
+    "dj/dj.toml",
 ]
 
 classifiers = [
@@ -50,8 +50,8 @@ Sphinx = "^5.0.1"
 sphinx-rtd-theme = "^1.0.0"
 
 [tool.poetry.scripts]
-djplus = "djplus.__main__:main"
-djplusconfig = "djplus.__main__:generate_config_file"
+dj = "dj.__main__:main"
+djonfig = "dj.__main__:generate_config_file"
 
 [build-system]
 requires = ["poetry-core"]

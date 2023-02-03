@@ -1,17 +1,17 @@
 AUTH_PASSWORD_VALIDATORS = [
-    "djplus.auth.validators.password.length",
-    "djplus.auth.validators.password.number",
-    "djplus.auth.validators.password.lowercase",
-    "djplus.auth.validators.password.uppercase",
-    "djplus.auth.validators.password.symbol",
+    "dj.auth.validators.password.length",
+    "dj.auth.validators.password.number",
+    "dj.auth.validators.password.lowercase",
+    "dj.auth.validators.password.uppercase",
+    "dj.auth.validators.password.symbol",
 ]
 
 AUTH_USERNAME_VALIDATORS = [
-    "djplus.auth.validators.username.length",
-    "djplus.auth.validators.username.ascii",
-    "djplus.auth.validators.username.identifier",
+    "dj.auth.validators.username.length",
+    "dj.auth.validators.username.ascii",
+    "dj.auth.validators.username.identifier",
 ]
-AUTH_PASSWORD_HASHERS = ["djplus.auth.hashers.default"]
+AUTH_PASSWORD_HASHERS = ["dj.auth.hashers.default"]
 AUTH_LOGIN_URL = "/auth/login/"
 AUTH_LOGIN_REDIRECT_URL = "/"
 AUTH_LOGOUT_REDIRECT_URL = "/"

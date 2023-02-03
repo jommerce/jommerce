@@ -1,9 +1,9 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from djplus.auth.validators import get_password_validators, get_username_validators, \
+from dj.auth.validators import get_password_validators, get_username_validators, \
     UsernameLengthValidator, PasswordLengthValidator
-from djplus.auth.validators import password as password_validators
-from djplus.auth.validators import username as username_validators
+from dj.auth.validators import password as password_validators
+from dj.auth.validators import username as username_validators
 
 
 def validate_return_none(value):

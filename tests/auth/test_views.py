@@ -1,6 +1,6 @@
 from django.test import TestCase, override_settings
-from djplus.auth.models import User, AnonymousUser, Session
-from djplus.auth import forms
+from dj.auth.models import User, AnonymousUser, Session
+from dj.auth import forms
 
 
 class AuthenticatedUserMiddleware:
@@ -23,14 +23,14 @@ class AnonymousUserMiddleware:
         return self.get_response(request)
 
 
-@override_settings(ROOT_URLCONF="djplus.auth.urls")
+@override_settings(ROOT_URLCONF="dj.auth.urls")
 class LoginViewTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create(email="test@example.com", password="123456")
 
     @override_settings(AUTH_SESSION_COOKIE_NAME="session_id")
-    @override_settings(MIDDLEWARE=["djplus.auth.middleware.AuthenticationMiddleware"])
+    @override_settings(MIDDLEWARE=["dj.auth.middleware.AuthenticationMiddleware"])
     def test_Login_successfully(self):
         response = self.client.post("/login/", data={"email": "test@example.com", "password": "123456"})
         self.assertIn("session_id", response.cookies)
@@ -68,10 +68,10 @@ class LoginViewTests(TestCase):
         self.assertFormError(response, "form", "password", ["Incorrect password"])
 
 
-@override_settings(ROOT_URLCONF="djplus.auth.urls")
+@override_settings(ROOT_URLCONF="dj.auth.urls")
 class LogoutViewTests(TestCase):
     @override_settings(AUTH_SESSION_COOKIE_NAME="session_key")
-    @override_settings(MIDDLEWARE=["djplus.auth.middleware.AuthenticationMiddleware"])
+    @override_settings(MIDDLEWARE=["dj.auth.middleware.AuthenticationMiddleware"])
     def test_logout_successfully(self):
         User.objects.create(email="test@example.com", password="123456")
         self.client.post("/login/", data={"email": "test@example.com", "password": "123456"})
@@ -111,7 +111,7 @@ class LogoutViewTests(TestCase):
         self.assertRedirects(response, "/test/", fetch_redirect_response=False)
 
 
-@override_settings(ROOT_URLCONF="djplus.auth.urls")
+@override_settings(ROOT_URLCONF="dj.auth.urls")
 class SignupViewTests(TestCase):
     def test_signup_successfully(self):
         self.client.post("/signup/", data={"email": "staff@domain.com", "password": "password"})

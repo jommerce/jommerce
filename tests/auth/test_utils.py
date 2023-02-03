@@ -1,6 +1,6 @@
 import string
 from django.test import TestCase
-from djplus.auth.utils import generate_random_string
+from dj.auth.utils import generate_random_string
 
 
 class GenerateRandomStringTests(TestCase):

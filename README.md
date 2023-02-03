@@ -21,26 +21,27 @@ pip install djplus
 ## Create Project
 Simple command line for jumpstarting production-ready Django projects:
 ```shell
-djplus
+dj
 ```
 or
 ```shell
-python -m djplus
+python -m dj
 ```
 
 ## Auth
+
 ```python
 #settings.py
 
 INSTALLED_APPS = [
     # ...
-    "djplus.auth", 
+    "dj.auth", 
     # ...
 ]
 
 MIDDLEWARE = [
     # ...
-    'djplus.auth.middleware.AuthenticationMiddleware',
+    'dj.auth.middleware.AuthenticationMiddleware',
     # ...
 ]
 ```
@@ -49,7 +50,7 @@ MIDDLEWARE = [
 
 urlpatterns = [
     # ...
-    path("auth/", include("djplus.auth.urls", namespace="auth")),
+    path("auth/", include("dj.auth.urls", namespace="auth")),
     # ...
 ]
 ```
@@ -59,7 +60,7 @@ urlpatterns = [
 
 INSTALLED_APPS = [
     # ...
-    "djplus.blog", 
+    "dj.blog", 
     # ...
 ]
 ```
@@ -68,7 +69,7 @@ INSTALLED_APPS = [
 
 urlpatterns = [
     # ...
-    path("blog/", include("djplus.blog.urls", namespace="blog")),
+    path("blog/", include("dj.blog.urls", namespace="blog")),
     # ...
 ]
 ```

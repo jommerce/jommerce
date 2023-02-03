@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
 from django.utils.module_loading import import_string
 from django.utils.translation import gettext_lazy as _
-from djplus.auth.conf import settings
+from dj.auth.conf import settings
 
 
 def get_username_validators():

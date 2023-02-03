@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from djplus.auth.validators import UsernameLengthValidator
+from dj.auth.validators import UsernameLengthValidator
 
 
 def identifier(username: str):
