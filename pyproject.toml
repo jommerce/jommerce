@@ -1,22 +1,22 @@
 [tool.poetry]
 name = "djplus"
-version = "2.1.0"
-description = "More than a reusable app"
+version = "3.0.0"
+description = "A collection of Django apps"
 license = "MIT"
 authors = ["githashem <PersonalHashem@gmail.com>"]
 readme = "README.md"
-keywords = ["djplus"]
+keywords = ["django", "dj", "extra", "contrib"]
 
-repository = "https://github.com/githashem/djplus"
+repository = "https://github.com/githashem/dj"
 
 include = [
     "README.md",
     "LICENSE",
     "CHANGELOG.md",
-    "djplus/project_template/*",
-    "djplus/templates/*",
-    "djplus/static/*",
-    "djplus/djplus.toml",
+    "dj/project_template/*",
+    "dj/templates/*",
+    "dj/static/*",
+    "dj/dj.toml",
 ]
 
 classifiers = [
@@ -50,8 +50,8 @@ Sphinx = "^5.0.1"
 sphinx-rtd-theme = "^1.0.0"
 
 [tool.poetry.scripts]
-djplus = "djplus.__main__:main"
-djplusconfig = "djplus.__main__:generate_config_file"
+dj = "dj.__main__:main"
+djonfig = "dj.__main__:generate_config_file"
 
 [build-system]
 requires = ["poetry-core"]

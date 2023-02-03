@@ -11,12 +11,12 @@ PROJECT_TEMPLATE_DIR = Path(__file__).parent / "project_template"
 
 
 def generate_config_file():
-    shutil.copyfile(Path(__file__).parent / "djplus.toml", Path.home() / "djplus.toml")
+    shutil.copyfile(Path(__file__).parent / "dj.toml", Path.home() / "dj.toml")
 
 
 def main():
     try:
-        with open(Path.home() / "djplus.toml", "rb") as file:
+        with open(Path.home() / "dj.toml", "rb") as file:
             config = toml.load(file)
     except (FileNotFoundError, ModuleNotFoundError):
         config = {}

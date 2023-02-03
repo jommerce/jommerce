@@ -4,12 +4,12 @@
 ![license](https://img.shields.io/pypi/l/djplus?color=blue&style=flat-square)
 
 # Why does this package exist?
-Because as a freelancer, when I look at all customer orders, 
-I see that 80% of those projects have common apps such as 
-authentication, blog, store, admin, academy, community, etc. 
-So we made this package to code all these apps **only once** and 
-use them in **several projects** (Don't Repeat Yourself) and 
-these apps can be **customized** by the **settings of each project**.
+Because 80% of customer projects have common apps 
+such as authentication, store, admin, blog, forum, academy, etc. 
+Therefore, as freelancers, we decided to code all these apps only once in one place 
+and use them in different projects as often as desired, 
+and all these apps can be customized by the settings of each project.
+This helps to save our time and increase our income in exchange for doing projects.
 
 # Installing
 You can use pip to install `djplus` for usage:
@@ -21,26 +21,27 @@ pip install djplus
 ## Create Project
 Simple command line for jumpstarting production-ready Django projects:
 ```shell
-djplus
+dj
 ```
 or
 ```shell
-python -m djplus
+python -m dj
 ```
 
 ## Auth
+
 ```python
 #settings.py
 
 INSTALLED_APPS = [
     # ...
-    "djplus.auth", 
+    "dj.auth", 
     # ...
 ]
 
 MIDDLEWARE = [
     # ...
-    'djplus.auth.middleware.AuthenticationMiddleware',
+    'dj.auth.middleware.AuthenticationMiddleware',
     # ...
 ]
 ```
@@ -49,7 +50,7 @@ MIDDLEWARE = [
 
 urlpatterns = [
     # ...
-    path("auth/", include("djplus.auth.urls", namespace="auth")),
+    path("auth/", include("dj.auth.urls", namespace="auth")),
     # ...
 ]
 ```
@@ -59,7 +60,7 @@ urlpatterns = [
 
 INSTALLED_APPS = [
     # ...
-    "djplus.blog", 
+    "dj.blog", 
     # ...
 ]
 ```
@@ -68,7 +69,7 @@ INSTALLED_APPS = [
 
 urlpatterns = [
     # ...
-    path("blog/", include("djplus.blog.urls", namespace="blog")),
+    path("blog/", include("dj.blog.urls", namespace="blog")),
     # ...
 ]
 ```

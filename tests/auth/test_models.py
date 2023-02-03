@@ -1,6 +1,6 @@
 from django.test import TestCase, override_settings
 from django.utils import timezone
-from djplus.auth.models import User, AnonymousUser, Session
+from dj.auth.models import User, AnonymousUser, Session
 
 
 class UserModelTests(TestCase):

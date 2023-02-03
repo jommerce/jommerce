@@ -2,8 +2,8 @@ from datetime import datetime
 from django.test import TestCase, RequestFactory
 from django.http import HttpResponse
 from django.conf import settings
-from djplus.auth.middleware import AuthenticationMiddleware, AnonymousUser
-from djplus.auth.models import User, Session
+from dj.auth.middleware import AuthenticationMiddleware, AnonymousUser
+from dj.auth.models import User, Session
 
 SESSION_COOKIE_NAME = settings.AUTH_SESSION_COOKIE_NAME
 

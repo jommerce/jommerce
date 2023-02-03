@@ -2,10 +2,10 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-from djplus.auth.conf import settings
-import djplus.auth.models
-import djplus.auth.validators.password
-from djplus.auth.validators import get_password_validators
+from dj.auth.conf import settings
+import dj.auth.models
+import dj.auth.validators.password
+from dj.auth.validators import get_password_validators
 
 
 class Migration(migrations.Migration):
@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Session',
             fields=[
-                ('id', models.CharField(default=djplus.auth.models.generate_session_id, max_length=32, primary_key=True, serialize=False, verbose_name='id')),
+                ('id', models.CharField(default=dj.auth.models.generate_session_id, max_length=32, primary_key=True, serialize=False, verbose_name='id')),
                 ('user', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='sessions', to=settings.AUTH_USER_MODEL, verbose_name='user')),
             ],
             options={

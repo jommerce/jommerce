@@ -60,7 +60,7 @@ coverage.xml
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
-djplus/project/settings/local.py
+dj/project/settings/local.py
 
 # Flask stuff:
 instance/
