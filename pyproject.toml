@@ -6,6 +6,9 @@ license = "MIT"
 authors = ["githashem <PersonalHashem@gmail.com>"]
 readme = "README.md"
 keywords = ["django", "dj", "extra", "contrib"]
+packages = [
+    { include = "dj" },
+]
 
 repository = "https://github.com/githashem/dj"
 
