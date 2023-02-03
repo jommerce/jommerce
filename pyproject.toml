@@ -7,7 +7,7 @@ authors = ["githashem <PersonalHashem@gmail.com>"]
 readme = "README.md"
 keywords = ["django", "dj", "extra", "contrib"]
 
-repository = "https://github.com/githashem/djplus"
+repository = "https://github.com/githashem/dj"
 
 include = [
     "README.md",
