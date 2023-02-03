@@ -9,7 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add initial djplus project.
 - Add `ip` field to `Session` model.
 - Add `status` field to `User` model.
-### Breaking Changes
+### Fixed
+- Executable command line without `tomllib` library.
+### Changed
+- Rename `djplus` command line to `dj`.
+- Rename `djplusconfig` command line to `djonfig`.
+### Breaking Change
 - Change the name of the package from `djplus` to `dj`.
 
 ## [2.1.0] - 2022-10-27
