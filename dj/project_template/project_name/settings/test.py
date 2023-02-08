@@ -11,3 +11,9 @@ SECRET_KEY = "Fake Key"
 INSTALLED_APPS += [
     "tests",
 ]
+
+
+try:
+    from .local import *
+except ImportError:
+    pass
