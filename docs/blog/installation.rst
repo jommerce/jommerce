@@ -5,13 +5,13 @@ installation
 
 1. Install the App
 ==================
-Add ``"djplus.blog"`` to your ``INSTALLED_APPS`` setting:
+Add ``dj.blog`` to your ``INSTALLED_APPS`` setting:
 
 .. code-block:: python
 
     INSTALLED_APPS = [
         # ...
-        "djplus.blog",
+        "dj.blog",
         # ...
     ]
 
@@ -25,7 +25,7 @@ Add blog URLs to your project's URLconf:
 
     urlpatterns = [
         # ...
-        path('blog/', include('djplus.blog.urls', namespace="blog")),
+        path('blog/', include('dj.blog.urls', namespace="blog")),
         # ...
     ]
 

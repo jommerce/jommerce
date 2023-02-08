@@ -2,14 +2,11 @@
 command-line
 ============
 
-djplus
-======
+dj
+    Simple command line for jumpstarting production-ready Django projects.
 
-:synopsis: Command to generate Django project
+djonfig
+    Simple command line for generating the ``dj.toml`` file in the home directory.
 
-
-
-djplusconfig
-============
-
-:synopsis: Command to generate the ``djplus.toml`` file in the home directory
+djecret
+    Simple command line for generating a new secret key for your project.
