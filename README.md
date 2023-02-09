@@ -2,6 +2,7 @@
 ![django version](https://img.shields.io/pypi/djversions/djplus?style=flat-square)
 ![python version](https://img.shields.io/pypi/pyversions/djplus?style=flat-square)
 ![license](https://img.shields.io/pypi/l/djplus?color=blue&style=flat-square)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 # Why does this package exist?
 Because 80% of customer projects have common apps 

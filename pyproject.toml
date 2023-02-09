@@ -47,6 +47,7 @@ django-ipware = "^4.0.2"
 [tool.poetry.group.dev.dependencies]
 django-debug-toolbar = "^3.2.4"
 ipython = "^8.2.0"
+black = "^23.1.0"
 
 [tool.poetry.group.docs.dependencies]
 Sphinx = "^5.0.1"
@@ -60,3 +61,8 @@ djecret = "dj.__main__:get_random_secret_key"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+extend-exclude = '''
+dj/project_template/*
+'''
