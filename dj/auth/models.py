@@ -11,9 +11,14 @@ class User(models.Model):
     class Status(models.IntegerChoices):
         INACTIVE = 0
         ACTIVE = 1
+
     email = models.EmailField(_("email"), max_length=64, unique=True)
-    password = models.CharField(_("password"), max_length=128, validators=get_password_validators())
-    status = models.SmallIntegerField(_("status"), choices=Status.choices, default=Status.INACTIVE)
+    password = models.CharField(
+        _("password"), max_length=128, validators=get_password_validators()
+    )
+    status = models.SmallIntegerField(
+        _("status"), choices=Status.choices, default=Status.INACTIVE
+    )
 
     __original_password = None
 
@@ -74,7 +79,9 @@ def get_default_expire_date():
 
 
 class Session(models.Model):
-    id = models.CharField(_("id"), max_length=32, primary_key=True, default=generate_session_id)
+    id = models.CharField(
+        _("id"), max_length=32, primary_key=True, default=generate_session_id
+    )
     user = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -83,7 +90,9 @@ class Session(models.Model):
         null=True,
         default=None,
     )
-    expire_date = models.DateTimeField(_("expire_date"), blank=True, default=get_default_expire_date)
+    expire_date = models.DateTimeField(
+        _("expire_date"), blank=True, default=get_default_expire_date
+    )
     data = models.JSONField(_("data"), default=dict, blank=True)
     ip = models.GenericIPAddressField(_("IP"))
 
@@ -116,7 +125,7 @@ class Session(models.Model):
             return super().save(args, kwargs)
 
     def get(self, key, default=None):
-        """ Return the value for key if key is in the dictionary, else default. """
+        """Return the value for key if key is in the dictionary, else default."""
         self.accessed = True
         return self.data.get(key, default)
 

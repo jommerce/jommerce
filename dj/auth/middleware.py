@@ -11,7 +11,9 @@ class AuthenticationMiddleware:
 
     def __call__(self, request: HttpRequest):
         try:
-            session = Session.objects.get(pk=request.COOKIES.get(settings.AUTH_SESSION_COOKIE_NAME, None))
+            session = Session.objects.get(
+                pk=request.COOKIES.get(settings.AUTH_SESSION_COOKIE_NAME, None)
+            )
         except Session.DoesNotExist:
             request.session = Session()
             request.user = AnonymousUser()

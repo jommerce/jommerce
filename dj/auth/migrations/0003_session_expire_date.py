@@ -5,15 +5,18 @@ import dj.auth.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('auth', '0002_session_data'),
+        ("auth", "0002_session_data"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='session',
-            name='expire_date',
-            field=models.DateTimeField(blank=True, default=dj.auth.models.get_default_expire_date, verbose_name='expire_date'),
+            model_name="session",
+            name="expire_date",
+            field=models.DateTimeField(
+                blank=True,
+                default=dj.auth.models.get_default_expire_date,
+                verbose_name="expire_date",
+            ),
         ),
     ]

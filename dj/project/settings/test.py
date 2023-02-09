@@ -15,6 +15,4 @@ INSTALLED_APPS += [
 
 # Authentication
 # ----------------------------------------------------------------------------------------------------------------------
-AUTH_PASSWORD_HASHERS = (
-    "tests.auth.test_hashers.pbkdf2_hasher",
-)
+AUTH_PASSWORD_HASHERS = ("tests.auth.test_hashers.pbkdf2_hasher",)

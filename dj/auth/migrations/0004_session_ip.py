@@ -4,16 +4,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('auth', '0003_session_expire_date'),
+        ("auth", "0003_session_expire_date"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='session',
-            name='ip',
-            field=models.GenericIPAddressField(default='', verbose_name='IP'),
+            model_name="session",
+            name="ip",
+            field=models.GenericIPAddressField(default="", verbose_name="IP"),
             preserve_default=False,
         ),
     ]

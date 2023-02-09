@@ -43,7 +43,9 @@ def signup(request):
         try:
             User.objects.get(email=request.POST["email"])
         except User.DoesNotExist:
-            User.objects.create(email=request.POST["email"], password=request.POST["password"])
+            User.objects.create(
+                email=request.POST["email"], password=request.POST["password"]
+            )
             return redirect(settings.AUTH_SIGNUP_REDIRECT_URL)
         else:
             form.add_error("email", _("This email already exists."))

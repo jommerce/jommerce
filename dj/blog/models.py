@@ -15,7 +15,9 @@ class Post(models.Model):
     title = models.CharField(_("title"), max_length=100, unique=True)
     slug = models.SlugField(_("slug"), max_length=100, unique=True)
     content = models.TextField(_("content"), blank=True)
-    publication_date = models.DateTimeField(_("publication date"), null=True, blank=True, default=None)
+    publication_date = models.DateTimeField(
+        _("publication date"), null=True, blank=True, default=None
+    )
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
     category = models.ForeignKey(
@@ -55,8 +57,12 @@ class Category(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=("slug", "parent"), name="unique_slugs_under_same_parent"),
-            models.UniqueConstraint(fields=("name", "parent"), name="unique_names_under_same_parent"),
+            models.UniqueConstraint(
+                fields=("slug", "parent"), name="unique_slugs_under_same_parent"
+            ),
+            models.UniqueConstraint(
+                fields=("name", "parent"), name="unique_names_under_same_parent"
+            ),
         ]
         verbose_name = _("category")
         verbose_name_plural = _("categories")

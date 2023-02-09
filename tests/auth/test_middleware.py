@@ -48,7 +48,9 @@ class AuthenticationMiddlewareTests(TestCase):
         self.assertIsInstance(self.request.user, AnonymousUser)
         self.assertIsNone(self.request.session.user)
 
-    def test_identify_an_anonymous_user_whose_session_does_not_exist_in_the_database(self):
+    def test_identify_an_anonymous_user_whose_session_does_not_exist_in_the_database(
+        self,
+    ):
         self.request.COOKIES[SESSION_COOKIE_NAME] = "fake_session"
         self.middleware(self.request)
         self.assertIsInstance(self.request.user, AnonymousUser)
@@ -67,15 +69,19 @@ class AuthenticationMiddlewareTests(TestCase):
         def view(request):
             request.session.save()
             return HttpResponse()
+
         middleware = AuthenticationMiddleware(view)
         middleware(self.request)
-        with self.assertRaises(Session.DoesNotExist): # noqa
+        with self.assertRaises(Session.DoesNotExist):  # noqa
             Session.objects.get(id=self.request.session.id)
 
     def test_saving_full_sessions(self):
         def view(request):
-            request.session.user = User.objects.create(email="staff@example.com", password="123456")
+            request.session.user = User.objects.create(
+                email="staff@example.com", password="123456"
+            )
             return HttpResponse()
+
         middleware = AuthenticationMiddleware(view)
         middleware(self.request)
         try:
@@ -84,7 +90,11 @@ class AuthenticationMiddlewareTests(TestCase):
             self.fail("The desired session has not been saved")
 
     def test_delete_expired_session(self):
-        Session.objects.create(id="expired session", data={"key": "value"}, expire_date=datetime(2021, 8, 1))
+        Session.objects.create(
+            id="expired session",
+            data={"key": "value"},
+            expire_date=datetime(2021, 8, 1),
+        )
         self.request.COOKIES[SESSION_COOKIE_NAME] = "expired session"
         self.middleware(self.request)
         with self.assertRaises(Session.DoesNotExist):  # noqa
@@ -112,7 +122,9 @@ class AuthenticationMiddlewareTests(TestCase):
         self.request.COOKIES[SESSION_COOKIE_NAME] = "user_session"
         with self.settings(AUTH_SESSION_COOKIE_SAMESITE="Strict"):
             response = self.middleware(self.request)
-            self.assertEqual(response.cookies[SESSION_COOKIE_NAME]["samesite"], "Strict")
+            self.assertEqual(
+                response.cookies[SESSION_COOKIE_NAME]["samesite"], "Strict"
+            )
         with self.settings(AUTH_SESSION_COOKIE_SAMESITE="Lax"):
             response = self.middleware(self.request)
             self.assertEqual(response.cookies[SESSION_COOKIE_NAME]["samesite"], "Lax")
@@ -128,10 +140,14 @@ class AuthenticationMiddlewareTests(TestCase):
         self.request.COOKIES[SESSION_COOKIE_NAME] = "user_session"
         with self.settings(AUTH_SESSION_COOKIE_DOMAIN=".example.com"):
             response = self.middleware(self.request)
-            self.assertEqual(response.cookies[SESSION_COOKIE_NAME]["domain"], ".example.com")
+            self.assertEqual(
+                response.cookies[SESSION_COOKIE_NAME]["domain"], ".example.com"
+            )
         with self.settings(AUTH_SESSION_COOKIE_DOMAIN="example.local"):
             response = self.middleware(self.request)
-            self.assertEqual(response.cookies[SESSION_COOKIE_NAME]["domain"], "example.local")
+            self.assertEqual(
+                response.cookies[SESSION_COOKIE_NAME]["domain"], "example.local"
+            )
         with self.settings(AUTH_SESSION_COOKIE_DOMAIN=None):
             response = self.middleware(self.request)
             self.assertEqual(response.cookies[SESSION_COOKIE_NAME]["domain"], "")

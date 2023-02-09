@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('auth', '0004_session_ip'),
+        ("auth", "0004_session_ip"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='status',
-            field=models.SmallIntegerField(choices=[(0, 'Inactive'), (1, 'Active')], default=0, verbose_name='status'),
+            model_name="user",
+            name="status",
+            field=models.SmallIntegerField(
+                choices=[(0, "Inactive"), (1, "Active")],
+                default=0,
+                verbose_name="status",
+            ),
         ),
     ]

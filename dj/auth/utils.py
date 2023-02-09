@@ -2,11 +2,15 @@ import string
 import secrets
 
 
-def generate_random_string(length=6, lowercase=True, uppercase=True, digit=True, symbol=True):
+def generate_random_string(
+    length=6, lowercase=True, uppercase=True, digit=True, symbol=True
+):
     if length < 0:
         raise ValueError("Length can't contain negative values")
     if not any((lowercase, uppercase, digit, symbol)):
-        raise ValueError("At least one of these arguments must be True. {lowercase, uppercase, digit, symbol}")
+        raise ValueError(
+            "At least one of these arguments must be True. {lowercase, uppercase, digit, symbol}"
+        )
 
     values = set()
     characters = ""
@@ -26,7 +30,9 @@ def generate_random_string(length=6, lowercase=True, uppercase=True, digit=True,
     try:
         indexes = secrets.SystemRandom().sample(range(length), len(values))
     except ValueError:
-        raise ValueError(f"With the given arguments, the `length` value must be at least {len(values)}")
+        raise ValueError(
+            f"With the given arguments, the `length` value must be at least {len(values)}"
+        )
 
     s = [secrets.choice(characters) for _ in range(length)]
     for index, value in zip(indexes, values):

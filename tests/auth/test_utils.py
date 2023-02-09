@@ -33,7 +33,7 @@ class GenerateRandomStringTests(TestCase):
     def test_generate_without_digit_characters(self):
         s = generate_random_string(digit=False)
         self.assertFalse(any(map(str.isdigit, s)))
-        
+
     def test_generate_at_least_one_special_character(self):
         s = generate_random_string(symbol=True)
         self.assertTrue(any(char in s for char in string.punctuation))
@@ -42,8 +42,12 @@ class GenerateRandomStringTests(TestCase):
         s = generate_random_string(symbol=False)
         self.assertFalse(any(char in s for char in string.punctuation))
 
-    def test_a_string_of_length_4_that_includes_letters_and_numbers_and_special_characters(self):
-        s = generate_random_string(length=4, lowercase=True, uppercase=True, digit=True, symbol=True)
+    def test_a_string_of_length_4_that_includes_letters_and_numbers_and_special_characters(
+        self,
+    ):
+        s = generate_random_string(
+            length=4, lowercase=True, uppercase=True, digit=True, symbol=True
+        )
         self.assertTrue(any(map(str.islower, s)))
         self.assertTrue(any(map(str.isupper, s)))
         self.assertTrue(any(map(str.isdigit, s)))
@@ -57,17 +61,29 @@ class GenerateRandomStringTests(TestCase):
             generate_random_string(length=-6)
 
     def test_error_not_enough_length_to_generate(self):
-        expected_error = "With the given arguments, the `length` value must be at least %(length)d"
+        expected_error = (
+            "With the given arguments, the `length` value must be at least %(length)d"
+        )
         with self.assertRaisesMessage(ValueError, expected_error % {"length": 1}):
-            generate_random_string(length=0, lowercase=False, uppercase=False, digit=True, symbol=False)
+            generate_random_string(
+                length=0, lowercase=False, uppercase=False, digit=True, symbol=False
+            )
         with self.assertRaisesMessage(ValueError, expected_error % {"length": 2}):
-            generate_random_string(length=1, lowercase=True, uppercase=True, digit=False, symbol=False)
+            generate_random_string(
+                length=1, lowercase=True, uppercase=True, digit=False, symbol=False
+            )
         with self.assertRaisesMessage(ValueError, expected_error % {"length": 3}):
-            generate_random_string(length=0, lowercase=True, uppercase=False, digit=True, symbol=True)
+            generate_random_string(
+                length=0, lowercase=True, uppercase=False, digit=True, symbol=True
+            )
         with self.assertRaisesMessage(ValueError, expected_error % {"length": 4}):
-            generate_random_string(length=3, lowercase=True, uppercase=True, digit=True, symbol=True)
+            generate_random_string(
+                length=3, lowercase=True, uppercase=True, digit=True, symbol=True
+            )
 
     def test_raise_when_all_of_the_arguments_are_false(self):
         expected_error = "At least one of these arguments must be True. {lowercase, uppercase, digit, symbol}"
         with self.assertRaisesMessage(ValueError, expected_error):
-            generate_random_string(lowercase=False, uppercase=False, digit=False, symbol=False)
+            generate_random_string(
+                lowercase=False, uppercase=False, digit=False, symbol=False
+            )

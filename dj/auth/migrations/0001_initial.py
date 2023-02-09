@@ -9,34 +9,69 @@ from dj.auth.validators import get_password_validators
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('email', models.EmailField(max_length=64, unique=True, verbose_name='email')),
-                ('password', models.CharField(max_length=128, validators=get_password_validators(), verbose_name='password')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(max_length=64, unique=True, verbose_name="email"),
+                ),
+                (
+                    "password",
+                    models.CharField(
+                        max_length=128,
+                        validators=get_password_validators(),
+                        verbose_name="password",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'user',
-                'verbose_name_plural': 'users',
+                "verbose_name": "user",
+                "verbose_name_plural": "users",
             },
         ),
         migrations.CreateModel(
-            name='Session',
+            name="Session",
             fields=[
-                ('id', models.CharField(default=dj.auth.models.generate_session_id, max_length=32, primary_key=True, serialize=False, verbose_name='id')),
-                ('user', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='sessions', to=settings.AUTH_USER_MODEL, verbose_name='user')),
+                (
+                    "id",
+                    models.CharField(
+                        default=dj.auth.models.generate_session_id,
+                        max_length=32,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="id",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        default=None,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="sessions",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="user",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'session',
-                'verbose_name_plural': 'sessions',
+                "verbose_name": "session",
+                "verbose_name_plural": "sessions",
             },
         ),
     ]

@@ -3,6 +3,6 @@ from django.utils.translation import gettext_lazy as _
 
 
 class BlogConfig(AppConfig):
-    default_auto_field = 'django.db.models.AutoField'
-    name = 'dj.blog'
+    default_auto_field = "django.db.models.AutoField"
+    name = "dj.blog"
     verbose_name = _("blog")

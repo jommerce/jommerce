@@ -44,7 +44,9 @@ class PasswordHasherTestMixin:
 
     def test_verify_hashed_password(self):
         self.assertTrue(self.hasher.verify(self.password, self.hashed_password))
-        self.assertFalse(self.hasher.verify(generate_random_string(length=6), self.hashed_password))
+        self.assertFalse(
+            self.hasher.verify(generate_random_string(length=6), self.hashed_password)
+        )
 
     def test_use_salt(self):
         hashed_password2 = self.hasher.hash(self.password)

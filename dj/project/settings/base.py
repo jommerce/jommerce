@@ -1,4 +1,4 @@
-from os import environ as SECRETS # noqa
+from os import environ as SECRETS  # noqa
 from pathlib import Path
 
 
@@ -11,8 +11,8 @@ PROJECT_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = SECRETS.get("DJANGO_SECRET_KEY")
 DEBUG = True
 ALLOWED_HOSTS = SECRETS.get("DJANGO_ALLOWED_HOSTS", "").split()
-ROOT_URLCONF = 'dj.project.urls'
-WSGI_APPLICATION = 'dj.project.wsgi.application'
+ROOT_URLCONF = "dj.project.urls"
+WSGI_APPLICATION = "dj.project.wsgi.application"
 
 
 # Apps
@@ -27,11 +27,11 @@ INSTALLED_APPS = [
 # Middleware
 # ----------------------------------------------------------------------------------------------------------------------
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'dj.auth.middleware.AuthenticationMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "dj.auth.middleware.AuthenticationMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 
@@ -39,13 +39,13 @@ MIDDLEWARE = [
 # ----------------------------------------------------------------------------------------------------------------------
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [PROJECT_DIR / "templates"],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [PROJECT_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
             ],
         },
     },
@@ -55,19 +55,19 @@ TEMPLATES = [
 # Databases
 # ----------------------------------------------------------------------------------------------------------------------
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 
 # Internationalization
 # ----------------------------------------------------------------------------------------------------------------------
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -76,7 +76,7 @@ USE_TZ = True
 
 # Static and Media files
 # ----------------------------------------------------------------------------------------------------------------------
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [
     PROJECT_DIR / "static",

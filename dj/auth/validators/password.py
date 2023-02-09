@@ -28,7 +28,7 @@ def uppercase(password):
 
 
 def symbol(password):
-    special_characters = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+    special_characters = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
     if not any(char in special_characters for char in password):
         raise ValidationError(
             _("at least one special character"),

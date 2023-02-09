@@ -33,24 +33,36 @@ class UserModelTests(TestCase):
 
     def test_upgrade_password_hasher(self):
         password = "p@ssword"
-        with self.settings(AUTH_PASSWORD_HASHERS=[
-            "tests.auth.test_hashers.pbkdf2_hasher",
-            "tests.auth.test_hashers.scrypt_hasher",
-        ]):
+        with self.settings(
+            AUTH_PASSWORD_HASHERS=[
+                "tests.auth.test_hashers.pbkdf2_hasher",
+                "tests.auth.test_hashers.scrypt_hasher",
+            ]
+        ):
             user = User.objects.create(email="user@gmail.com", password=password)
             self.assertIs(user.verify_password(password), True)
-        with self.settings(AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.scrypt_hasher"]):
+        with self.settings(
+            AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.scrypt_hasher"]
+        ):
             self.assertIs(user.verify_password(password), False)
-        with self.settings(AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.pbkdf2_hasher"]):
+        with self.settings(
+            AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.pbkdf2_hasher"]
+        ):
             self.assertIs(user.verify_password(password), True)
-        with self.settings(AUTH_PASSWORD_HASHERS=[
-            "tests.auth.test_hashers.scrypt_hasher",
-            "tests.auth.test_hashers.pbkdf2_hasher",
-        ]):
+        with self.settings(
+            AUTH_PASSWORD_HASHERS=[
+                "tests.auth.test_hashers.scrypt_hasher",
+                "tests.auth.test_hashers.pbkdf2_hasher",
+            ]
+        ):
             self.assertIs(user.verify_password(password), True)
-        with self.settings(AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.scrypt_hasher"]):
+        with self.settings(
+            AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.scrypt_hasher"]
+        ):
             self.assertIs(user.verify_password(password), True)
-        with self.settings(AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.pbkdf2_hasher"]):
+        with self.settings(
+            AUTH_PASSWORD_HASHERS=["tests.auth.test_hashers.pbkdf2_hasher"]
+        ):
             self.assertIs(user.verify_password(password), False)
 
 
@@ -82,7 +94,9 @@ class SessionModelTests(TestCase):
 
     @override_settings(AUTH_SESSION_COOKIE_AGE=10)
     def test_default_expire_date(self):
-        self.assertEqual(Session().expire_date, timezone.now() + timezone.timedelta(seconds=10))
+        self.assertEqual(
+            Session().expire_date, timezone.now() + timezone.timedelta(seconds=10)
+        )
 
     def test_new_session(self):
         self.assertIs(self.session.modified, False)
@@ -153,7 +167,9 @@ class SessionModelTests(TestCase):
         self.assertIs(self.session.modified, True)
 
     def test_setdefault_default_named_argument(self):
-        self.assertEqual(self.session.setdefault("test key", default="test value"), "test value")
+        self.assertEqual(
+            self.session.setdefault("test key", default="test value"), "test value"
+        )
         self.assertIn("test key", self.session.data)
         self.assertIs(self.session.accessed, True)
         self.assertIs(self.session.modified, True)
@@ -166,4 +182,3 @@ class SessionModelTests(TestCase):
         self.assertEqual(self.session["test key"], "test value")
         self.assertIs(self.session.accessed, True)
         self.assertIs(self.session.modified, True)
-

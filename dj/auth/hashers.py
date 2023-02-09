@@ -21,7 +21,9 @@ except ImportError:
 
 @functools.lru_cache
 def get_hashers():
-    return [import_string(hasher_path) for hasher_path in settings.AUTH_PASSWORD_HASHERS]
+    return [
+        import_string(hasher_path) for hasher_path in settings.AUTH_PASSWORD_HASHERS
+    ]
 
 
 class BasePasswordHasher(ABC):
@@ -32,12 +34,16 @@ class BasePasswordHasher(ABC):
         pass
 
     def verify(self, raw_password, hashed_password):
-        salt = hashed_password[:self.salt_length]
-        return secrets.compare_digest(hashed_password.encode(), self.hash(raw_password, salt).encode())
+        salt = hashed_password[: self.salt_length]
+        return secrets.compare_digest(
+            hashed_password.encode(), self.hash(raw_password, salt).encode()
+        )
 
 
 class PBKDF2PasswordHasher(BasePasswordHasher):
-    def __init__(self, iterations=480_000, digest_name="sha256", digest_size=None, salt_length=32):
+    def __init__(
+        self, iterations=480_000, digest_name="sha256", digest_size=None, salt_length=32
+    ):
         self.iterations = iterations
         self.digest_name = digest_name
         self.digest_size = digest_size
@@ -57,7 +63,16 @@ class PBKDF2PasswordHasher(BasePasswordHasher):
 
 
 class Argon2PasswordHasher(BasePasswordHasher):
-    def __init__(self, time_cost=2, memory_cost=102_400, parallelism=8, hash_length=32, salt_length=16, type="argon2id", version=19):
+    def __init__(
+        self,
+        time_cost=2,
+        memory_cost=102_400,
+        parallelism=8,
+        hash_length=32,
+        salt_length=16,
+        type="argon2id",
+        version=19,
+    ):
         self.time_cost = time_cost
         self.memory_cost = memory_cost
         self.parallelism = parallelism
@@ -75,20 +90,26 @@ class Argon2PasswordHasher(BasePasswordHasher):
         elif self._type == "argon2i":
             return argon2.Type.I
         else:
-            raise ValueError("'type' must be one of these values. {'argon2id', 'argon2i', 'argon2d'}")
+            raise ValueError(
+                "'type' must be one of these values. {'argon2id', 'argon2i', 'argon2d'}"
+            )
 
     def hash(self, password, salt=None):
         salt = salt or generate_random_string(self.salt_length, symbol=False)
-        hashed = argon2.low_level.hash_secret(
-            password.encode(),
-            salt.encode(),
-            time_cost=self.time_cost,
-            memory_cost=self.memory_cost,
-            parallelism=self.parallelism,
-            hash_len=self.hash_length,
-            type=self.type,
-            version=self.version,
-        ).decode("ascii").rsplit("$", 1)[1]
+        hashed = (
+            argon2.low_level.hash_secret(
+                password.encode(),
+                salt.encode(),
+                time_cost=self.time_cost,
+                memory_cost=self.memory_cost,
+                parallelism=self.parallelism,
+                hash_len=self.hash_length,
+                type=self.type,
+                version=self.version,
+            )
+            .decode("ascii")
+            .rsplit("$", 1)[1]
+        )
         return salt + hashed
 
 
@@ -102,7 +123,11 @@ class BcryptPasswordHasher(BasePasswordHasher):
         password = password.encode()
         if self.digest is not None:
             password = binascii.hexlify(self.digest(password).digest())
-        return bcrypt.hashpw(password, bcrypt.gensalt(int(self.rounds), self.prefix)).decode("ascii").rsplit("$", 1)[1]
+        return (
+            bcrypt.hashpw(password, bcrypt.gensalt(int(self.rounds), self.prefix))
+            .decode("ascii")
+            .rsplit("$", 1)[1]
+        )
 
     def verify(self, raw_password, hashed_password):
         password = raw_password.encode()
@@ -110,12 +135,19 @@ class BcryptPasswordHasher(BasePasswordHasher):
             password = binascii.hexlify(self.digest(password).digest())
         return bcrypt.checkpw(
             password,
-            b"$" + self.prefix + b"$" + str(self.rounds).encode() + b"$" + hashed_password.encode(),
+            b"$"
+            + self.prefix
+            + b"$"
+            + str(self.rounds).encode()
+            + b"$"
+            + hashed_password.encode(),
         )
 
 
 class ScryptPasswordHasher(BasePasswordHasher):
-    def __init__(self, block_size=8, parallelism=1, work_factor=2**14, maxmem=0, salt_length=32):
+    def __init__(
+        self, block_size=8, parallelism=1, work_factor=2**14, maxmem=0, salt_length=32
+    ):
         self.block_size = block_size
         self.parallelism = parallelism
         self.work_factor = work_factor
@@ -137,4 +169,6 @@ class ScryptPasswordHasher(BasePasswordHasher):
         return salt + hash_
 
 
-default = PBKDF2PasswordHasher(iterations=480_000, digest_name="sha256", digest_size=None, salt_length=32)
+default = PBKDF2PasswordHasher(
+    iterations=480_000, digest_name="sha256", digest_size=None, salt_length=32
+)

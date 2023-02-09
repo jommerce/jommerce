@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('auth', '0001_initial'),
+        ("auth", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='session',
-            name='data',
-            field=models.JSONField(blank=True, default=dict, verbose_name='data'),
+            model_name="session",
+            name="data",
+            field=models.JSONField(blank=True, default=dict, verbose_name="data"),
         ),
     ]

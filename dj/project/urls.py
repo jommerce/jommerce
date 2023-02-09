@@ -8,6 +8,7 @@ urlpatterns = [
 
 if "django.contrib.admin" in settings.INSTALLED_APPS:
     from django.contrib import admin
+
     urlpatterns += [path("admin/", admin.site.urls)]
 
 if "dj.auth" in settings.INSTALLED_APPS:

@@ -6,30 +6,65 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('auth', '0001_initial'),
+        ("auth", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Post',
+            name="Post",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100, unique=True, verbose_name='title')),
-                ('slug', models.SlugField(max_length=100, unique=True, verbose_name='slug')),
-                ('content', models.TextField(blank=True, verbose_name='content')),
-                ('publication_date', models.DateTimeField(blank=True, default=None, null=True, verbose_name='publication date')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='updated at')),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='posts', to=settings.AUTH_USER_MODEL, verbose_name='author')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "title",
+                    models.CharField(max_length=100, unique=True, verbose_name="title"),
+                ),
+                (
+                    "slug",
+                    models.SlugField(max_length=100, unique=True, verbose_name="slug"),
+                ),
+                ("content", models.TextField(blank=True, verbose_name="content")),
+                (
+                    "publication_date",
+                    models.DateTimeField(
+                        blank=True,
+                        default=None,
+                        null=True,
+                        verbose_name="publication date",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="created at"),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="updated at"),
+                ),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="posts",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="author",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'post',
-                'verbose_name_plural': 'posts',
-                'ordering': ('-publication_date',),
+                "verbose_name": "post",
+                "verbose_name_plural": "posts",
+                "ordering": ("-publication_date",),
             },
         ),
     ]

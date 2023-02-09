@@ -1,6 +1,7 @@
 from django.core.management.templates import TemplateCommand
 from django.core.management.utils import get_random_secret_key
 from pathlib import Path
+
 try:
     import tomllib as toml
 except ModuleNotFoundError:
@@ -30,7 +31,6 @@ def main():
         extensions=[".py", ".py-tpl", ".txt"],
         exclude=[],
         verbosity=0,
-
         secret_key=get_random_secret_key(),
         domain_name=input("domain_name[example.local]: ").strip() or "example.local",
         **config,
