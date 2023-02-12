@@ -2,10 +2,10 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-from dj.auth.conf import settings
-import dj.auth.models
-import dj.auth.validators.password
-from dj.auth.validators import get_password_validators
+from jommerce.auth.conf import settings
+import jommerce.auth.models
+import jommerce.auth.validators.password
+from jommerce.auth.validators import get_password_validators
 
 
 class Migration(migrations.Migration):
@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
                 (
                     "id",
                     models.CharField(
-                        default=dj.auth.models.generate_session_id,
+                        default=jommerce.auth.models.generate_session_id,
                         max_length=32,
                         primary_key=True,
                         serialize=False,

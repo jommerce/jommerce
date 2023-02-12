@@ -1,5 +1,5 @@
 from django.conf import settings as django_settings
-from dj.auth import settings as app_settings
+from jommerce.auth import settings as app_settings
 
 
 class Settings:

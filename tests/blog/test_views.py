@@ -1,10 +1,10 @@
 from django.test import TestCase, override_settings
 from django.utils import timezone
-from dj.blog.models import Post
-from dj.auth.models import User
+from jommerce.blog.models import Post
+from jommerce.auth.models import User
 
 
-@override_settings(ROOT_URLCONF="dj.blog.urls")
+@override_settings(ROOT_URLCONF="jommerce.blog.urls")
 class IndexViewTests(TestCase):
     def test_template_name(self):
         response = self.client.get("/")
@@ -15,7 +15,7 @@ class IndexViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-@override_settings(ROOT_URLCONF="dj.blog.urls")
+@override_settings(ROOT_URLCONF="jommerce.blog.urls")
 class PostDetailViewTests(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -45,12 +45,12 @@ class PostDetailViewTests(TestCase):
             title="What is Django?", slug="what-is-django", author=self.user
         )
         Post.objects.create(
-            title="What is Djplus?",
-            slug="what-is-dj",
+            title="What is Jommerce?",
+            slug="what-is-jommerce",
             author=self.user,
             publication_date=timezone.now() + timezone.timedelta(seconds=1),
         )
         response = self.client.get("/what-is-django/")
         self.assertEqual(response.status_code, 404)
-        response = self.client.get("/what-is-dj/")
+        response = self.client.get("/what-is-jommerce/")
         self.assertEqual(response.status_code, 404)

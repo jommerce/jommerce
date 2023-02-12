@@ -1,17 +1,17 @@
 AUTH_PASSWORD_VALIDATORS = [
-    "dj.auth.validators.password.length",
-    "dj.auth.validators.password.number",
-    "dj.auth.validators.password.lowercase",
-    "dj.auth.validators.password.uppercase",
-    "dj.auth.validators.password.symbol",
+    "jommerce.auth.validators.password.length",
+    "jommerce.auth.validators.password.number",
+    "jommerce.auth.validators.password.lowercase",
+    "jommerce.auth.validators.password.uppercase",
+    "jommerce.auth.validators.password.symbol",
 ]
 
 AUTH_USERNAME_VALIDATORS = [
-    "dj.auth.validators.username.length",
-    "dj.auth.validators.username.ascii",
-    "dj.auth.validators.username.identifier",
+    "jommerce.auth.validators.username.length",
+    "jommerce.auth.validators.username.ascii",
+    "jommerce.auth.validators.username.identifier",
 ]
-AUTH_PASSWORD_HASHERS = ["dj.auth.hashers.default"]
+AUTH_PASSWORD_HASHERS = ["jommerce.auth.hashers.default"]
 AUTH_LOGIN_URL = "/auth/login/"
 AUTH_LOGIN_REDIRECT_URL = "/"
 AUTH_LOGOUT_REDIRECT_URL = "/"

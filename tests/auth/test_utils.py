@@ -1,6 +1,6 @@
 import string
 from django.test import TestCase
-from dj.auth.utils import generate_random_string
+from jommerce.auth.utils import generate_random_string
 
 
 class GenerateRandomStringTests(TestCase):

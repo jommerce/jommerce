@@ -1,25 +1,23 @@
 [tool.poetry]
-name = "djplus"
+name = "jommerce"
 version = "3.0.0"
 description = "A collection of Django apps"
 license = "MIT"
 authors = ["githashem <PersonalHashem@gmail.com>"]
 readme = "README.md"
-keywords = ["django", "dj", "extra", "contrib"]
-packages = [
-    { include = "dj" },
-]
+keywords = ["django", "jommerce", "extra", "contrib"]
 
-repository = "https://github.com/githashem/dj"
+
+repository = "https://github.com/jommerce/jommerce"
 
 include = [
     "README.md",
     "LICENSE",
     "CHANGELOG.md",
-    "dj/project_template/*",
-    "dj/templates/*",
-    "dj/static/*",
-    "dj/dj.toml",
+    "jommerce/project_template/*",
+    "jommerce/templates/*",
+    "jommerce/static/*",
+    "jommerce/jommerce.toml",
 ]
 
 classifiers = [
@@ -54,9 +52,9 @@ Sphinx = "^5.0.1"
 sphinx-rtd-theme = "^1.0.0"
 
 [tool.poetry.scripts]
-dj = "dj.__main__:main"
-djonfig = "dj.__main__:generate_config_file"
-djecret = "dj.__main__:get_random_secret_key"
+jommerce = "jommerce.__main__:main"
+jonfig = "jommerce.__main__:generate_config_file"
+jecret = "jommerce.__main__:get_random_secret_key"
 
 [build-system]
 requires = ["poetry-core"]
@@ -64,5 +62,5 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 extend-exclude = '''
-dj/project_template/*
+jommerce/project_template/*
 '''

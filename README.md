@@ -1,7 +1,7 @@
-![djplus version](https://img.shields.io/pypi/v/djplus?style=flat-square)
-![django version](https://img.shields.io/pypi/djversions/djplus?style=flat-square)
-![python version](https://img.shields.io/pypi/pyversions/djplus?style=flat-square)
-![license](https://img.shields.io/pypi/l/djplus?color=blue&style=flat-square)
+![jommerce version](https://img.shields.io/pypi/v/jommerce?style=flat-square)
+![django version](https://img.shields.io/pypi/djversions/jommerce?style=flat-square)
+![python version](https://img.shields.io/pypi/pyversions/jommerce?style=flat-square)
+![license](https://img.shields.io/pypi/l/jommerce?color=blue&style=flat-square)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 # Why does this package exist?
@@ -13,20 +13,20 @@ and all these apps can be customized by the settings of each project.
 This helps to save our time and increase our income in exchange for doing projects.
 
 # Installing
-You can use pip to install `djplus` for usage:
+You can use pip to install `jommerce` for usage:
 ```shell
-pip install djplus
+pip install jommerce
 ```
 
 # Usage
 ## Create Project
 Simple command line for jumpstarting production-ready Django projects:
 ```shell
-dj
+jommerce
 ```
 or
 ```shell
-python -m dj
+python -m jommerce
 ```
 
 ## Auth
@@ -36,13 +36,13 @@ python -m dj
 
 INSTALLED_APPS = [
     # ...
-    "dj.auth", 
+    "jommerce.auth", 
     # ...
 ]
 
 MIDDLEWARE = [
     # ...
-    'dj.auth.middleware.AuthenticationMiddleware',
+    'jommerce.auth.middleware.AuthenticationMiddleware',
     # ...
 ]
 ```
@@ -51,17 +51,18 @@ MIDDLEWARE = [
 
 urlpatterns = [
     # ...
-    path("auth/", include("dj.auth.urls", namespace="auth")),
+    path("auth/", include("jommerce.auth.urls", namespace="auth")),
     # ...
 ]
 ```
 ## Blog
+
 ```python
 #settings.py
 
 INSTALLED_APPS = [
     # ...
-    "dj.blog", 
+    "jommerce.blog", 
     # ...
 ]
 ```
@@ -70,7 +71,7 @@ INSTALLED_APPS = [
 
 urlpatterns = [
     # ...
-    path("blog/", include("dj.blog.urls", namespace="blog")),
+    path("blog/", include("jommerce.blog.urls", namespace="blog")),
     # ...
 ]
 ```

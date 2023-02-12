@@ -11,11 +11,11 @@ if "django.contrib.admin" in settings.INSTALLED_APPS:
 
     urlpatterns += [path("admin/", admin.site.urls)]
 
-if "dj.auth" in settings.INSTALLED_APPS:
-    urlpatterns += [path("auth/", include("dj.auth.urls", namespace="auth"))]
+if "jommerce.auth" in settings.INSTALLED_APPS:
+    urlpatterns += [path("auth/", include("jommerce.auth.urls", namespace="auth"))]
 
-if "dj.blog" in settings.INSTALLED_APPS:
-    urlpatterns += [path("blog/", include("dj.blog.urls", namespace="blog"))]
+if "jommerce.blog" in settings.INSTALLED_APPS:
+    urlpatterns += [path("blog/", include("jommerce.blog.urls", namespace="blog"))]
 
 if "debug_toolbar" in settings.INSTALLED_APPS:
     urlpatterns += [path("__debug__/", include("debug_toolbar.urls", namespace="djdt"))]

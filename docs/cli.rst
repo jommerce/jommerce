@@ -2,11 +2,11 @@
 command-line
 ============
 
-dj
+jommerce
     Simple command line for jumpstarting production-ready Django projects.
 
-djonfig
-    Simple command line for generating the ``dj.toml`` file in the home directory.
+jonfig
+    Simple command line for generating the ``jommerce.toml`` file in the home directory.
 
-djecret
+jecret
     Simple command line for generating a new secret key for your project.

@@ -19,15 +19,9 @@ import datetime
 
 # -- Project information -----------------------------------------------------
 
-project = "djplus"
-copyright = "{}, Django Debug Toolbar developers and contributors".format(
-    datetime.date.today().year
-)
-
-
-# The full version, including alpha/beta/rc tags
-release = "2.0.0"
-
+project = "jommerce"
+copyright = "{}, Jommerce developers and contributors".format(datetime.date.today().year)
+author = "Hashem"
 
 # -- General configuration ---------------------------------------------------
 

@@ -1,5 +1,5 @@
 from django.test import TestCase
-from dj.blog.models import Post, Category
+from jommerce.blog.models import Post, Category
 
 
 class PostModelTests(TestCase):

@@ -2,7 +2,7 @@ from django.test import TestCase, override_settings
 from django.urls import reverse, NoReverseMatch
 
 
-@override_settings(ROOT_URLCONF="dj.blog.urls")
+@override_settings(ROOT_URLCONF="jommerce.blog.urls")
 class UrlPatternsTests(TestCase):
     def assertReverse(self, url, name, args=[], kwargs={}):
         try:

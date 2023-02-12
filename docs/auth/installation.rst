@@ -5,25 +5,25 @@ installation
 
 1. Install the App
 ==================
-Add ``dj.auth`` to your ``INSTALLED_APPS`` setting:
+Add ``jommerce.auth`` to your ``INSTALLED_APPS`` setting:
 
 .. code-block:: python
 
     INSTALLED_APPS = [
         # ...
-        "dj.auth",
+        "jommerce.auth",
         # ...
     ]
 
 2. Add the Middleware
 =====================
-Add ``dj.auth.middleware.AuthenticationMiddleware`` to your ``MIDDLEWARE`` setting:
+Add ``jommerce.auth.middleware.AuthenticationMiddleware`` to your ``MIDDLEWARE`` setting:
 
 .. code-block:: python
 
     MIDDLEWARE = [
         # ...
-        "dj.auth.middleware.AuthenticationMiddleware",
+        "jommerce.auth.middleware.AuthenticationMiddleware",
         # ...
     ]
 
@@ -37,7 +37,7 @@ Add auth URLs to your project's URLconf:
 
     urlpatterns = [
         # ...
-        path('auth/', include('dj.auth.urls', namespace="auth")),
+        path('auth/', include('jommerce.auth.urls', namespace="auth")),
         # ...
     ]
 

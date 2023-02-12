@@ -1,7 +1,7 @@
 import unittest
 from django.test import TestCase
-from dj.auth.utils import generate_random_string
-from dj.auth.hashers import (
+from jommerce.auth.utils import generate_random_string
+from jommerce.auth.hashers import (
     BasePasswordHasher,
     PBKDF2PasswordHasher,
     Argon2PasswordHasher,

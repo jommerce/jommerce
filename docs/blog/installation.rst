@@ -5,13 +5,13 @@ installation
 
 1. Install the App
 ==================
-Add ``dj.blog`` to your ``INSTALLED_APPS`` setting:
+Add ``jommerce.blog`` to your ``INSTALLED_APPS`` setting:
 
 .. code-block:: python
 
     INSTALLED_APPS = [
         # ...
-        "dj.blog",
+        "jommerce.blog",
         # ...
     ]
 
@@ -25,7 +25,7 @@ Add blog URLs to your project's URLconf:
 
     urlpatterns = [
         # ...
-        path('blog/', include('dj.blog.urls', namespace="blog")),
+        path('blog/', include('jommerce.blog.urls', namespace="blog")),
         # ...
     ]
 

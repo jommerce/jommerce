@@ -5,21 +5,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-### Added 
-- Add `djecret` command line to generate a new secret key for your project.
 
-## [3.0.0] - 2023-2-3
+## [3.0.0] - 2023-2-13
 ### Added
-- Add initial djplus project.
+- Add initial jommerce project.
 - Add `ip` field to `Session` model.
 - Add `status` field to `User` model.
+- Add `jecret` command line to generate a new secret key for your project.
 ### Fixed
 - Executable command line without `tomllib` library.
 ### Changed
-- Rename `djplus` command line to `dj`.
-- Rename `djplusconfig` command line to `djonfig`.
+- Rename `djplus` command line to `jommerce`.
+- Rename `djplusconfig` command line to `jonfig`.
 ### Breaking Change
-- Change the name of the package from `djplus` to `dj`.
+- Change the name of the package from `djplus` to `jommerce`.
 
 
 ## [2.1.0] - 2022-10-27
@@ -66,10 +65,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release
 
 
-[2.1.0]: https://github.com/githashem/djplus/compare/v2.1.0...v3.0.0
-[2.1.0]: https://github.com/githashem/djplus/compare/v2.0.0...v2.1.0
-[2.0.0]: https://github.com/githashem/djplus/compare/v1.1.1...v2.0.0
-[1.1.1]: https://github.com/githashem/djplus/compare/v1.1.0...v1.1.1
-[1.1.0]: https://github.com/githashem/djplus/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/githashem/djplus/compare/v0.1.0...v1.0.0
-[0.1.0]: https://github.com/githashem/djplus/releases/tag/v0.1.0
+[3.0.0]: https://github.com/jommerce/jommerce/compare/v2.1.0...v3.0.0
+[2.1.0]: https://github.com/jommerce/jommerce/compare/v2.0.0...v2.1.0
+[2.0.0]: https://github.com/jommerce/jommerce/compare/v1.1.1...v2.0.0
+[1.1.1]: https://github.com/jommerce/jommerce/compare/v1.1.0...v1.1.1
+[1.1.0]: https://github.com/jommerce/jommerce/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/jommerce/jommerce/compare/v0.1.0...v1.0.0
+[0.1.0]: https://github.com/jommerce/jommerce/releases/tag/v0.1.0

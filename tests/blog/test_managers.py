@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.utils import timezone
-from dj.auth.models import User
-from dj.blog.models import Post
+from jommerce.auth.models import User
+from jommerce.blog.models import Post
 
 
 class PublishedManagerTests(TestCase):
@@ -21,7 +21,7 @@ class PublishedManagerTests(TestCase):
         )
         post = Post.objects.create(
             title="What is Djplus?",
-            slug="what-is-dj",
+            slug="what-is-jommerce",
             author=self.user,
             publication_date=timezone.now() - timezone.timedelta(seconds=1),
         )

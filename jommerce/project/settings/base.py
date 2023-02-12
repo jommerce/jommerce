@@ -11,15 +11,15 @@ PROJECT_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = SECRETS.get("DJANGO_SECRET_KEY")
 DEBUG = True
 ALLOWED_HOSTS = SECRETS.get("DJANGO_ALLOWED_HOSTS", "").split()
-ROOT_URLCONF = "dj.project.urls"
-WSGI_APPLICATION = "dj.project.wsgi.application"
+ROOT_URLCONF = "jommerce.project.urls"
+WSGI_APPLICATION = "jommerce.project.wsgi.application"
 
 
 # Apps
 # ----------------------------------------------------------------------------------------------------------------------
 INSTALLED_APPS = [
-    "dj.auth",
-    "dj.blog",
+    "jommerce.auth",
+    "jommerce.blog",
     "django.contrib.staticfiles",
 ]
 
@@ -30,7 +30,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "dj.auth.middleware.AuthenticationMiddleware",
+    "jommerce.auth.middleware.AuthenticationMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
