@@ -48,6 +48,7 @@ MIDDLEWARE = [
 ```
 ```python
 # urls.py
+from django.urls import path, include
 
 urlpatterns = [
     # ...
@@ -68,6 +69,7 @@ INSTALLED_APPS = [
 ```
 ```python
 # urls.py 
+from django.urls import path, include
 
 urlpatterns = [
     # ...
