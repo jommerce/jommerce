@@ -7,13 +7,19 @@ body:
     attributes:
       label: Which one of the Jommerce sections?
       options:
-        - command-line/project template/app template
-        - templates/static
         - auth
         - admin
         - blog
         - shop
-        - other/i don't know
+        - payment
+        - storage
+        - academy
+        - forum
+        - contact
+        - command line
+        - project template
+        - project
+        - other/I don't know
     validations:
       required: true
 
